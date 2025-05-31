@@ -1,0 +1,34 @@
+# Node modules
+node_modules/
+
+# Build folders (nếu có)
+frontend/build/
+backend/dist/
+/dist/
+/build/
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Thư mục env (nếu bạn có dùng .env để chứa secret)
+.env
+.env.local
+.env.*.local
+
+# Dependency directories
+# (nếu bạn dùng PHP hoặc Python bên ngoài, phần này không cần)
+.DS_Store
+
+# Các IDE/editor temp files
+.vscode/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Mac-specific
+.DS_Store

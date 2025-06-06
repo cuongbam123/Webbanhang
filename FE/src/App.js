@@ -1,28 +1,22 @@
 import React from 'react'
-import { useSelector, useDispatch } from 'react-redux'
-import { decrement, increment } from './redux/slices/counterSlice'
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import HomePage from './pages/HomePage/HomePage';
+import OrderPage from './pages/OrderPage/OrderPage';
+import ProductsPage from './pages/ProductsPage/ProductsPage';
 
 function App() {
-  const count = useSelector((state) => state.counter.value)
-  const dispatch = useDispatch()
 
   return (
     <div>
-      <div>
-        <button
-          aria-label="Increment value"
-          onClick={() => dispatch(increment())}
-        >
-          Increment
-        </button>
-        <span>{count}</span>
-        <button
-          aria-label="Decrement value"
-          onClick={() => dispatch(decrement())}
-        >
-          Decrement
-        </button>
-      </div>
+      <Router>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/order" element={<OrderPage />} />
+          <Route path="/product" element={<ProductsPage />} />
+
+
+        </Routes>
+      </Router>
     </div>
   )
 }

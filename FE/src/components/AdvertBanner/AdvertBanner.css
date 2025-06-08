@@ -1,0 +1,15 @@
+.advert-banner {
+  width: 100%;
+  border-radius: 8px;
+  overflow: hidden;
+  margin: 30px 0;
+  transition: transform 0.3s ease;
+}
+
+.advert-banner:hover {
+  transform: scale(1.01);
+}
+
+.advert-banner img {
+  width: 100%;
+}

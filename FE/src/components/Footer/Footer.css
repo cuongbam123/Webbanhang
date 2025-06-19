@@ -1,0 +1,32 @@
+footer h5 {
+  font-weight: bold;
+  position: relative;
+}
+
+footer h5:after {
+  content: "";
+  position: absolute;
+  bottom: -10px;
+  left: 0;
+  width: 50px;
+  height: 2px;
+  background-color: #e94560;
+}
+
+footer ul li a {
+  transition: all 0.3s ease;
+}
+
+footer ul li a:hover {
+  color: #e94560 !important;
+  padding-left: 5px;
+}
+
+.social-icons a {
+  transition: all 0.3s ease;
+}
+
+.social-icons a:hover {
+  color: #e94560 !important;
+  transform: translateY(-3px);
+}

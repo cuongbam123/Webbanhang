@@ -1,17 +1,39 @@
 const ProductService = require('../services/ProductService');
 
 module.exports = {
-  // GET /api/products
+  // Lấy danh sách sản phẩm: phân trang + sắp xếp + tìm kiếm
   index: async (req, res, next) => {
     try {
-      const products = await ProductService.getAllProducts();
-      res.json(products);
+      const {
+        page = 1,
+        limit = 10,
+        sortBy = 'name_product',
+        sortOrder = 'asc',
+        search = '' // 🔍 Tên sản phẩm cần tìm kiếm (nếu có)
+      } = req.query;
+
+      const skip = (page - 1) * limit;
+      const sort = { [sortBy]: sortOrder === 'desc' ? -1 : 1 };
+      const filter = search ? { name_product: { $regex: search, $options: 'i' } } : {}; // 🔍 Tạo điều kiện tìm kiếm theo tên
+
+      const products = await ProductService.getAllProducts(parseInt(limit), parseInt(skip), sort, filter);
+      const total = await ProductService.countProducts(filter);
+
+      res.json({
+        total,
+        page: parseInt(page),
+        limit: parseInt(limit),
+        sortBy,
+        sortOrder,
+        search,
+        data: products
+      });
     } catch (err) {
       next(err);
     }
   },
 
-  // GET /api/products/:id
+  // Các hàm show, create, update, remove 
   show: async (req, res, next) => {
     try {
       const product = await ProductService.getProductById(req.params.id);
@@ -22,7 +44,6 @@ module.exports = {
     }
   },
 
-  // POST /api/products
   create: async (req, res, next) => {
     try {
       const newProduct = await ProductService.createProduct(req.body);
@@ -32,25 +53,23 @@ module.exports = {
     }
   },
 
-  // PUT /api/products/:id
   update: async (req, res, next) => {
     try {
-      const updated = await ProductService.updateProduct(req.params.id, req.body);
-      if (!updated) return res.status(404).send('Không tìm thấy sản phẩm để cập nhật');
-      res.json(updated);
+      const updatedProduct = await ProductService.updateProduct(req.params.id, req.body);
+      if (!updatedProduct) return res.status(404).send('Không tìm thấy sản phẩm');
+      res.json(updatedProduct);
     } catch (err) {
       next(err);
     }
   },
 
-  // DELETE /api/products/:id
   remove: async (req, res, next) => {
     try {
       const deleted = await ProductService.deleteProduct(req.params.id);
-      if (!deleted) return res.status(404).send('Không tìm thấy sản phẩm để xóa');
-      res.json({ message: 'Xóa sản phẩm thành công' });
+      if (!deleted) return res.status(404).send('Không tìm thấy sản phẩm');
+      res.json({ message: 'Xóa thành công' });
     } catch (err) {
       next(err);
     }
-  }
+  },
 };

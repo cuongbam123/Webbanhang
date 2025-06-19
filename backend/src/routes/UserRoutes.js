@@ -1,13 +1,15 @@
-const express = require('express')
-const router = express.Router()
-const UserController = require('../controllers/UserController')
+const express = require('express');
+const router = express.Router();
+const UserController = require('../controllers/UserController');
+const { verifyToken, isAdmin } = require('../middlewares/auth');
 
-// Đặt các route cụ thể trước (detail), rồi mới tới route chung (/:id)
-router.get('/detail/login', UserController.detail)
-router.get('/:id',            UserController.user)
-router.get('/',               UserController.index)
+// Đăng ký và đăng nhập
+router.post('/register', UserController.register);
+router.post('/login', UserController.login);
 
-router.post('/',              UserController.post_user)
-router.put('/',               UserController.update_user)
+// Route chỉ admin mới được truy cập
+router.get('/admin/users', verifyToken, isAdmin, UserController.index);
+router.get('/admin/users/:id', verifyToken, isAdmin, UserController.user);
+router.put('/admin/users/:id', verifyToken, isAdmin, UserController.updateUser);
 
-module.exports = router
+module.exports = router;

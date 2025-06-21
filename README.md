@@ -9,6 +9,7 @@
 
 
 # ERD
+![ERD](https://github.com/user-attachments/assets/d2df4a49-2359-4e0b-9cf1-995ef7ef950f)
 
 
 # Usecase

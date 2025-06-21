@@ -90,7 +90,7 @@ const Navbar = () => {
       </ul>
       <div className="nav-login-cart">
         <Link to="/login">
-          <button>Sign up</button>
+          <button onClick={() => setMenu("")}>Sign up</button>
         </Link>
         <Link to="/cart">
           <img src={cart_icon} alt="" />

@@ -9,10 +9,11 @@ import Cart from "./Pages/Cart";
 import LoginSignup from "./Pages/LoginSignup";
 import SearchResults from "./Pages/SearchResults";
 import OrderPage from "./Pages/OrderPage";
+import men_banner from "./Components/Assets/banner_dt.png";
+import women_banner from "./Components/Assets/banner_laptop.jpg";
+import kid_banner from "./Components/Assets/banner_phukien.jpg";
 
-import men_banner from "./Components/Assets/banner_mens.png";
-import women_banner from "./Components/Assets/banner_women.png";
-import kid_banner from "./Components/Assets/banner_kids.png";
+
 
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 

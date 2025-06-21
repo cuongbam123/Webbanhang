@@ -8,9 +8,11 @@ import Cart from "./Pages/Cart";
 import LoginSignup from "./Pages/LoginSignup";
 import Footer from "./Components/Footer/Footer";
 import SearchResults from "./Pages/SearchResults";
-import men_banner from "./Components/Assets/banner_mens.png";
-import women_banner from "./Components/Assets/banner_women.png";
-import kid_banner from "./Components/Assets/banner_kids.png";
+import men_banner from "./Components/Assets/banner_dt.png";
+import women_banner from "./Components/Assets/banner_laptop.jpg";
+import kid_banner from "./Components/Assets/banner_phukien.jpg";
+
+
 
 function App() {
   return (

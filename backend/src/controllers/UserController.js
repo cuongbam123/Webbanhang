@@ -27,7 +27,11 @@ module.exports = {
                 { expiresIn: '1h' }
             );
 
-            res.json({ user, token });
+            res.json({
+                token, user,
+                fullname: user.fullname,
+                role: user.role
+            });
         } catch (err) {
             next(err);
         }

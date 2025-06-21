@@ -11,37 +11,49 @@ import SearchResults from "./Pages/SearchResults";
 import men_banner from "./Components/Assets/banner_mens.png";
 import women_banner from "./Components/Assets/banner_women.png";
 import kid_banner from "./Components/Assets/banner_kids.png";
+import { useEffect, useState } from "react";
 
 function App() {
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // const [fullname, setFullname] = useState("");
+
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   const storedName = localStorage.getItem("fullname");
+  //   if (token && storedName) {
+  //     setIsLoggedIn(true);
+  //     setFullname(storedName);
+  //   }
+  // }, []);
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    setIsLoggedIn(!!token);
+  }, []);
+
   return (
     <div>
       <BrowserRouter>
-        <Navbar />
+        <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
         <Routes>
           <Route path="/" element={<Shop />} />
-          <Route
-            path="/dien-thoai"
-            element={<ShopCategory banner={men_banner} category="dien-thoai" />}
-          />
-          <Route
-            path="/laptop"
-            element={<ShopCategory banner={women_banner} category="laptop" />}
-          />
-          <Route
-            path="/phu-kien"
-            element={<ShopCategory banner={kid_banner} category="phu-kien" />}
-          />
+          <Route path="/dien-thoai" element={<ShopCategory banner={men_banner} category="dien-thoai" />} />
+          <Route path="/laptop" element={<ShopCategory banner={women_banner} category="laptop" />} />
+          <Route path="/phu-kien" element={<ShopCategory banner={kid_banner} category="phu-kien" />} />
           <Route path="/search" element={<SearchResults />} />
           <Route path="/product" element={<Product />}>
             <Route path=":productId" element={<Product />} />
           </Route>
           <Route path="/cart" element={<Cart />} />
-          <Route path="/login" element={<LoginSignup />} />
+          <Route path="/login" element={<LoginSignup setIsLoggedIn={setIsLoggedIn}/>} />
         </Routes>
         <Footer />
       </BrowserRouter>
     </div>
   );
 }
+
+
 
 export default App;

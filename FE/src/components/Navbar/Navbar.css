@@ -185,16 +185,16 @@
 
 .nav-login-cart {
   position: relative;
-  display:flex;
+  display: flex;
   align-items: center;
-  gap: 24px;
+  gap: 10px;
 }
 
 .nav-cart-icon {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content:center;
+  cursor: pointer;
+  transition: transform 0.2s;
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.08);
+  margin-right: 4px;
 }
 
 .nav-cart-count {
@@ -225,6 +225,8 @@
   cursor: pointer;
   transition: background 0.2s;
   box-shadow: 0 2px 8px rgba(52, 152, 219, 0.08);
+  margin-right: 4px;
+  transform: scale(1.05);
 }
 
 .nav-login-cart button:hover {

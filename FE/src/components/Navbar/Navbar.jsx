@@ -100,6 +100,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
             <button>Login</button>
           </Link>
         )}
+
         <Link to="/cart">
           <img src={cart_icon} alt="" />
         </Link>

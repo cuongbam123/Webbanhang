@@ -24,9 +24,13 @@ const ShopCategory = (props) => {
 
   // Sắp xếp sản phẩm nếu có chọn sort
   if (sortType === "asc") {
-    filteredProducts = [...filteredProducts].sort((a, b) => a.new_price - b.new_price);
+    filteredProducts = [...filteredProducts].sort(
+      (a, b) => a.new_price - b.new_price
+    );
   } else if (sortType === "desc") {
-    filteredProducts = [...filteredProducts].sort((a, b) => b.new_price - a.new_price);
+    filteredProducts = [...filteredProducts].sort(
+      (a, b) => b.new_price - a.new_price
+    );
   }
 
   return (
@@ -52,8 +56,16 @@ const ShopCategory = (props) => {
           out of {filteredProducts.length} products
         </p>
         <div className="shopcategory-sort" style={{ position: "relative" }}>
-          <span onClick={() => setSortOpen((open) => !open)} style={{ cursor: "pointer" }}>
-            Sort by <img src={dropdown_icon} alt="" style={{ verticalAlign: "middle" }} />
+          <span
+            onClick={() => setSortOpen((open) => !open)}
+            style={{ cursor: "pointer" }}
+          >
+            Sort by{" "}
+            <img
+              src={dropdown_icon}
+              alt=""
+              style={{ verticalAlign: "middle" }}
+            />
           </span>
           {sortOpen && (
             <div
@@ -67,24 +79,45 @@ const ShopCategory = (props) => {
                 boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
                 zIndex: 10,
                 minWidth: "170px",
-                padding: "8px 0"
+                padding: "8px 0",
               }}
             >
               <div
-                style={{ padding: "10px 20px", cursor: "pointer", color: sortType === "asc" ? "#3498db" : undefined }}
-                onClick={() => { setSortType("asc"); setSortOpen(false); }}
+                style={{
+                  padding: "10px 20px",
+                  cursor: "pointer",
+                  color: sortType === "asc" ? "#3498db" : undefined,
+                }}
+                onClick={() => {
+                  setSortType("asc");
+                  setSortOpen(false);
+                }}
               >
                 Giá: Thấp đến Cao
               </div>
               <div
-                style={{ padding: "10px 20px", cursor: "pointer", color: sortType === "desc" ? "#3498db" : undefined }}
-                onClick={() => { setSortType("desc"); setSortOpen(false); }}
+                style={{
+                  padding: "10px 20px",
+                  cursor: "pointer",
+                  color: sortType === "desc" ? "#3498db" : undefined,
+                }}
+                onClick={() => {
+                  setSortType("desc");
+                  setSortOpen(false);
+                }}
               >
                 Giá: Cao đến Thấp
               </div>
               <div
-                style={{ padding: "10px 20px", cursor: "pointer", color: sortType === "" ? "#3498db" : undefined }}
-                onClick={() => { setSortType(""); setSortOpen(false); }}
+                style={{
+                  padding: "10px 20px",
+                  cursor: "pointer",
+                  color: sortType === "" ? "#3498db" : undefined,
+                }}
+                onClick={() => {
+                  setSortType("");
+                  setSortOpen(false);
+                }}
               >
                 Mặc định
               </div>
@@ -107,7 +140,13 @@ const ShopCategory = (props) => {
       {visibleCount < filteredProducts.length && (
         <div
           className="shopcategory-loadmore"
-          onClick={() => setVisibleCount(visibleCount + 12)}
+          onClick={() => {
+            const scrollY = window.scrollY;
+            setVisibleCount((v) => {
+              setTimeout(() => window.scrollTo(0, scrollY), 0);
+              return v + 12;
+            });
+          }}
           style={{ cursor: "pointer" }}
         >
           Explore More

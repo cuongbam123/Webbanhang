@@ -5,6 +5,7 @@ import logo from "../Assets/logo.png";
 import cart_icon from "../Assets/cart_icon.png";
 import { ShopContext } from "../../Context/ShopContext";
 import nav_dropdown from "../Assets/nav_dropdown.png";
+import all_product from "../Assets/all_product";
 
 const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   const [menu, setMenu] = useState("shop");
@@ -44,6 +45,46 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
     navigate("/login");
   };
 
+  // Lấy danh sách hãng từ sản phẩm
+  const getBrands = (category) => {
+    const brands = all_product
+      .filter((p) => p.category === category)
+      .map((p) => {
+        // Lấy hãng là từ đầu tên sản phẩm (từ đầu đến khoảng trắng đầu tiên hoặc đến từ thứ 2)
+        const firstWord = p.name.split(" ")[0].toLowerCase();
+        // Một số hãng có 2 từ đầu (Apple MacBook, Samsung Galaxy, etc)
+        if (
+          firstWord === "apple" ||
+          firstWord === "samsung" ||
+          firstWord === "macbook" ||
+          firstWord === "asus" ||
+          firstWord === "hp" ||
+          firstWord === "msi" ||
+          firstWord === "lenovo" ||
+          firstWord === "acer" ||
+          firstWord === "gigabyte" ||
+          firstWord === "oppo" ||
+          firstWord === "vivo" ||
+          firstWord === "xiaomi" ||
+          firstWord === "nubia" ||
+          firstWord === "realme" ||
+          firstWord === "marshall" ||
+          firstWord === "jbl" ||
+          firstWord === "logitech" ||
+          firstWord === "razer" ||
+          firstWord === "harman" ||
+          firstWord === "dji"
+        ) {
+          return p.name.split(" ").slice(0, 2).join(" ");
+        }
+        return p.name.split(" ")[0];
+      });
+    // Loại bỏ trùng lặp và chuẩn hóa chữ hoa đầu
+    return [
+      ...new Set(brands.map((b) => b.charAt(0).toUpperCase() + b.slice(1))),
+    ];
+  };
+
   return (
     <div className="navbar">
       <div className="nav-logo">
@@ -65,26 +106,63 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
       />
       <ul ref={menuRef} className="nav-menu">
         <li onClick={() => setMenu("shop")}>
-          <Link style={{ textDecoration: "none" }} to="/">Shop</Link>
+          <Link style={{ textDecoration: "none" }} to="/">
+            Shop
+          </Link>
           {menu === "shop" && <hr />}
         </li>
-        <li onClick={() => setMenu("dien-thoai")}>
-          <Link style={{ textDecoration: "none" }} to="/dien-thoai">Điện thoại</Link>
+        <li onClick={() => setMenu("dien-thoai")} className="has-submenu">
+          <Link style={{ textDecoration: "none" }} to="/dien-thoai">
+            Điện thoại
+          </Link>
           {menu === "dien-thoai" && <hr />}
+          <ul className="submenu">
+            {getBrands("dien-thoai").map((brand) => (
+              <li key={brand}>
+                <Link to={`/dien-thoai?brand=${encodeURIComponent(brand)}`}>
+                  {brand}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </li>
-        <li onClick={() => setMenu("laptop")}>
-          <Link style={{ textDecoration: "none" }} to="/laptop">Laptop</Link>
+        <li onClick={() => setMenu("laptop")} className="has-submenu">
+          <Link style={{ textDecoration: "none" }} to="/laptop">
+            Laptop
+          </Link>
           {menu === "laptop" && <hr />}
+          <ul className="submenu">
+            {getBrands("laptop").map((brand) => (
+              <li key={brand}>
+                <Link to={`/laptop?brand=${encodeURIComponent(brand)}`}>
+                  {brand}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </li>
-        <li onClick={() => setMenu("phu-kien")}>
-          <Link style={{ textDecoration: "none" }} to="/phu-kien">Phụ kiện</Link>
+        <li onClick={() => setMenu("phu-kien")} className="has-submenu">
+          <Link style={{ textDecoration: "none" }} to="/phu-kien">
+            Phụ kiện
+          </Link>
           {menu === "phu-kien" && <hr />}
+          <ul className="submenu">
+            {getBrands("phu-kien").map((brand) => (
+              <li key={brand}>
+                <Link to={`/phu-kien?brand=${encodeURIComponent(brand)}`}>
+                  {brand}
+                </Link>
+              </li>
+            ))}
+          </ul>
         </li>
 
         {/* Hiển thị menu quản lý nếu là admin */}
         {role === "admin" && (
           <li onClick={() => setMenu("admin")}>
-            <Link style={{ textDecoration: "none" }} to="/admin">Quản lý hệ thống</Link>
+            <Link style={{ textDecoration: "none" }} to="/admin">
+              Quản lý hệ thống
+            </Link>
             {menu === "admin" && <hr />}
           </li>
         )}
@@ -92,7 +170,9 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
       <div className="nav-login-cart">
         {isLoggedIn ? (
           <>
-            <span style={{ marginRight: "10px", fontWeight: "bold" }}>{fullname}</span>
+            <span style={{ marginRight: "10px", fontWeight: "bold" }}>
+              {fullname}
+            </span>
             <button onClick={handleLogout}>Logout</button>
           </>
         ) : (

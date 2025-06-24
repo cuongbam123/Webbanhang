@@ -1,37 +1,36 @@
-import React, { useContext } from 'react'
-import './CSS/ShopCategory.css'
-import { ShopContext } from '../Context/ShopContext'
-import dropdown_icon from '../Components/Assets/dropdown_icon.png'
-import Item from '../Components/Item/Item'
+// ShopCategory.jsx
 
-const ShopCategory = (props) => {
-    const {all_product} = useContext(ShopContext);
-    return (
-        <div className = 'shop-category'>
-            <img className = "shopcategory-banner" src={props.banner} alt="" />
-            <div className = 'shopcategory-indexSort'>
-                <p>
-                    <span>Showing 1-12</span> out of 36 products
-                </p>
-                <div className="shopcategory-sort">
-                    Sort by <img src={dropdown_icon} alt="" />
-                </div>
-            </div>
-            <div className="shopcategory-products">
-                {all_product.map((item,i)=>{
-                    if (props.category===item.category) {
-                        return <Item key={i} id={item.id} name={item.name} image={item.image} new_price={item.new_price} old_price={item.old_price} />
-                    }
-                    else{
-                        return null;
-                    }
-                })}
-            </div>
-            <div className="shopcategory-loadmore">
-                Explore More
-            </div>
-        </div>
-    )
-}
+import React, { useContext } from 'react';
+import { ShopContext } from '../Context/ShopContext';
+import { Link } from 'react-router-dom';
 
-export default ShopCategory
+const ShopCategory = ({ banner, category }) => {
+  const { all_product, addToCart } = useContext(ShopContext);
+
+  // Lọc sản phẩm theo id_category (theo cách bạn đang truyền)
+  const filteredProducts = all_product.filter(product => product.id_category === category);
+
+  return (
+    <div className="shop-category">
+      <img src={banner} alt="Category Banner" />
+      <div className="product-list">
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map(product => (
+            <div key={product._id} className="product-card">
+              <Link to={`/product/${product._id}`}>
+                <img src={product.image} alt={product.name_product} />
+                <h3>{product.name_product}</h3>
+                <p>{product.price_product.toLocaleString()} VNĐ</p>
+              </Link>
+              <button onClick={() => addToCart(product._id)}>Thêm vào giỏ</button>
+            </div>
+          ))
+        ) : (
+          <p>Không có sản phẩm nào trong danh mục này.</p>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default ShopCategory;

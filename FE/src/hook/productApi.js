@@ -1,6 +1,13 @@
 import axios from 'axios';
 
-export const getAllProducts = async () => {
-    const res = await axios.get(`${process.env.REACT_APP_API_KEY}/products`);
-    return res.data; // chỉ trả về phần data
-}
+const API_URL = 'http://localhost:3001/api/products';
+
+export const fetchProductById = async (id) => {
+    try {
+        const response = await axios.get(`${API_URL}/${id}`);
+        return response.data;
+    } catch (error) {
+        console.error('Lỗi khi lấy chi tiết sản phẩm:', error);
+        return null;
+    }
+};

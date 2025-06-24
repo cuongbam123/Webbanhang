@@ -6,6 +6,7 @@ const saleRoutes = require('./routes/SaleRoutes');
 const productRoutes = require('./routes/ProductRoutes');
 const orderRoutes = require('./routes/OrderRoutes');
 const detailOrderRoutes = require('./routes/DetailOrderRoutes');
+const uploadRoutes = require('./routes/UploadRoutes');
 //Cấu hình cors
 // const cors = require("cors");
 
@@ -19,6 +20,13 @@ const PORT = process.env.PORT || 3001;
 //   origin: "http://localhost:3000", // hoặc "*" nếu là dev nội bộ
 //   credentials: true
 // }));
+
+
+// app.use('/uploads', express.static('uploads'));
+// app.use('/images', express.static('src/images'));
+// app.use('/uploads', express.static(__dirname + '/uploads'));
+app.use('/uploads', express.static('uploads'));
+
 
 
 // Middleware để parse JSON
@@ -55,6 +63,7 @@ app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/detail-orders", detailOrderRoutes);
 app.use('/api/payment', paymentRoutes);
+app.use('/api/upload', uploadRoutes);
 
 // Global error handler
 app.use((err, req, res, next) => {

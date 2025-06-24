@@ -1,7 +1,7 @@
 const Product = require('../models/product');
 
 const getAllProducts = async (limit, skip, sort, filter) =>
-  await Product.find(filter).sort(sort).limit(limit).skip(skip);
+  await Product.find(filter).sort(sort).limit(limit || 0).skip(skip);
 
 const countProducts = async (filter) => await Product.countDocuments(filter);
 const getProductById = async (id) => await Product.findById(id);

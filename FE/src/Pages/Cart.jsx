@@ -4,6 +4,7 @@ import { ShopContext } from '../Context/ShopContext';
 const Cart = () => {
   const { all_product, cartItems } = useContext(ShopContext);
 
+
   const cartProducts = all_product.filter(product => cartItems[product._id]);
 
   return (

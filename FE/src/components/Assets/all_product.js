@@ -295,7 +295,7 @@ let all_product = [
   },
   {
     id: 33,
-    name: "Loa Bluetooth Marshall Emberton III",
+    name: "Tai nghe chụp tai Gaming Sony Inzone H3",
     category: "phu-kien",
     image: p33_img,
     new_price: 499.0,

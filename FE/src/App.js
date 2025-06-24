@@ -82,9 +82,9 @@ function App() {
             <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
             <Routes>
               <Route path="/" element={<Shop />} />
-                <Route path="/dien-thoai" element={<ShopCategory banner={men_banner} category="dien-thoai" />} />
-                <Route path="/laptop" element={<ShopCategory banner={women_banner} category="laptop" />} />
-                <Route path="/phu-kien" element={<ShopCategory banner={kid_banner} category="phu-kien" />} />
+                <Route path="/dien-thoai" element={<ShopCategory banner={dt_banner} category="dien-thoai" />} />
+                <Route path="/laptop" element={<ShopCategory banner={laptop_banner} category="laptop" />} />
+                <Route path="/phu-kien" element={<ShopCategory banner={pkien_banner} category="phu-kien" />} />
                 <Route path="/search" element={<SearchResults />} />
                 <Route path="/product">
                   <Route path=":productId" element={<Product />} />

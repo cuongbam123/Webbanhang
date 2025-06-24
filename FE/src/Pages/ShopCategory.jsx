@@ -32,11 +32,12 @@
 //       </div>
 // =======
 import React, { useContext, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
 import "./CSS/ShopCategory.css";
 import { ShopContext } from "../Context/ShopContext";
 import dropdown_icon from "../Components/Assets/dropdown_icon.png";
 import Item from "../Components/Item/Item";
-import { useSearchParams } from "react-router-dom";
+
 
 const ShopCategory = ({ banner, category }) => {
 //   const { all_product } = useContext(ShopContext);
@@ -49,15 +50,15 @@ const ShopCategory = ({ banner, category }) => {
   const { all_product, addToCart } = useContext(ShopContext);
 
   // Lọc sản phẩm theo id_category (theo cách bạn đang truyền)
-//   const filteredProducts = all_product.filter(product => product.id_category === category);
+  const filteredProducts = all_product.filter(product => product.id_category === category);
 
   // Lọc sản phẩm theo category, brand, type
-  let filteredProducts = all_product.filter(
-    (item) =>
-      props.category === item.category &&
-      (!brand || item.name.toLowerCase().includes(brand.toLowerCase())) &&
-      (!type || item.name.toLowerCase().includes(type.toLowerCase()))
-  );
+//   let filteredProducts = all_product.filter(
+//     (item) =>
+//       props.category === item.category &&
+//       (!brand || item.name.toLowerCase().includes(brand.toLowerCase())) &&
+//       (!type || item.name.toLowerCase().includes(type.toLowerCase()))
+//   );
 
   // Sắp xếp sản phẩm nếu có chọn sort
   if (sortType === "asc") {

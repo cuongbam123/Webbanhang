@@ -1,62 +1,60 @@
-const orderService = require('../services/OrderService');
+const Order = require('../models/Order');
 
-/** POST /orders */
-async function createOrder(req, res, next) {
+// Tạo đơn hàng mới
+exports.createOrder = async (req, res) => {
   try {
-    const data = req.body;
-    const order = await orderService.createOrder(data);
-    res.status(201).json(order);
-  } catch (err) {
-    next(err);
+    const newOrder = new Order({ ...req.body });
+    await newOrder.save();
+    return res.status(201).json({ success: true, data: newOrder });
+  } catch (error) {
+    console.error('createOrder:', error);
+    return res.status(500).json({ success: false, message: 'Lỗi tạo đơn hàng' });
   }
-}
+};
 
-/** GET /orders */
-async function listOrders(req, res, next) {
+// Lấy tất cả đơn hàng
+exports.getAllOrders = async (req, res) => {
   try {
-    const orders = await orderService.getAllOrders();
-    res.json(orders);
-  } catch (err) {
-    next(err);
+    const orders = await Order.find();
+    return res.status(200).json({ success: true, data: orders });
+  } catch (error) {
+    console.error('getAllOrders:', error);
+    return res.status(500).json({ success: false, message: 'Lỗi lấy đơn hàng' });
   }
-}
+};
 
-/** GET /orders/:id */
-async function getOrder(req, res, next) {
+// Lấy đơn theo ID
+exports.getOrderById = async (req, res) => {
   try {
-    const order = await orderService.getOrderById(req.params.id);
-    if (!order) return res.status(404).end();
-    res.json(order);
-  } catch (err) {
-    next(err);
+    const order = await Order.findById(req.params.id);
+    if (!order) return res.status(404).json({ success: false, message: 'Không tìm thấy đơn hàng' });
+    return res.status(200).json({ success: true, data: order });
+  } catch (error) {
+    console.error('getOrderById:', error);
+    return res.status(500).json({ success: false, message: 'Lỗi lấy đơn hàng' });
   }
-}
+};
 
-/** PUT /orders/:id */
-async function updateOrder(req, res, next) {
+// Cập nhật trạng thái đơn hàng
+exports.updateOrder = async (req, res) => {
   try {
-    const order = await orderService.updateOrder(req.params.id, req.body);
-    if (!order) return res.status(404).end();
-    res.json(order);
-  } catch (err) {
-    next(err);
+    const updated = await Order.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    if (!updated) return res.status(404).json({ success: false, message: 'Không tìm thấy đơn hàng' });
+    return res.status(200).json({ success: true, data: updated });
+  } catch (error) {
+    console.error('updateOrder:', error);
+    return res.status(500).json({ success: false, message: 'Lỗi cập nhật đơn hàng' });
   }
-}
+};
 
-/** DELETE /orders/:id */
-async function deleteOrder(req, res, next) {
+// Xóa đơn hàng
+exports.deleteOrder = async (req, res) => {
   try {
-    await orderService.deleteOrder(req.params.id);
-    res.status(204).end();
-  } catch (err) {
-    next(err);
+    const deleted = await Order.findByIdAndDelete(req.params.id);
+    if (!deleted) return res.status(404).json({ success: false, message: 'Không tìm thấy đơn hàng' });
+    return res.status(200).json({ success: true, message: 'Đã xóa đơn hàng' });
+  } catch (error) {
+    console.error('deleteOrder:', error);
+    return res.status(500).json({ success: false, message: 'Lỗi xóa đơn hàng' });
   }
-}
-
-module.exports = {
-  createOrder,
-  listOrders,
-  getOrder,
-  updateOrder,
-  deleteOrder
 };

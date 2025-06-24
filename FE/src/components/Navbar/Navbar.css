@@ -150,6 +150,10 @@
   align-items: center;
   gap: 36px;
   list-style: none;
+  font-family: "Segoe UI", Arial, sans-serif;
+  font-weight: 500;
+  font-size: 20px;
+  color: #2c3e50;
 }
 
 .nav-menu li {
@@ -157,6 +161,7 @@
   font-size: 18px;
   color: #000;
   font-weight: 600;
+
   cursor: pointer;
   padding: 6px 0;
   transition: color 0.2s;
@@ -197,17 +202,12 @@
   transition: color 0.2s;
 }
 
-.nav-menu li.active a,
-.nav-menu li:active a {
-  color: #ff0000 !important;
-}
 
-.nav-menu li:hover a {
-  color: #ff0000 !important;
-}
-
-.nav-menu li.active {
-  color: #ff0000 !important;
+.nav-menu li a {
+  color: #2c3e50;
+  text-decoration: none;
+  font-family: inherit;
+  font-weight: 500;
 }
 
 .nav-login-cart {
@@ -264,8 +264,58 @@
   display: none;
 }
 
+
 .nav-login-cart img {
   margin-right: 16px;
+}
+.nav-menu li.has-submenu .submenu {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  background: #fff;
+  min-width: 180px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  z-index: 1001;
+  padding: 8px 0;
+}
+
+.nav-menu li.has-submenu:hover .submenu {
+  display: block;
+}
+
+.submenu {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  font-family: "Segoe UI", Arial, sans-serif;
+}
+
+.submenu li {
+  padding: 8px 20px;
+  white-space: nowrap;
+  font-size: 16px;
+  color: #2c3e50;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  list-style: none;
+}
+
+.submenu li a {
+  color: #2c3e50;
+  text-decoration: none;
+  font-weight: 500;
+  font-family: inherit;
+  display: block;
+  width: 100%;
+}
+
+.submenu li:hover,
+.submenu li a:hover {
+  background: #f5f8fa;
+  color: #3498db;
+
 }
 
 @media (max-width: 1280px) {
@@ -378,12 +428,16 @@
 
   .nav-menu {
     display: none;
-    height: 80px;
+    flex-direction: column;
+    height: auto;
     width: 100%;
     position: absolute;
     background-color: white;
-    justify-content: center;
+    justify-content: flex-start;
     top: 50px;
+    left: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    z-index: 1000;
   }
 
   .nav-menu-visible {
@@ -397,6 +451,33 @@
   .nav-login-cart button {
     padding: 6px 10px;
     font-size: 12px;
+  }
+
+  .nav-menu li.has-submenu .submenu {
+    display: none;
+    position: static;
+    background: #f9f9f9;
+    min-width: 100%;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid #eee;
+  }
+
+  .nav-menu li.has-submenu:hover .submenu,
+  .nav-menu li.has-submenu:active .submenu {
+    display: block;
+  }
+
+  .submenu li {
+    padding: 14px 24px;
+    font-size: 17px;
+    border-bottom: 1px solid #f0f0f0;
+  }
+
+  .submenu li:last-child {
+    border-bottom: none;
   }
 }
 

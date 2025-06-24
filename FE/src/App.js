@@ -9,9 +9,9 @@ import Cart from "./Pages/Cart";
 import LoginSignup from "./Pages/LoginSignup";
 import SearchResults from "./Pages/SearchResults";
 import OrderPage from "./Pages/OrderPage";
-import men_banner from "./Components/Assets/banner_dt.png";
-import women_banner from "./Components/Assets/banner_laptop.jpg";
-import kid_banner from "./Components/Assets/banner_phukien.jpg";
+import dt_banner from "./Components/Assets/banner_dt.png";
+import laptop_banner from "./Components/Assets/banner_laptop.jpg";
+import pkien_banner from "./Components/Assets/banner_phukien.jpg";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 
 import { useEffect, useState } from "react";
@@ -42,9 +42,9 @@ function App() {
 
         <Routes>
           <Route path="/" element={<Shop />} />
-          <Route path="/dien-thoai" element={<ShopCategory banner={men_banner} category="dien-thoai" />} />
-          <Route path="/laptop" element={<ShopCategory banner={women_banner} category="laptop" />} />
-          <Route path="/phu-kien" element={<ShopCategory banner={kid_banner} category="phu-kien" />} />
+          <Route path="/dien-thoai" element={<ShopCategory banner={dt_banner} category="dien-thoai" />} />
+          <Route path="/laptop" element={<ShopCategory banner={laptop_banner} category="laptop" />} />
+          <Route path="/phu-kien" element={<ShopCategory banner={pkien_banner} category="phu-kien" />} />
           <Route path="/search" element={<SearchResults />} />
           <Route path="/product">
             <Route path=":productId" element={<Product />} />

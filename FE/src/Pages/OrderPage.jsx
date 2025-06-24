@@ -147,7 +147,7 @@ function OrderPage() {
                 }
                 `}
             </style>
-            <div style={{ display: "flex", gap: "2rem", alignItems: "flex-start" }}>
+            <div style={{ display: "flex", gap: "1rem", alignItems: "flex-start" }}>
                 {/* BÊN TRÁI */}
                 <div style={{ flex: 3, border: "1px solid #ddd", padding: "1rem", background: "#f9f9ff" }}>
                     <div style={{ border: "1px solid #ddd", padding: "1rem", marginBottom: "1rem" }}>
@@ -169,10 +169,10 @@ function OrderPage() {
                         <h4 style={{ marginBottom: "1rem" }}>Chọn phương thức thanh toán</h4>
 
                         <div onClick={() => setPaymentMethod("cod")} style={{
-                            display: "flex", alignItems: "center", padding: "10px", borderRadius: "6px",
+                            display: "flex", alignItems: "center", padding: "25px", borderRadius: "6px",
                             cursor: "pointer", backgroundColor: paymentMethod === "cod" ? "#e9f7ef" : "#f8f9fa",
                             border: paymentMethod === "cod" ? "2px solid #28a745" : "1px solid #ccc",
-                            marginBottom: "10px"
+                            marginBottom: "10px",                            
                         }}>
                             <input type="radio" name="payment" value="cod" checked={paymentMethod === "cod"}
                                 onChange={() => setPaymentMethod("cod")} style={{ marginRight: "10px" }} />
@@ -185,9 +185,10 @@ function OrderPage() {
                         </div>
 
                         <div onClick={() => setPaymentMethod("paypal")} style={{
-                            display: "flex", alignItems: "center", padding: "10px", borderRadius: "6px",
+                            display: "flex", alignItems: "center", padding: "25px", borderRadius: "6px",
                             cursor: "pointer", backgroundColor: paymentMethod === "paypal" ? "#e6f0fd" : "#f8f9fa",
                             border: paymentMethod === "paypal" ? "2px solid #0070ba" : "1px solid #ccc"
+
                         }}>
                             <input type="radio" name="payment" value="paypal" checked={paymentMethod === "paypal"}
                                 onChange={() => setPaymentMethod("paypal")} style={{ marginRight: "10px" }} />

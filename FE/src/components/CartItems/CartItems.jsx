@@ -6,7 +6,19 @@ import { useNavigate } from 'react-router-dom';
 
 const CartItems = () => {
     const navigate = useNavigate();
-    const { getTotalCartAmount, all_product, cartItems, removeFromCart } = useContext(ShopContext)
+    const { getTotalCartAmount, all_product, cartItems, removeFromCart, addToCart, setCartItems } = useContext(ShopContext)
+
+    // Hàm xóa sản phẩm khỏi giỏ (set số lượng về 0)
+    const removeItemCompletely = (id) => {
+      cartItems[id] = 0;
+      // Cập nhật lại state (bắt buộc để React render lại)
+      // Tạo object mới để trigger re-render
+      const newCart = { ...cartItems };
+      newCart[id] = 0;
+      // Nếu ShopContext không có setCartItems, cần thêm vào context
+      if (typeof setCartItems === 'function') setCartItems(newCart);
+    };
+
     return (
         <div className='cartitems'>
             <div className="cartitems-format-main">
@@ -25,9 +37,13 @@ const CartItems = () => {
                             <img src={e.image} alt="" className='carticon-product-icon' />
                             <p>{e.name}</p>
                             <p>${e.new_price}</p>
-                            <button className='cartitems-quantity'>{cartItems[e.id]}</button>
+                            <div className='cartitems-quantity-group'>
+                              <button className='cartitems-quantity-btn' onClick={() => removeFromCart(e.id)}>-</button>
+                              <span className='cartitems-quantity'>{cartItems[e.id]}</span>
+                              <button className='cartitems-quantity-btn' onClick={() => addToCart(e.id)}>+</button>
+                            </div>
                             <p>${e.new_price * cartItems[e.id]}</p>
-                            <img className='cartitems-remove-icon' src={remove_icon} onClick={() => { removeFromCart(e.id) }} alt="" />
+                            <img className='cartitems-remove-icon' src={remove_icon} onClick={() => removeItemCompletely(e.id)} alt="" />
                         </div>
                         <hr />
                     </div>
@@ -36,7 +52,7 @@ const CartItems = () => {
             })}
             <div className="cartitems-down">
                 <div className="cartitems-total">
-                    <h1>cart Totals</h1>
+                    <h1>Cart Totals</h1>
                     <div>
                         <div className="cartitems-total-item">
                             <p>Subtatal</p>

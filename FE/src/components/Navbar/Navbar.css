@@ -8,7 +8,9 @@
   position: sticky;
   top: 0;
   z-index: 100;
-  gap: 18px;
+  gap: 44px;
+  margin-right: 0;
+  padding-right: 0;
 }
 
 .nav-logo {
@@ -18,7 +20,13 @@
   letter-spacing: 1px;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 44px;
+}
+
+.nav-logo img {
+  width: 80px;
+  height: auto;
+  margin-left: 0px;
 }
 
 .nav-search {
@@ -147,7 +155,7 @@
 .nav-menu li {
   position: relative;
   font-size: 18px;
-  color: #2c3e50;
+  color: #000;
   font-weight: 600;
   cursor: pointer;
   padding: 6px 0;
@@ -159,7 +167,7 @@
   display: block;
   height: 3px;
   width: 0;
-  background: #3498db;
+  background: #000;
   border-radius: 2px;
   transition: width 0.3s;
   position: absolute;
@@ -170,7 +178,7 @@
 .nav-menu li:hover::after,
 .nav-menu .active::after {
   width: 100%;
-  background: #3498db;
+  background: #000;
 }
 
 .nav-menu li:not(:hover):not(.active)::after {
@@ -180,7 +188,26 @@
 
 .nav-menu li:hover,
 .nav-menu .active {
-  color: #3498db;
+  color: #000;
+}
+
+.nav-menu li a {
+  color: #000 !important;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.nav-menu li.active a,
+.nav-menu li:active a {
+  color: #ff0000 !important;
+}
+
+.nav-menu li:hover a {
+  color: #ff0000 !important;
+}
+
+.nav-menu li.active {
+  color: #ff0000 !important;
 }
 
 .nav-login-cart {
@@ -200,7 +227,7 @@
 .nav-cart-count {
   position: absolute;
   top: -8px;
-  right: -3px;
+  right: 1px;
   background: #ff4141;
   color: #fff;
   border-radius: 50%;
@@ -235,6 +262,10 @@
 
 .nav-dropdown {
   display: none;
+}
+
+.nav-login-cart img {
+  margin-right: 16px;
 }
 
 @media (max-width: 1280px) {
@@ -387,4 +418,33 @@
   .nav-login-cart {
     transform: scale(0.8);
   }
+}
+
+.navbar-item {
+  position: relative;
+  font-size: 24px;
+  color: #5a189a;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: absolute;
+  top: 40px;
+  left: 0;
+  background: #fff;
+  border: 1px solid #eee;
+  min-width: 140px;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(90,24,154,0.08);
+}
+
+.dropdown-item {
+  padding: 10px 20px;
+  color: #5a189a;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.dropdown-item:hover {
+  background: #f3f0ff;
 }

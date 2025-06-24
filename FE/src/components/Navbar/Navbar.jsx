@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from "react";
 import "./Navbar.css";
 import { Link, useNavigate } from "react-router-dom";
-import logo from "../Assets/logo.png";
+import logo from "../Assets/logoshop.png";
 import cart_icon from "../Assets/cart_icon.png";
 import { ShopContext } from "../../Context/ShopContext";
 import nav_dropdown from "../Assets/nav_dropdown.png";
@@ -41,13 +41,20 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
     localStorage.removeItem("fullname");
     localStorage.removeItem("role");
     setIsLoggedIn(false);
-    navigate("/login");
+    setRole("");
+    if (window.location.pathname === "/admin") {
+      navigate("/");
+    } else {
+      navigate("/login");
+    }
   };
 
   return (
     <div className="navbar">
       <div className="nav-logo">
-        <img src={logo} alt="" />
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+          <img src={logo} alt="" />
+        </Link>
       </div>
       <form className="nav-search" onSubmit={handleSearch}>
         <input
@@ -64,26 +71,26 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
         alt=""
       />
       <ul ref={menuRef} className="nav-menu">
-        <li onClick={() => setMenu("shop")}>
-          <Link style={{ textDecoration: "none" }} to="/">Shop</Link>
-          {menu === "shop" && <hr />}
-        </li>
-        <li onClick={() => setMenu("dien-thoai")}>
+        {/* <li onClick={() => setMenu("shop")}> */}
+        {/*   <Link style={{ textDecoration: "none" }} to="/">Shop</Link> */}
+        {/*   {menu === "shop" && <hr />} */}
+        {/* </li> */}
+        <li onClick={() => setMenu("dien-thoai")}> 
           <Link style={{ textDecoration: "none" }} to="/dien-thoai">Điện thoại</Link>
           {menu === "dien-thoai" && <hr />}
         </li>
-        <li onClick={() => setMenu("laptop")}>
+        <li onClick={() => setMenu("laptop")}> 
           <Link style={{ textDecoration: "none" }} to="/laptop">Laptop</Link>
           {menu === "laptop" && <hr />}
         </li>
-        <li onClick={() => setMenu("phu-kien")}>
+        <li onClick={() => setMenu("phu-kien")}> 
           <Link style={{ textDecoration: "none" }} to="/phu-kien">Phụ kiện</Link>
           {menu === "phu-kien" && <hr />}
         </li>
 
         {/* Hiển thị menu quản lý nếu là admin */}
         {role === "admin" && (
-          <li onClick={() => setMenu("admin")}>
+          <li onClick={() => setMenu("admin")}> 
             <Link style={{ textDecoration: "none" }} to="/admin">Quản lý hệ thống</Link>
             {menu === "admin" && <hr />}
           </li>

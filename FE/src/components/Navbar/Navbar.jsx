@@ -93,7 +93,14 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
   return (
     <div className="navbar">
       <div className="nav-logo">
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+        <Link
+          to="/"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            textDecoration: "none",
+          }}
+        >
           <img src={logo} alt="" />
         </Link>
       </div>
@@ -122,13 +129,27 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
           </Link>
           {menu === "dien-thoai" && <hr />}
           <ul className="submenu">
-            {getBrands("dien-thoai").map((brand) => (
-              <li key={brand}>
-                <Link to={`/dien-thoai?brand=${encodeURIComponent(brand)}`}>
-                  {brand}
-                </Link>
-              </li>
-            ))}
+            <li>
+              <Link to="/dien-thoai?brand=Iphone">Iphone</Link>
+            </li>
+            <li>
+              <Link to="/dien-thoai?brand=Samsung">Samsung</Link>
+            </li>
+            <li>
+              <Link to="/dien-thoai?brand=Xiaomi">Xiaomi</Link>
+            </li>
+            <li>
+              <Link to="/dien-thoai?brand=Realme">Realme</Link>
+            </li>
+            <li>
+              <Link to="/dien-thoai?brand=Oppo">Oppo</Link>
+            </li>
+            <li>
+              <Link to="/dien-thoai?brand=Vivo">Vivo</Link>
+            </li>
+            <li>
+              <Link to="/dien-thoai?brand=Nubia">Nubia</Link>
+            </li>
           </ul>
         </li>
         <li onClick={() => setMenu("laptop")} className="has-submenu">
@@ -137,13 +158,27 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
           </Link>
           {menu === "laptop" && <hr />}
           <ul className="submenu">
-            {getBrands("laptop").map((brand) => (
-              <li key={brand}>
-                <Link to={`/laptop?brand=${encodeURIComponent(brand)}`}>
-                  {brand}
-                </Link>
-              </li>
-            ))}
+            <li>
+              <Link to="/laptop?brand=Macbook">Macbook</Link>
+            </li>
+            <li>
+              <Link to="/laptop?brand=Lenovo">Lenovo</Link>
+            </li>
+            <li>
+              <Link to="/laptop?brand=HP">HP</Link>
+            </li>
+            <li>
+              <Link to="/laptop?brand=MSI">MSI</Link>
+            </li>
+            <li>
+              <Link to="/laptop?brand=ASUS">ASUS</Link>
+            </li>
+            <li>
+              <Link to="/laptop?brand=Acer">Acer</Link>
+            </li>
+            <li>
+              <Link to="/laptop?brand=Gigabyte">Gigabyte</Link>
+            </li>
           </ul>
         </li>
         <li onClick={() => setMenu("phu-kien")} className="has-submenu">
@@ -152,19 +187,29 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
           </Link>
           {menu === "phu-kien" && <hr />}
           <ul className="submenu">
-            {getBrands("phu-kien").map((brand) => (
-              <li key={brand}>
-                <Link to={`/phu-kien?brand=${encodeURIComponent(brand)}`}>
-                  {brand}
-                </Link>
-              </li>
-            ))}
+            <li>
+              <Link to="/phu-kien?type=Bàn phím">Bàn phím</Link>
+            </li>
+            <li>
+              <Link to="/phu-kien?type=Tai nghe">Tai nghe</Link>
+            </li>
+            <li>
+              <Link to="/phu-kien?type=Loa">Loa</Link>
+            </li>
+            <li>
+              <Link to="/phu-kien?type=Camera">Camera</Link>
+            </li>
+            <li>
+              <Link to="/phu-kien?type=Chuột">Chuột</Link>
+            </li>
           </ul>
         </li>
         {/* Hiển thị menu quản lý nếu là admin */}
         {role === "admin" && (
-          <li onClick={() => setMenu("admin")}> 
-            <Link style={{ textDecoration: "none" }} to="/admin">Quản lý hệ thống</Link>
+          <li onClick={() => setMenu("admin")}>
+            <Link style={{ textDecoration: "none" }} to="/admin">
+              Quản lý hệ thống
+            </Link>
             {menu === "admin" && <hr />}
           </li>
         )}

@@ -9,12 +9,16 @@
 .footer-logo {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: -10px;
+    
+}
+.footer-logo img{
+    height: 200px;
 }
 
 .footer-logo p {
-    color: #383838;
-    font-size: 46px;
+    color: black;
+    font-size: 50px;
     font-weight: 700;
 }
 

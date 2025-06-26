@@ -51,6 +51,61 @@ const ShopCategory = ({ banner, category }) => {
   return (
     <div className="shop-category">
       <img className="shopcategory-banner" src={banner} alt="" />
+      <div className="shopcategory-indexSort">
+        <div></div>
+        <div className="shopcategory-sort" style={{ position: "relative", marginLeft: 0, marginTop: 0 }}>
+          <span onClick={() => setSortOpen((open) => !open)} style={{ cursor: "pointer" }}>
+            Sort by <img src={dropdown_icon} alt="" style={{ verticalAlign: "middle" }} />
+          </span>
+          {sortOpen && (
+            <div
+              style={{
+                position: "absolute",
+                top: "110%",
+                right: 0,
+                background: "#fff",
+                border: "1px solid #00d2dd",
+                borderRadius: "10px",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
+                zIndex: 10,
+                minWidth: "170px",
+                padding: "8px 0"
+              }}
+            >
+              <div
+                style={{ padding: "10px 20px", cursor: "pointer", color: sortType === "asc" ? "#3498db" : undefined }}
+                onClick={() => { setSortType("asc"); setSortOpen(false); }}
+              >
+                Giá: Thấp đến Cao
+              </div>
+              <div
+                style={{ padding: "10px 20px", cursor: "pointer", color: sortType === "desc" ? "#3498db" : undefined }}
+                onClick={() => { setSortType("desc"); setSortOpen(false); }}
+              >
+                Giá: Cao đến Thấp
+              </div>
+              <div
+                style={{ padding: "10px 20px", cursor: "pointer", color: sortType === "az" ? "#3498db" : undefined }}
+                onClick={() => { setSortType("az"); setSortOpen(false); }}
+              >
+                Tên: A → Z
+              </div>
+              <div
+                style={{ padding: "10px 20px", cursor: "pointer", color: sortType === "za" ? "#3498db" : undefined }}
+                onClick={() => { setSortType("za"); setSortOpen(false); }}
+              >
+                Tên: Z → A
+              </div>
+              <div
+                style={{ padding: "10px 20px", cursor: "pointer", color: sortType === "" ? "#3498db" : undefined }}
+                onClick={() => { setSortType(""); setSortOpen(false); }}
+              >
+                Mặc định
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
       <div className="product-list">
         {filteredProducts.length > 0 ? (
           filteredProducts.map((product) => (
@@ -74,58 +129,6 @@ const ShopCategory = ({ banner, category }) => {
           ))
         ) : (
           <p>Không có sản phẩm nào trong danh mục này.</p>
-        )}
-      </div>
-      <div className="shopcategory-sort" style={{ position: "relative" }}>
-        <span onClick={() => setSortOpen((open) => !open)} style={{ cursor: "pointer" }}>
-          Sort by <img src={dropdown_icon} alt="" style={{ verticalAlign: "middle" }} />
-        </span>
-        {sortOpen && (
-          <div
-            style={{
-              position: "absolute",
-              top: "110%",
-              right: 0,
-              background: "#fff",
-              border: "1px solid #00d2dd",
-              borderRadius: "10px",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-              zIndex: 10,
-              minWidth: "170px",
-              padding: "8px 0"
-            }}
-          >
-            <div
-              style={{ padding: "10px 20px", cursor: "pointer", color: sortType === "asc" ? "#3498db" : undefined }}
-              onClick={() => { setSortType("asc"); setSortOpen(false); }}
-            >
-              Giá: Thấp đến Cao
-            </div>
-            <div
-              style={{ padding: "10px 20px", cursor: "pointer", color: sortType === "desc" ? "#3498db" : undefined }}
-              onClick={() => { setSortType("desc"); setSortOpen(false); }}
-            >
-              Giá: Cao đến Thấp
-            </div>
-            <div
-              style={{ padding: "10px 20px", cursor: "pointer", color: sortType === "az" ? "#3498db" : undefined }}
-              onClick={() => { setSortType("az"); setSortOpen(false); }}
-            >
-              Tên: A → Z
-            </div>
-            <div
-              style={{ padding: "10px 20px", cursor: "pointer", color: sortType === "za" ? "#3498db" : undefined }}
-              onClick={() => { setSortType("za"); setSortOpen(false); }}
-            >
-              Tên: Z → A
-            </div>
-            <div
-              style={{ padding: "10px 20px", cursor: "pointer", color: sortType === "" ? "#3498db" : undefined }}
-              onClick={() => { setSortType(""); setSortOpen(false); }}
-            >
-              Mặc định
-            </div>
-          </div>
         )}
       </div>
     </div>

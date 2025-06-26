@@ -109,6 +109,9 @@
   box-shadow: 0 2px 8px rgba(33, 150, 243, 0.06);
   transition: box-shadow 0.2s, border 0.2s;
   cursor: pointer;
+  width: 70px;
+  margin-left: 1300px;
+  
 }
 
 .shopcategory-sort:hover {

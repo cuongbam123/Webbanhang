@@ -1,5 +1,5 @@
-import React, { createContext, useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { createContext, useState, useEffect } from "react";
+import axios from "axios";
 
 export const ShopContext = createContext();
 
@@ -8,32 +8,37 @@ export const ShopContextProvider = (props) => {
   const [cartItems, setCartItems] = useState({});
 
   useEffect(() => {
-  const fetchProducts = async () => {
-    try {
-      const response = await axios.get('http://localhost:3001/api/products');
-      setAllProduct(response.data.data);
-    } catch (error) {
-      console.error('Lỗi khi lấy danh sách sản phẩm:', error);
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("http://localhost:3001/api/products");
+        setAllProduct(response.data.data);
+      } catch (error) {
+        console.error("Lỗi khi lấy danh sách sản phẩm:", error);
+      }
+    };
+
+    // 👉 Thêm đoạn này để khởi tạo cart từ localStorage
+    const storedCart = localStorage.getItem("cartItems");
+    if (storedCart) {
+      setCartItems(JSON.parse(storedCart));
     }
-  };
 
-  // 👉 Thêm đoạn này để khởi tạo cart từ localStorage
-  const storedCart = localStorage.getItem("cartItems");
-  if (storedCart) {
-    setCartItems(JSON.parse(storedCart));
-  }
-
-  fetchProducts();
-}, []);
-useEffect(() => {
-  localStorage.setItem("cartItems", JSON.stringify(cartItems));
-}, [cartItems]);
-
+    fetchProducts();
+  }, []);
+  useEffect(() => {
+    localStorage.setItem("cartItems", JSON.stringify(cartItems));
+  }, [cartItems]);
 
   const addToCart = (itemId) => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng!");
+      window.location.href = "/login";
+      return;
+    }
     setCartItems((prev) => ({
       ...prev,
-      [itemId]: prev[itemId] ? prev[itemId] + 1 : 1
+      [itemId]: prev[itemId] ? prev[itemId] + 1 : 1,
     }));
   };
 
@@ -49,7 +54,7 @@ useEffect(() => {
   const getTotalCartAmount = () => {
     let total = 0;
     for (const id in cartItems) {
-      const product = all_product.find(p => p._id === id);
+      const product = all_product.find((p) => p._id === id);
       if (product) total += product.price_product * cartItems[id];
     }
     return total;
@@ -57,6 +62,11 @@ useEffect(() => {
 
   const getTotalCartItem = () => {
     return Object.values(cartItems).reduce((acc, val) => acc + val, 0);
+  };
+
+  const clearCart = () => {
+    setCartItems({});
+    localStorage.removeItem("cartItems");
   };
 
   return (
@@ -68,7 +78,8 @@ useEffect(() => {
         removeFromCart,
         setCartItems,
         getTotalCartAmount,
-        getTotalCartItem
+        getTotalCartItem,
+        clearCart,
       }}
     >
       {props.children}

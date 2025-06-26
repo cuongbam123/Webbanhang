@@ -17,7 +17,7 @@ const ShopCategory = ({ banner, category }) => {
 
   // Lọc sản phẩm theo id_category (theo cách bạn đang truyền)
 
-  const filteredProducts = all_product.filter(
+  let filteredProducts = all_product.filter(
     (product) => product.id_category === category
   );
 
@@ -112,6 +112,8 @@ const ShopCategory = ({ banner, category }) => {
             <div key={product._id} className="product-card">
               <Link to={`/product/${product._id}`}>
                 <img src={product.image} alt={product.name_product} />
+              </Link>
+              <div className="product-info">
                 <h3>{product.name_product}</h3>
                 <p>
                   {product.price_product.toLocaleString()} VNĐ
@@ -121,7 +123,7 @@ const ShopCategory = ({ banner, category }) => {
                     </span>
                   )}
                 </p>
-              </Link>
+              </div>
               <button onClick={() => addToCart(product._id)}>
                 Thêm vào giỏ
               </button>

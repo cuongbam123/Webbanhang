@@ -33,6 +33,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
     e.preventDefault();
     if (searchQuery.trim()) {
       navigate(`/search?q=${encodeURIComponent(searchQuery)}`);
+      window.scrollTo(0, 0);
       setSearchQuery("");
     }
   };

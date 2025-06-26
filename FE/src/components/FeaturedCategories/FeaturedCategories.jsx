@@ -11,28 +11,28 @@ const FeaturedCategories = () => {
   const categories = [
     {
       id: 1,
-      name: "Smartphones",
+      name: "Điện thoại",
       image: smartphone,
       description: "Latest smartphones from top brands",
       route: "/dien-thoai",
     },
     {
       id: 2,
-      name: "Laptops",
+      name: "Laptop",
       image: laptop,
       description: "Powerful laptops for work and gaming",
       route: "/laptop",
     },
     {
       id: 3,
-      name: "Accessories",
+      name: "Phụ kiện",
       image: accessories,
       description: "Essential tech accessories",
       route: "/phu-kien",
     },
     {
       id: 4,
-      name: "Audio",
+      name: "Tai nghe",
       image: audio,
       description: "Premium audio devices",
       route: "/phu-kien?type=Tai%20nghe",

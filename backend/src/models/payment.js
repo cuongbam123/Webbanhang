@@ -1,8 +1,9 @@
 const { Schema, model } = require('mongoose');
 
 const paymentSchema = new Schema({
-  _id:      { type: String, required: true },
-  pay_name: { type: String, required: true }
-}, { _id: false, collection: 'payment' });
+  _id: String,
+  pay_name: String
+}, { collection: 'payment' });
 
 module.exports = model('Payment', paymentSchema);
+

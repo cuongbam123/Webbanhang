@@ -15,6 +15,7 @@ import pkien_banner from "./Components/Assets/banner_phukien.jpg";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { ShopContextProvider } from "./Context/ShopContext";
 import AdminAddProduct from "./Pages/AdminAddProduct";
+import OrderSuccess from "./Pages/OrderSuccess";
 
 
 import { useEffect, useState } from "react";
@@ -94,6 +95,7 @@ function App() {
                 <Route path="/admin/add-product" element={<AdminAddProduct />} />
 
                 <Route path="/order" element={<OrderPage />} />
+                <Route path="/order-success/:id" element={<OrderSuccess />} />
             </Routes>
             <Footer />
           </BrowserRouter>

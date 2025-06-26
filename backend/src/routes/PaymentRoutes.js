@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
+const paymentController = require('../controllers/PaymentController');
+const { verifyToken, isAdmin } = require('../middlewares/auth');
 
-router.get('/config', (req, res) => {
-    res.status(200).json({
-        clientId: process.env.PAYPAL_CLIENT_ID || "sb", // fallback nếu chưa có .env
-    });
-});
+router.get('/', verifyToken, isAdmin, paymentController.getAllPayments);
+router.post('/', verifyToken, isAdmin, paymentController.createPayment);
 
 module.exports = router;

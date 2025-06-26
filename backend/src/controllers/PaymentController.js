@@ -1,18 +1,19 @@
-const paypalService = require('../services/paypal.service');
+const paymentService = require('../services/PaymentService');
 
-exports.verifyPayment = async (req, res) => {
-    try {
-        const { orderID } = req.body;
-        const order = await paypalService.verifyPayment(orderID);
+exports.getAllPayments = async (req, res) => {
+  try {
+    const payments = await paymentService.getAllPayments();
+    res.json({ success: true, data: payments });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Lỗi lấy phương thức thanh toán' });
+  }
+};
 
-        if (order.status === "COMPLETED") {
-            // Nếu muốn: lưu đơn hàng vào database tại đây
-            return res.status(200).json({ message: "Thanh toán thành công", order });
-        } else {
-            return res.status(400).json({ message: "Thanh toán chưa hoàn tất", order });
-        }
-    } catch (err) {
-        console.error(err);
-        return res.status(500).json({ message: "Lỗi xác thực thanh toán", error: err.message });
-    }
+exports.createPayment = async (req, res) => {
+  try {
+    const payment = await paymentService.createPayment(req.body);
+    res.status(201).json({ success: true, data: payment });
+  } catch (err) {
+    res.status(500).json({ success: false, message: 'Lỗi tạo phương thức thanh toán' });
+  }
 };

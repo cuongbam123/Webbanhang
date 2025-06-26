@@ -1,11 +1,22 @@
+
 const express = require('express');
 const router = express.Router();
-const detailController = require('../controllers/DetailOrderController');
+const detailOrderController = require('../controllers/DetailOrderController');
+const { verifyToken, isAdmin } = require('../middlewares/auth');
 
-router.post('/', detailController.createDetailOrder);
-router.get('/', detailController.listDetailOrders);
-router.get('/:id', detailController.getDetailOrder);
-router.put('/:id', detailController.updateDetailOrder);
-router.delete('/:id', detailController.deleteDetailOrder);
+// Tạo mới 1 detail order riêng lẻ
+router.post('/', verifyToken, detailOrderController.createDetailOrder);
+
+// Lấy toàn bộ chi tiết đơn hàng (admin)
+router.get('/', verifyToken, isAdmin, detailOrderController.listDetailOrders);
+
+// Lấy chi tiết theo ID
+router.get('/:id', verifyToken, detailOrderController.getDetailOrder);
+
+// Cập nhật chi tiết đơn hàng (admin)
+router.put('/:id', verifyToken, isAdmin, detailOrderController.updateDetailOrder);
+
+// Xoá chi tiết đơn hàng (admin)
+router.delete('/:id', verifyToken, isAdmin, detailOrderController.deleteDetailOrder);
 
 module.exports = router;

@@ -7,6 +7,12 @@ const productRoutes = require('./routes/ProductRoutes');
 const orderRoutes = require('./routes/OrderRoutes');
 const detailOrderRoutes = require('./routes/DetailOrderRoutes');
 const uploadRoutes = require('./routes/UploadRoutes');
+const paymentRoutes = require('./routes/PaymentRoutes');
+const couponRoutes = require("./routes/CouponRoutes");
+const noteRoutes = require("./routes/NoteRoutes");
+const paypalRoutes = require("./routes/PaypalRoutes");
+
+
 //Cấu hình cors
 // const cors = require("cors");
 
@@ -54,7 +60,6 @@ app.use(cors({
 // const productRoutes = require("./routes/ProductRoutes");
 // const orderRoutes = require("./routes/OrderRoutes");
 // const detailOrderRoutes = require("./routes/DetailOrderRoutes");
-const paymentRoutes = require('./routes/PaymentRoutes');
 
 // Mount routes
 app.use("/api/users", userRoutes);
@@ -62,8 +67,14 @@ app.use("/api/sales", saleRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/orders", orderRoutes);
 app.use("/api/detail-orders", detailOrderRoutes);
-app.use('/api/payment', paymentRoutes);
+app.use('/api/payments', paymentRoutes);
 app.use('/api/upload', uploadRoutes);
+app.use('/api/coupons', couponRoutes);
+app.use('/api/notes', noteRoutes);
+app.use('/api/paypal', paypalRoutes);
+
+
+
 
 // Global error handler
 app.use((err, req, res, next) => {

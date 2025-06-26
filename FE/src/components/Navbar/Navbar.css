@@ -1,3 +1,4 @@
+/* --- Navbar CSS cũ (khôi phục lại) --- */
 .navbar {
   width: 100%;
   background: #fff;
@@ -156,16 +157,11 @@
   color: #2c3e50;
 }
 
-.nav-menu li, .nav-menu li a {
-  white-space: nowrap;
-}
-
 .nav-menu li {
   position: relative;
   font-size: 18px;
   color: #000;
   font-weight: 600;
-
   cursor: pointer;
   padding: 6px 0;
   transition: color 0.2s;
@@ -205,7 +201,6 @@
   text-decoration: none;
   transition: color 0.2s;
 }
-
 
 .nav-menu li a {
   color: #2c3e50;
@@ -268,7 +263,6 @@
   display: none;
 }
 
-
 .nav-login-cart img {
   margin-right: 16px;
 }
@@ -319,7 +313,6 @@
 .submenu li a:hover {
   background: #f5f8fa;
   color: #3498db;
-
 }
 
 @media (max-width: 1280px) {
@@ -474,145 +467,53 @@
     display: block;
   }
 
-  .submenu li {
-    padding: 14px 24px;
-    font-size: 17px;
-    border-bottom: 1px solid #f0f0f0;
+  .nav-login-cart button {
+    padding: 6px 10px;
+    font-size: 12px;
   }
 
-  .submenu li:last-child {
-    border-bottom: none;
+  .nav-menu li.has-submenu .submenu {
+    display: none;
+    position: static;
+    background: #f9f9f9;
+    min-width: 100%;
+    box-shadow: none;
+    border-radius: 0;
+    padding: 0;
+    margin: 0;
+    border-top: 1px solid #eee;
+  }
+
+  .nav-menu li.has-submenu:hover .submenu,
+  .nav-menu li.has-submenu:active .submenu {
+    display: block;
   }
 }
 
 @media (max-width: 500px) {
   .navbar {
-    padding: 8px 0px;
-    gap: 0;
+    padding: 8px 6px;
+    gap: 4px;
   }
 
-  .nav-logo {
-    transform: scale(0.8);
+  .nav-search {
+    max-width: 80px;
+    margin: 0 2px;
   }
 
   .nav-menu {
-    height: 70px;
-    top: 50px;
+    gap: 4px;
+    font-size: 12px;
   }
 
-  .nav-login-cart {
-    transform: scale(0.8);
+  .nav-login-cart button {
+    padding: 4px 6px;
+    font-size: 10px;
   }
-}
 
-.navbar-item {
-  position: relative;
-  font-size: 24px;
-  color: #5a189a;
-  cursor: pointer;
-}
-
-.dropdown {
-  position: absolute;
-  top: 40px;
-  left: 0;
-  background: #fff;
-  border: 1px solid #eee;
-  min-width: 140px;
-  z-index: 10;
-  box-shadow: 0 2px 8px rgba(90,24,154,0.08);
-}
-
-.dropdown-item {
-  padding: 10px 20px;
-  color: #5a189a;
-  cursor: pointer;
-  white-space: nowrap;
-}
-
-.dropdown-item:hover {
-  background: #f3f0ff;
-}
-
-.nav-hotline-link {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  background: #3498db;
-  color: #fff;
-  border-radius: 30px;
-  padding: 8px 28px;
-  font-weight: 600;
-  font-size: 17px;
-  text-decoration: none;
-  transition: background 0.2s;
-  white-space: nowrap;
-}
-.nav-hotline-link:hover {
-  background: #217dbb;
-}
-.nav-hotline-text {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-  line-height: 1.1;
-}
-.nav-hotline-title {
-  font-size: 16px;
-  font-weight: 500;
-  margin-right: 8px;
-}
-.nav-hotline-number {
-  font-size: 20px;
-  font-weight: 700;
-}
-@media (max-width: 600px) {
-  .nav-hotline-link {
-    padding: 6px 10px;
-    font-size: 15px;
+  .nav-cart-count {
+    width: 12px;
+    height: 12px;
+    font-size: 8px;
   }
-  .nav-hotline-text {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0;
-  }
-  .nav-hotline-title, .nav-hotline-number {
-    margin-right: 0;
-    font-size: 15px;
-  }
-  .nav-hotline-number {
-    font-size: 16px;
-  }
-}
-
-.admin-page .nav-hotline-link {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  gap: 12px !important;
-  background: #3498db !important;
-  color: #fff !important;
-  border-radius: 30px !important;
-  padding: 8px 28px !important;
-  font-weight: 600 !important;
-  font-size: 17px !important;
-  text-decoration: none !important;
-  white-space: nowrap !important;
-}
-.admin-page .nav-hotline-text {
-  display: flex !important;
-  flex-direction: row !important;
-  align-items: center !important;
-  gap: 10px !important;
-  line-height: 1.1 !important;
-}
-.admin-page .nav-hotline-title {
-  font-size: 16px !important;
-  font-weight: 500 !important;
-  margin-right: 8px !important;
-}
-.admin-page .nav-hotline-number {
-  font-size: 20px !important;
-  font-weight: 700 !important;
 }

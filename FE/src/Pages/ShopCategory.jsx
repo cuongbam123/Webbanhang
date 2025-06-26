@@ -32,11 +32,11 @@ const ShopCategory = ({ banner, category }) => {
   // Sắp xếp sản phẩm nếu có chọn sort
   if (sortType === "asc") {
     filteredProducts = [...filteredProducts].sort(
-      (a, b) => a.new_price - b.new_price
+      (a, b) => Number(a.price_product) - Number(b.price_product)
     );
   } else if (sortType === "desc") {
     filteredProducts = [...filteredProducts].sort(
-      (a, b) => b.new_price - a.new_price
+      (a, b) => Number(b.price_product) - Number(a.price_product)
     );
   } else if (sortType === "az") {
     filteredProducts = [...filteredProducts].sort((a, b) =>

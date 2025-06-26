@@ -224,18 +224,87 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 5.75C3 4.784 3.784 4 4.75 4h2.5A1.75 1.75 0 0 1 9 5.75v1.5A1.75 1.75 0 0 1 7.25 9H6.5a11.5 11.5 0 0 0 11 11v-.75A1.75 1.75 0 0 1 19.25 17h1.5A1.75 1.75 0 0 1 22 18.75v2.5A1.75 1.75 0 0 1 20.25 23h-2.5A1.75 1.75 0 0 1 16 21.25v-1.5A1.75 1.75 0 0 1 17.75 18h.75A13.25 13.25 0 0 1 3 5.75Z" />
             </svg>
             <span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1 }}>
-              <span style={{ fontSize: 16, fontWeight: 500 }}>Gọi mua hàng</span>
-              <span style={{ fontSize: 18, fontWeight: 700 }}>0000.8386</span>
+              <span style={{ fontSize: 15, fontWeight: 500 }}>Gọi mua hàng</span>
+              <span style={{ fontSize: 15, fontWeight: 500 }}>0000.8386</span>
             </span>
           </a>
         </div>
         {isLoggedIn ? (
-          <>
-            <span style={{ marginRight: "10px", fontWeight: "bold" }}>
-              {fullname}
-            </span>
-            <button onClick={handleLogout}>Logout</button>
-          </>
+          <div
+            className="nav-user-dropdown"
+            style={{ position: "relative", marginRight: "16px", display: "inline-block" }}
+            onMouseEnter={e => {
+              const menu = e.currentTarget.querySelector('.dropdown-menu');
+              if (menu) menu.style.display = 'block';
+            }}
+            onMouseLeave={e => {
+              const menu = e.currentTarget.querySelector('.dropdown-menu');
+              if (menu) menu.style.display = 'none';
+            }}
+          >
+            <button
+              className="user-btn"
+              style={{
+                background: "#36a2eb",
+                color: "#fff",
+                border: "none",
+                borderRadius: "25px",
+                padding: "5px 10px",
+                fontWeight: "bold",
+                cursor: "pointer",
+                minWidth: "100px"
+              }}
+            >
+              {fullname || "User"}
+            </button>
+            <div
+              className="dropdown-menu"
+              style={{
+                display: "none",
+                position: "absolute",
+                top: "110%",
+                left: 0,
+                background: "#fff",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.15)",
+                borderRadius: "8px",
+                minWidth: "120px",
+                zIndex: 10,
+                border: "1.5px solid #36a2eb",
+              }}
+            >
+              <button
+                onClick={handleLogout}
+                style={{
+                  width: "100%",
+                  background: "none",
+                  border: "none",
+                  color: "#36a2eb",
+                  padding: "10px",
+                  textAlign: "left",
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                }}
+              >
+                Thông tin đặt hàng
+              </button>
+              <hr />
+              <button
+                onClick={handleLogout}
+                style={{
+                  width: "100%",
+                  background: "none",
+                  border: "none",
+                  color: "#36a2eb",
+                  padding: "10px",
+                  textAlign: "left",
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                }}
+              >
+                Logout
+              </button>
+            </div>
+          </div>
         ) : (
           <Link to="/login">
             <button>Login</button>

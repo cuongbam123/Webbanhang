@@ -16,6 +16,7 @@ import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import { ShopContextProvider } from "./Context/ShopContext";
 import AdminAddProduct from "./Pages/AdminAddProduct";
 import OrderSuccess from "./Pages/OrderSuccess";
+import MyOrders from './Pages/MyOrder';
 
 
 import { useEffect, useState } from "react";
@@ -95,6 +96,7 @@ function App() {
                 <Route path="/admin/add-product" element={<AdminAddProduct />} />
 
                 <Route path="/order" element={<OrderPage />} />
+                <Route path="/my-orders" element={<MyOrders />} />
                 <Route path="/order-success/:id" element={<OrderSuccess />} />
             </Routes>
             <Footer />

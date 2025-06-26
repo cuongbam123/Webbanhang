@@ -13,6 +13,9 @@ router.get('/', verifyToken, isAdmin, orderController.getAllOrders);
 // Lấy đơn hàng theo ID (user hoặc admin)
 router.get('/:id', verifyToken, orderController.getOrderById);
 
+//Lấy đơn hàng của chính mình
+router.get('/my', verifyToken, orderController.getMyOrders);
+
 // Cập nhật đơn hàng (admin)
 router.put('/:id', verifyToken, isAdmin, orderController.updateOrder);
 

@@ -43,6 +43,26 @@ exports.getOrderById = async (req, res) => {
   }
 };
 
+// Lấy đơn hàng của chính người dùng
+exports.getMyOrders = async (req, res) => {
+  try {
+    const userId = new mongoose.Types.ObjectId(req.user.id); // ép kiểu cho chắc chắn
+
+    const orders = await Order.find({ id_user: userId }).sort({ create_time: -1 });
+
+    console.log('Đơn tìm thấy:', orders.length);
+
+    if (!orders || orders.length === 0) {
+      return res.status(200).json({ success: true, data: [] }); // ✅ KHÔNG return 404 ở đây
+    }
+
+    return res.status(200).json({ success: true, data: orders });
+  } catch (err) {
+    console.error('getMyOrders error:', err);
+    return res.status(500).json({ success: false, message: 'Lỗi lấy đơn hàng của bạn' });
+  }
+};
+
 // Cập nhật đơn hàng (admin)
 exports.updateOrder = async (req, res) => {
   try {

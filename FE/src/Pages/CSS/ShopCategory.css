@@ -52,7 +52,8 @@
   text-decoration: none;
 }
 
-.product-card h3, .product-card p {
+.product-card h3,
+.product-card p {
   text-decoration: none;
 }
 
@@ -93,7 +94,14 @@
 }
 
 .product-card button:hover {
-  background: linear-gradient(270deg, #ff0080, #7928ca, #007cf0, #00dfd8, #ff0080);
+  background: linear-gradient(
+    270deg,
+    #ff0080,
+    #7928ca,
+    #007cf0,
+    #00dfd8,
+    #ff0080
+  );
   background-size: 400% 400%;
   animation: rainbow 2s linear infinite;
 }
@@ -268,4 +276,15 @@
   width: 100%;
   margin: 8px 0 0 0;
   text-align: center;
+}
+
+/* Background cho trang giỏ hàng */
+.cart-bg {
+  min-height: 100vh;
+  width: 100vw;
+  background-image: url("../../Components/Assets/bg_showing.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 40px 0;
 }

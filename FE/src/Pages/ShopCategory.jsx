@@ -15,10 +15,15 @@ const ShopCategory = ({ banner, category }) => {
   const [sortType, setSortType] = useState(""); // "asc" | "desc" | "az" | "za" | ""
   const { all_product, addToCart } = useContext(ShopContext);
 
-  // Lọc sản phẩm theo id_category (theo cách bạn đang truyền)
-
+  // Lọc sản phẩm theo id_category, type hoặc brand nếu có
   let filteredProducts = all_product.filter(
-    (product) => product.id_category === category
+    (product) =>
+      product.id_category === category &&
+      (
+        (type && product.name_product && product.name_product.toLowerCase().includes(type.toLowerCase())) ||
+        (!type && brand && product.name_product && product.name_product.toLowerCase().includes(brand.toLowerCase())) ||
+        (!type && !brand)
+      )
   );
 
   // Lọc sản phẩm theo category, brand, type

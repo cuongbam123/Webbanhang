@@ -202,6 +202,9 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
             <li>
               <Link to="/phu-kien?type=Chuột">Chuột</Link>
             </li>
+            <li>
+              <Link to="/phu-kien?type=Ốp lưng">Ốp lưng</Link>
+            </li>
           </ul>
         </li>
         {/* Hiển thị menu quản lý nếu là admin */}

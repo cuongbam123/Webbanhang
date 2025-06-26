@@ -38,12 +38,10 @@ exports.getOrderById = async (req, res) => {
 
     // Nếu không phải admin thì chỉ xem được đơn của chính mình
     if (req.user.role !== "admin" && order.id_user.toString() !== req.user.id) {
-      return res
-        .status(403)
-        .json({
-          success: false,
-          message: "Không có quyền truy cập đơn hàng này",
-        });
+      return res.status(403).json({
+        success: false,
+        message: "Không có quyền truy cập đơn hàng này",
+      });
     }
 
     res.status(200).json({ success: true, data: order });
@@ -82,5 +80,18 @@ exports.deleteOrder = async (req, res) => {
   } catch (err) {
     console.error("deleteOrder error:", err);
     res.status(500).json({ success: false, message: "Lỗi xóa đơn hàng" });
+  }
+};
+
+// Lấy danh sách đơn hàng của user hiện tại
+exports.getOrdersByUser = async (req, res) => {
+  try {
+    const orders = await orderService.getOrdersByUser(req.user.id);
+    res.status(200).json({ success: true, data: orders });
+  } catch (err) {
+    console.error("getOrdersByUser error:", err);
+    res
+      .status(500)
+      .json({ success: false, message: "Lỗi lấy đơn hàng của user" });
   }
 };

@@ -37,37 +37,30 @@ const OrderSuccess = () => {
     );
 
   return (
-    <div style={{ maxWidth: 700, margin: "40px auto", background: "#fff", padding: 32, borderRadius: 16, boxShadow: "0 2px 10px rgba(0,0,0,0.1)" }}>
-      <h1 style={{ fontSize: 28, color: "#2ecc71" }}>✅ Đặt hàng thành công!</h1>
-      <p style={{ fontSize: 18, marginTop: 12 }}>Cảm ơn bạn đã mua hàng. Đơn hàng của bạn đã được ghi nhận.</p>
-
-      <div style={{ marginTop: 32 }}>
-        <h3>Mã đơn hàng:</h3>
-        <p style={{ fontWeight: 600 }}>{order._id}</p>
-
-        <h3>Địa chỉ nhận hàng:</h3>
-        <p>{order.address}</p>
-
-        <h3>Phương thức thanh toán:</h3>
-        <p>{order.id_payment?.pay_name || order.id_payment}</p>
-
-        <h3>Tổng tiền:</h3>
-        <p style={{ fontWeight: 600 }}>{Number(order.total).toLocaleString()} VNĐ</p>
-
+    <div className="order-success-container">
+      <span className="order-success-icon">✅</span>
+      <div className="order-success-title">Đặt hàng thành công!</div>
+      <div className="order-success-desc">
+        Cảm ơn bạn đã mua hàng. Đơn hàng của bạn đã được ghi nhận.
+      </div>
+      <div className="order-success-info">
+        <b>Mã đơn hàng:</b>
+        <span>{order._id}</span>
+        <b>Địa chỉ nhận hàng:</b>
+        <span>{order.address}</span>
+        <b>Phương thức thanh toán:</b>
+        <span>{order.id_payment?.pay_name || order.id_payment}</span>
+        <b>Tổng tiền:</b>
+        <span>{Number(order.total).toLocaleString()} VNĐ</span>
         {order.id_note && (
           <>
-            <h3>Người nhận:</h3>
-            <p>{order.id_note.fullname} - {order.id_note.phone}</p>
-            {order.id_note.content && <p>Ghi chú: {order.id_note.content}</p>}
+            <b>Người nhận:</b>
+            <span>{order.id_note.fullname} - {order.id_note.phone}</span>
+            {order.id_note.content && <span>Ghi chú: {order.id_note.content}</span>}
           </>
         )}
       </div>
-
-      <div style={{ marginTop: 32 }}>
-        <Link to="/" style={{ padding: "12px 24px", background: "#3498db", color: "white", borderRadius: 8, textDecoration: "none", fontWeight: 600 }}>
-          ⬅️ Về trang chủ
-        </Link>
-      </div>
+      <Link to="/" className="order-success-btn">← Về trang chủ</Link>
     </div>
   );
 };

@@ -51,6 +51,11 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
     }
   };
 
+  const handleNavigate = (to) => {
+    navigate(to);
+    window.scrollTo(0, 0);
+  };
+
   // Lấy danh sách hãng từ sản phẩm
   const getBrands = (category) => {
     const brands = all_product
@@ -125,93 +130,209 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
         {/*   {menu === "shop" && <hr />} */}
         {/* </li> */}
         <li onClick={() => setMenu("dien-thoai")} className="has-submenu">
-          <Link style={{ textDecoration: "none" }} to="/dien-thoai">
+          <Link
+            style={{ textDecoration: "none" }}
+            to="/dien-thoai"
+            onClick={() => handleNavigate("/dien-thoai")}
+          >
             Điện thoại
           </Link>
           {menu === "dien-thoai" && <hr />}
           <ul className="submenu">
             <li>
-              <Link to="/dien-thoai?brand=Iphone">Iphone</Link>
+              <Link
+                to="/dien-thoai?brand=Iphone"
+                onClick={() => handleNavigate("/dien-thoai?brand=Iphone")}
+              >
+                Iphone
+              </Link>
             </li>
             <li>
-              <Link to="/dien-thoai?brand=Samsung">Samsung</Link>
+              <Link
+                to="/dien-thoai?brand=Samsung"
+                onClick={() => handleNavigate("/dien-thoai?brand=Samsung")}
+              >
+                Samsung
+              </Link>
             </li>
             <li>
-              <Link to="/dien-thoai?brand=Xiaomi">Xiaomi</Link>
+              <Link
+                to="/dien-thoai?brand=Xiaomi"
+                onClick={() => handleNavigate("/dien-thoai?brand=Xiaomi")}
+              >
+                Xiaomi
+              </Link>
             </li>
             <li>
-              <Link to="/dien-thoai?brand=Realme">Realme</Link>
+              <Link
+                to="/dien-thoai?brand=Realme"
+                onClick={() => handleNavigate("/dien-thoai?brand=Realme")}
+              >
+                Realme
+              </Link>
             </li>
             <li>
-              <Link to="/dien-thoai?brand=Oppo">Oppo</Link>
+              <Link
+                to="/dien-thoai?brand=Oppo"
+                onClick={() => handleNavigate("/dien-thoai?brand=Oppo")}
+              >
+                Oppo
+              </Link>
             </li>
             <li>
-              <Link to="/dien-thoai?brand=Vivo">Vivo</Link>
+              <Link
+                to="/dien-thoai?brand=Vivo"
+                onClick={() => handleNavigate("/dien-thoai?brand=Vivo")}
+              >
+                Vivo
+              </Link>
             </li>
             <li>
-              <Link to="/dien-thoai?brand=Nubia">Nubia</Link>
+              <Link
+                to="/dien-thoai?brand=Nubia"
+                onClick={() => handleNavigate("/dien-thoai?brand=Nubia")}
+              >
+                Nubia
+              </Link>
             </li>
           </ul>
         </li>
         <li onClick={() => setMenu("laptop")} className="has-submenu">
-          <Link style={{ textDecoration: "none" }} to="/laptop">
+          <Link
+            style={{ textDecoration: "none" }}
+            to="/laptop"
+            onClick={() => handleNavigate("/laptop")}
+          >
             Laptop
           </Link>
           {menu === "laptop" && <hr />}
           <ul className="submenu">
             <li>
-              <Link to="/laptop?brand=Macbook">Macbook</Link>
+              <Link
+                to="/laptop?brand=Macbook"
+                onClick={() => handleNavigate("/laptop?brand=Macbook")}
+              >
+                Macbook
+              </Link>
             </li>
             <li>
-              <Link to="/laptop?brand=Lenovo">Lenovo</Link>
+              <Link
+                to="/laptop?brand=Lenovo"
+                onClick={() => handleNavigate("/laptop?brand=Lenovo")}
+              >
+                Lenovo
+              </Link>
             </li>
             <li>
-              <Link to="/laptop?brand=HP">HP</Link>
+              <Link
+                to="/laptop?brand=HP"
+                onClick={() => handleNavigate("/laptop?brand=HP")}
+              >
+                HP
+              </Link>
             </li>
             <li>
-              <Link to="/laptop?brand=MSI">MSI</Link>
+              <Link
+                to="/laptop?brand=MSI"
+                onClick={() => handleNavigate("/laptop?brand=MSI")}
+              >
+                MSI
+              </Link>
             </li>
             <li>
-              <Link to="/laptop?brand=ASUS">ASUS</Link>
+              <Link
+                to="/laptop?brand=ASUS"
+                onClick={() => handleNavigate("/laptop?brand=ASUS")}
+              >
+                ASUS
+              </Link>
             </li>
             <li>
-              <Link to="/laptop?brand=Acer">Acer</Link>
+              <Link
+                to="/laptop?brand=Acer"
+                onClick={() => handleNavigate("/laptop?brand=Acer")}
+              >
+                Acer
+              </Link>
             </li>
             <li>
-              <Link to="/laptop?brand=Gigabyte">Gigabyte</Link>
+              <Link
+                to="/laptop?brand=Gigabyte"
+                onClick={() => handleNavigate("/laptop?brand=Gigabyte")}
+              >
+                Gigabyte
+              </Link>
             </li>
           </ul>
         </li>
         <li onClick={() => setMenu("phu-kien")} className="has-submenu">
-          <Link style={{ textDecoration: "none" }} to="/phu-kien">
+          <Link
+            style={{ textDecoration: "none" }}
+            to="/phu-kien"
+            onClick={() => handleNavigate("/phu-kien")}
+          >
             Phụ kiện
           </Link>
           {menu === "phu-kien" && <hr />}
           <ul className="submenu">
             <li>
-              <Link to="/phu-kien?type=Bàn phím">Bàn phím</Link>
+              <Link
+                to="/phu-kien?type=Bàn phím"
+                onClick={() => handleNavigate("/phu-kien?type=Bàn phím")}
+              >
+                Bàn phím
+              </Link>
             </li>
             <li>
-              <Link to="/phu-kien?type=Tai nghe">Tai nghe</Link>
+              <Link
+                to="/phu-kien?type=Tai nghe"
+                onClick={() => handleNavigate("/phu-kien?type=Tai nghe")}
+              >
+                Tai nghe
+              </Link>
             </li>
             <li>
-              <Link to="/phu-kien?type=Loa">Loa</Link>
+              <Link
+                to="/phu-kien?type=Loa"
+                onClick={() => handleNavigate("/phu-kien?type=Loa")}
+              >
+                Loa
+              </Link>
             </li>
             <li>
-              <Link to="/phu-kien?type=Camera">Camera</Link>
+              <Link
+                to="/phu-kien?type=Camera"
+                onClick={() => handleNavigate("/phu-kien?type=Camera")}
+              >
+                Camera
+              </Link>
             </li>
             <li>
-              <Link to="/phu-kien?type=Chuột">Chuột</Link>
+              <Link
+                to="/phu-kien?type=Chuột"
+                onClick={() => handleNavigate("/phu-kien?type=Chuột")}
+              >
+                Chuột
+              </Link>
             </li>
             <li>
-              <Link to="/phu-kien?type=Ốp lưng">Ốp lưng</Link>
+              <Link
+                to="/phu-kien?type=Ốp lưng"
+                onClick={() => handleNavigate("/phu-kien?type=Ốp lưng")}
+              >
+                Ốp lưng
+              </Link>
             </li>
           </ul>
         </li>
         {/* Hiển thị menu quản lý nếu là admin */}
         {role === "admin" && (
           <li onClick={() => setMenu("admin")}>
-            <Link style={{ textDecoration: "none" }} to="/admin">
+            <Link
+              style={{ textDecoration: "none" }}
+              to="/admin"
+              onClick={() => handleNavigate("/admin")}
+            >
               Quản lý hệ thống
             </Link>
             {menu === "admin" && <hr />}
@@ -344,13 +465,14 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
             </div>
           </div>
         ) : (
-          <Link to="/login">
-            <button>Login</button>
-          </Link>
+          <button onClick={() => handleNavigate("/login")}>Login</button>
         )}
-        <Link to="/cart">
-          <img src={cart_icon} alt="" />
-        </Link>
+        <img
+          className="nav-cart-icon"
+          src={cart_icon}
+          alt=""
+          onClick={() => handleNavigate("/cart")}
+        />
         <div className="nav-cart-count">{getTotalCartItem()}</div>
       </div>
     </div>

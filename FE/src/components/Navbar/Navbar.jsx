@@ -334,7 +334,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
               to="/admin"
               onClick={() => handleNavigate("/admin")}
             >
-              Quản lý hệ thống
+              Thông tin đặt hàng
             </Link>
             {menu === "admin" && <hr />}
           </li>
@@ -445,7 +445,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
                   fontWeight: "bold",
                 }}
               >
-                Thông tin đặt hàng
+                Thông tin cá nhân 
               </button>
               <hr />
               <button

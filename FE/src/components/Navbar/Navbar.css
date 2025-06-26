@@ -156,6 +156,10 @@
   color: #2c3e50;
 }
 
+.nav-menu li, .nav-menu li a {
+  white-space: nowrap;
+}
+
 .nav-menu li {
   position: relative;
   font-size: 18px;
@@ -528,4 +532,87 @@
 
 .dropdown-item:hover {
   background: #f3f0ff;
+}
+
+.nav-hotline-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #3498db;
+  color: #fff;
+  border-radius: 30px;
+  padding: 8px 28px;
+  font-weight: 600;
+  font-size: 17px;
+  text-decoration: none;
+  transition: background 0.2s;
+  white-space: nowrap;
+}
+.nav-hotline-link:hover {
+  background: #217dbb;
+}
+.nav-hotline-text {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  line-height: 1.1;
+}
+.nav-hotline-title {
+  font-size: 16px;
+  font-weight: 500;
+  margin-right: 8px;
+}
+.nav-hotline-number {
+  font-size: 20px;
+  font-weight: 700;
+}
+@media (max-width: 600px) {
+  .nav-hotline-link {
+    padding: 6px 10px;
+    font-size: 15px;
+  }
+  .nav-hotline-text {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0;
+  }
+  .nav-hotline-title, .nav-hotline-number {
+    margin-right: 0;
+    font-size: 15px;
+  }
+  .nav-hotline-number {
+    font-size: 16px;
+  }
+}
+
+.admin-page .nav-hotline-link {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 12px !important;
+  background: #3498db !important;
+  color: #fff !important;
+  border-radius: 30px !important;
+  padding: 8px 28px !important;
+  font-weight: 600 !important;
+  font-size: 17px !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+}
+.admin-page .nav-hotline-text {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  gap: 10px !important;
+  line-height: 1.1 !important;
+}
+.admin-page .nav-hotline-title {
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  margin-right: 8px !important;
+}
+.admin-page .nav-hotline-number {
+  font-size: 20px !important;
+  font-weight: 700 !important;
 }

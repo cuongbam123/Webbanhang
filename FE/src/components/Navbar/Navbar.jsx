@@ -218,6 +218,17 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
         )}
       </ul>
       <div className="nav-login-cart">
+        <div className="nav-hotline">
+          <a href="tel:00008386" style={{ display: 'flex', alignItems: 'center', gap: 8, background: '#3498db', color: '#fff', borderRadius: 30, padding: '6px 18px', fontWeight: 600, fontSize: 17, textDecoration: 'none' }}>
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2" style={{ marginRight: 6 }}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3 5.75C3 4.784 3.784 4 4.75 4h2.5A1.75 1.75 0 0 1 9 5.75v1.5A1.75 1.75 0 0 1 7.25 9H6.5a11.5 11.5 0 0 0 11 11v-.75A1.75 1.75 0 0 1 19.25 17h1.5A1.75 1.75 0 0 1 22 18.75v2.5A1.75 1.75 0 0 1 20.25 23h-2.5A1.75 1.75 0 0 1 16 21.25v-1.5A1.75 1.75 0 0 1 17.75 18h.75A13.25 13.25 0 0 1 3 5.75Z" />
+            </svg>
+            <span style={{ display: 'flex', flexDirection: 'column', lineHeight: 1.1 }}>
+              <span style={{ fontSize: 16, fontWeight: 500 }}>Gọi mua hàng</span>
+              <span style={{ fontSize: 18, fontWeight: 700 }}>0000.8386</span>
+            </span>
+          </a>
+        </div>
         {isLoggedIn ? (
           <>
             <span style={{ marginRight: "10px", fontWeight: "bold" }}>

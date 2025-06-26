@@ -3,10 +3,12 @@ import "./ProductDisplay.css";
 import star_icon from "../Assets/star_icon.png";
 import star_dull_icon from "../Assets/star_dull_icon.png";
 import { ShopContext } from "../../Context/ShopContext";
+import { useNavigate } from "react-router-dom";
 
 const ProductDisplay = (props) => {
   const { product } = props;
   const { addToCart } = useContext(ShopContext);
+  const navigate = useNavigate();
   return (
     <div className="productdisplay">
       <div className="productdisplay-left">
@@ -21,7 +23,7 @@ const ProductDisplay = (props) => {
         </div>
       </div>
       <div className="productdisplay-right">
-        <h1>{product.name}</h1>
+        <h1>{product.name_product}</h1>
         <div className="productdisplay-right-stars">
           <img src={star_icon} alt="" />
           <img src={star_icon} alt="" />
@@ -30,32 +32,36 @@ const ProductDisplay = (props) => {
           <img src={star_dull_icon} alt="" />
           <p>(122)</p>
         </div>
-        <div className="productdisplay-right-prices">
-          <div className="productdisplay-right-price-old">
-            ${product.old_price}
-          </div>
-          <div className="productdisplay-right-price-new">
-            ${product.new_price}
+        <div className="productdisplay-pricebox">
+          <div className="productdisplay-pricebox-title">Giá sản phẩm</div>
+          <div className="productdisplay-pricebox-main">
+            <span className="productdisplay-pricebox-new">
+              {product.price_product && product.price_product.toLocaleString()}đ
+            </span>
+            {product.old_price && (
+              <span className="productdisplay-pricebox-old">
+                {product.old_price.toLocaleString()}đ
+              </span>
+            )}
           </div>
         </div>
         <div className="productdisplay-right-description">
-          Dynamic and powerful, the new iPhone 15 Pro Max features the A17
-          Bionic chip, a stunning ProMotion XDR display, and an advanced
-          triple-camera system for professional-grade photos and videos.
+          <span className="productdisplay-right-description-label">
+            Mô tả :
+          </span>{" "}
+          {product.describe}
+        </div>
+        <div className="productdisplay-right-quantity">
+          <span>Số lượng còn lại: </span>
+          {product.number}
         </div>
         <button
           onClick={() => {
-            addToCart(product.id);
+            addToCart(product._id);
           }}
         >
-          ADD TO CART
+          Thêm vào giỏ
         </button>
-        <p className="productdisplay-right-category">
-          <span>Category :</span>Electronics, Smartphone, Apple
-        </p>
-        <p className="productdisplay-right-category">
-          <span>Tags :</span>New, Pro, Max
-        </p>
       </div>
     </div>
   );

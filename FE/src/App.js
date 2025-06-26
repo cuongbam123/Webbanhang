@@ -91,7 +91,7 @@ function App() {
                 </Route>
                 <Route path="/cart" element={<Cart />} />
                 <Route path="/login" element={<LoginSignup setIsLoggedIn={setIsLoggedIn}/>} />
-<Route path="/admin/add-product" element={<AdminAddProduct />} />
+                <Route path="/admin/add-product" element={<AdminAddProduct />} />
 
                 <Route path="/order" element={<OrderPage />} />
             </Routes>

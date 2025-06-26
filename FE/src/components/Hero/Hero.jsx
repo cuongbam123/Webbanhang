@@ -17,7 +17,10 @@ const Hero = () => {
           <p>Smart Devices</p>
           <p>For Your Life</p>
         </div>
-        <div className="hero-latest-btn">
+        <div className="hero-latest-btn" onClick={() => {
+          const el = document.getElementById('featured-categories');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }}>
           <div>Explore Products</div>
           <img src={arrow} alt="" />
         </div>

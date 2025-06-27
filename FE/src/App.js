@@ -25,7 +25,7 @@ import FloatingChatButton from "./Components/ChatAI/FloatingChatButton";
 import { useEffect, useState } from "react";
 
 // 👉 Wrapper tách biệt để được dùng trong <BrowserRouter>
-function App() {
+function Layout() {
   const location = useLocation();
   const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
   const [showChat, setShowChat] = useState(false);
@@ -38,77 +38,79 @@ function App() {
   const isChatPage = location.pathname === "/chat";
 
   return (
-      <ShopContextProvider>
-        <PayPalScriptProvider options={{ "client-id": "sb" }}>
-          <BrowserRouter>
-            <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-            <Routes>
-              <Route path="/" element={<Shop />} />
-                <Route path="/dien-thoai" element={<ShopCategory banner={dt_banner} category="dien-thoai" />} />
-                <Route path="/laptop" element={<ShopCategory banner={laptop_banner} category="laptop" />} />
-                <Route path="/phu-kien" element={<ShopCategory banner={pkien_banner} category="phu-kien" />} />
-                <Route path="/search" element={<SearchResults />} />
-                <Route path="/product">
-                  <Route path=":productId" element={<Product />} />
-                </Route>
-                <Route path="/cart" element={<Cart />} />
-                <Route path="/login" element={<LoginSignup setIsLoggedIn={setIsLoggedIn}/>} />
-                <Route path="/admin/add-product" element={<AdminAddProduct />} />
+      // <ShopContextProvider>
+      //   <PayPalScriptProvider options={{ "client-id": "sb" }}>
+      //     <BrowserRouter>
+      //       <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+      //       <Routes>
+      //         <Route path="/" element={<Shop />} />
+      //           <Route path="/dien-thoai" element={<ShopCategory banner={dt_banner} category="dien-thoai" />} />
+      //           <Route path="/laptop" element={<ShopCategory banner={laptop_banner} category="laptop" />} />
+      //           <Route path="/phu-kien" element={<ShopCategory banner={pkien_banner} category="phu-kien" />} />
+      //           <Route path="/search" element={<SearchResults />} />
+      //           <Route path="/product">
+      //             <Route path=":productId" element={<Product />} />
+      //           </Route>
+      //           <Route path="/cart" element={<Cart />} />
+      //           <Route path="/login" element={<LoginSignup setIsLoggedIn={setIsLoggedIn}/>} />
+      //           <Route path="/admin/add-product" element={<AdminAddProduct />} />
 
-                <Route path="/order" element={<OrderPage />} />
-                <Route path="/my-orders" element={<MyOrders />} />
-                <Route path="/order-success/:id" element={<OrderSuccess />} />
+      //           <Route path="/order" element={<OrderPage />} />
+      //           <Route path="/my-orders" element={<MyOrders />} />
+      //           <Route path="/order-success/:id" element={<OrderSuccess />} />
 
-                <Route path="/chat" element={<AIChatBox />} />
+      //           <Route path="/chat" element={<AIChatBox />} />
 
-            </Routes>
-            <Footer />
-            {!isChatPage && (
+      //       </Routes>
+      //       <Footer />
+      //       {!isChatPage && (
+      //   <>
+      //     {showChat && <AIChatBox onClose={() => setShowChat(false)} />}
+      //     <FloatingChatButton onClick={() => setShowChat(true)} />
+      //   </>
+      // )}
+      //     </BrowserRouter>
+      //   </PayPalScriptProvider>
+      // </ShopContextProvider>
+    <>
+      <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+      <Routes>
+        <Route path="/" element={<Shop />} />
+        <Route path="/dien-thoai" element={<ShopCategory banner={dt_banner} category="dien-thoai" />} />
+        <Route path="/laptop" element={<ShopCategory banner={laptop_banner} category="laptop" />} />
+        <Route path="/phu-kien" element={<ShopCategory banner={pkien_banner} category="phu-kien" />} />
+        <Route path="/search" element={<SearchResults />} />
+        <Route path="/product/:productId" element={<Product />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/login" element={<LoginSignup setIsLoggedIn={setIsLoggedIn} />} />
+        <Route path="/admin/add-product" element={<AdminAddProduct />} />
+        <Route path="/order" element={<OrderPage />} />
+        <Route path="/order-success/:id" element={<OrderSuccess />} />
+        <Route path="/my-orders" element={<MyOrders />} />
+
+        <Route path="/chat" element={<AIChatBox />} />
+      </Routes>
+      <Footer />
+      {!isChatPage && (
         <>
           {showChat && <AIChatBox onClose={() => setShowChat(false)} />}
           <FloatingChatButton onClick={() => setShowChat(true)} />
         </>
       )}
-          </BrowserRouter>
-        </PayPalScriptProvider>
-      </ShopContextProvider>
-    // <>
-    //   <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
-    //   <Routes>
-    //     <Route path="/" element={<Shop />} />
-    //     <Route path="/dien-thoai" element={<ShopCategory banner={dt_banner} category="dien-thoai" />} />
-    //     <Route path="/laptop" element={<ShopCategory banner={laptop_banner} category="laptop" />} />
-    //     <Route path="/phu-kien" element={<ShopCategory banner={pkien_banner} category="phu-kien" />} />
-    //     <Route path="/search" element={<SearchResults />} />
-    //     <Route path="/product/:productId" element={<Product />} />
-    //     <Route path="/cart" element={<Cart />} />
-    //     <Route path="/login" element={<LoginSignup setIsLoggedIn={setIsLoggedIn} />} />
-    //     <Route path="/admin/add-product" element={<AdminAddProduct />} />
-    //     <Route path="/order" element={<OrderPage />} />
-    //     <Route path="/order-success/:id" element={<OrderSuccess />} />
-    //     <Route path="/chat" element={<AIChatBox />} />
-    //   </Routes>
-    //   <Footer />
-    //   {!isChatPage && (
-    //     <>
-    //       {showChat && <AIChatBox onClose={() => setShowChat(false)} />}
-    //       <FloatingChatButton onClick={() => setShowChat(true)} />
-    //     </>
-    //   )}
-    // </>
+    </>
   );
 }
 
-// function App() {
-//   return (
-//     <ShopContextProvider>
-//       <PayPalScriptProvider options={{ "client-id": "sb" }}>
-//         <BrowserRouter>
-//           <Layout />
-//         </BrowserRouter>
-//       </PayPalScriptProvider>
-//     </ShopContextProvider>
-//   );
-// }
+function App() {
+  return (
+    <ShopContextProvider>
+      <PayPalScriptProvider options={{ "client-id": "sb" }}>
+        <BrowserRouter>
+          <Layout />
+        </BrowserRouter>
+      </PayPalScriptProvider>
+    </ShopContextProvider>
+  );
+}
 
 export default App;

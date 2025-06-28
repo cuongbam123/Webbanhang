@@ -21,5 +21,4 @@ router.delete('/:id', verifyToken, isAdmin, detailOrderController.deleteDetailOr
 
 router.get('/order/:orderId', verifyToken, detailOrderController.getDetailOrdersByOrderId);
 
-
 module.exports = router;

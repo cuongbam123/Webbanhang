@@ -1,4 +1,5 @@
 const orderService = require("../services/OrderService");
+const Order = require('../models/order');
 
 // Tạo đơn hàng kèm chi tiết và trả về kết quả đầy đủ
 exports.createOrder = async (req, res) => {
@@ -37,12 +38,12 @@ exports.getOrderById = async (req, res) => {
         .json({ success: false, message: "Không tìm thấy đơn hàng" });
 
     // Nếu không phải admin thì chỉ xem được đơn của chính mình
-    if (req.user.role !== "admin" && order.id_user.toString() !== req.user.id) {
-      return res.status(403).json({
-        success: false,
-        message: "Không có quyền truy cập đơn hàng này",
-      });
-    }
+    // if (req.user.role !== "admin" && order.id_user.toString() !== req.user.id) {
+    //   return res.status(403).json({
+    //     success: false,
+    //     message: "Không có quyền truy cập đơn hàng này",
+    //   });
+    // }
 
     res.status(200).json({ success: true, data: order });
   } catch (err) {
@@ -114,4 +115,16 @@ exports.getOrdersByUser = async (req, res) => {
       .status(500)
       .json({ success: false, message: "Lỗi lấy đơn hàng của user" });
   }
+};
+
+exports.getMyOrders = async (req, res) => {
+    try {
+        console.log("User:", req.user); // ✅ kiểm tra JWT payload
+
+        const orders = await Order.find({ id_user: req.user.id }); // hoặc req.user._id
+        res.json(orders);
+    } catch (err) {
+        console.error("Lỗi khi lấy đơn hàng:", err); // ✅ log chi tiết
+        res.status(500).json({ error: "Đã xảy ra lỗi khi lấy đơn hàng" });
+    }
 };

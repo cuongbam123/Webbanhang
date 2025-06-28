@@ -81,4 +81,15 @@ module.exports = {
             next(err);
         }
     },
+
+    getProfile: async (req, res, next) => {
+        try {
+            const user = await UserService.getUserById(req.user.id);
+            if (!user) return res.status(404).send('Không tìm thấy user');
+            res.json(user);
+        } catch (err) {
+            next(err);
+        }
+    },
+    
 };

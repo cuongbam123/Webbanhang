@@ -29,8 +29,8 @@ const LoginSignup = ({ setIsLoggedIn, setFullname }) => {
         { username: formData.username, password: formData.password }
       );
       localStorage.setItem("token", res.data.token);
-      localStorage.setItem("fullname", res.data.fullname); // Lưu fullname
       localStorage.setItem("role", res.data.role);
+      localStorage.setItem("fullname", res.data.fullname); // Lưu fullname
 
       alert("Đăng nhập thành công!");
       setIsLoggedIn(true); // Cập nhật login cho App

@@ -108,7 +108,7 @@ const OrderList = () => {
               <tr
                 key={order._id}
                 className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                onClick={() => navigate(`/orders/${order._id}`)}
+                onClick={() => navigate(`/admin/orders/${order._id}`)}
               >
                 <td className="py-2 px-4 text-gray-900 dark:text-white">{order._id}</td>
                 <td className="py-2 px-4 text-gray-800 dark:text-white">

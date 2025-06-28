@@ -1,47 +1,68 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { toast } from "react-toastify";
 import { Edit, Trash2, UserPlus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-
-// Dữ liệu giả lập
-const mockUsers = [
-  { id: 1, name: "Nguyễn Văn A", email: "a@gmail.com", role: "Admin" },
-  { id: 2, name: "Trần Thị B", email: "b@gmail.com", role: "Khách hàng" },
-  { id: 3, name: "Lê Văn C", email: "c@gmail.com", role: "Khách hàng" },
-];
+// import { getToken } from "../utils/auth"; // Tạo file utils nếu chưa có
 
 const UserList = () => {
   const navigate = useNavigate();
-  const [users, setUsers] = useState(mockUsers);
+  const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("Tất cả");
 
-  // Lọc người dùng
-  const filteredUsers = users.filter((user) => {
-    const matchesSearch =
-      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesRole = roleFilter === "Tất cả" || user.role === roleFilter;
-    return matchesSearch && matchesRole;
-  });
+  useEffect(() => {
+    fetchUsers();
+  }, []);
 
-  // Xoá người dùng
-  const handleDelete = (id) => {
-    if (window.confirm("Bạn có chắc muốn xoá người dùng này?")) {
-      setUsers(users.filter((u) => u.id !== id));
-      toast.success("Đã xoá người dùng!");
+  const token = localStorage.getItem("token");
+
+  const fetchUsers = async () => {
+    try {
+      const res = await axios.get("http://localhost:3001/api/users/admin/users", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setUsers(res.data);
+    } catch (err) {
+      toast.error("Lỗi khi tải danh sách người dùng");
     }
   };
 
-  // Sửa người dùng
-  const handleEdit = (id) => {
-    navigate(`/edit-user/${id}`);
+  const handleDelete = async (id) => {
+    if (!window.confirm("Bạn có chắc muốn xoá người dùng này?")) return;
+    try {
+      await axios.delete(`http://localhost:3001/api/users/admin/users/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      toast.success("Đã xoá người dùng!");
+      fetchUsers();
+    } catch (err) {
+      toast.error("Lỗi khi xoá");
+    }
   };
 
-  // Thêm người dùng
-  const handleAddUser = () => {
-    navigate("/add-user");
+  const handleEdit = (id) => {
+    navigate(`/admin/edit-user/${id}`);
   };
+
+  const handleAddUser = () => {
+    navigate("/admin/add-user");
+  };
+
+  const filteredUsers = users.filter((user) => {
+    const matchesSearch =
+      user.fullname?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.email?.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesRole =
+      roleFilter === "Tất cả" ||
+      (roleFilter === "Admin" && user.role === "admin") ||
+      (roleFilter === "Khách hàng" && user.role === "user");
+    return matchesSearch && matchesRole;
+  });
 
   return (
     <div className="p-4 bg-white dark:bg-gray-900 min-h-full">
@@ -58,7 +79,6 @@ const UserList = () => {
         </button>
       </div>
 
-      {/* Tìm kiếm và lọc */}
       <div className="flex flex-col md:flex-row gap-4 mb-4">
         <input
           type="text"
@@ -78,7 +98,6 @@ const UserList = () => {
         </select>
       </div>
 
-      {/* Bảng người dùng */}
       <table className="min-w-full bg-white dark:bg-gray-800 shadow rounded-lg">
         <thead className="bg-gray-100 dark:bg-gray-700">
           <tr>
@@ -92,22 +111,22 @@ const UserList = () => {
         <tbody>
           {filteredUsers.map((user) => (
             <tr
-              key={user.id}
+              key={user._id}
               className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
             >
-              <td className="py-2 px-4 text-gray-900 dark:text-white">{user.id}</td>
-              <td className="py-2 px-4 text-gray-800 dark:text-white">{user.name}</td>
+              <td className="py-2 px-4 text-gray-900 dark:text-white">{user._id}</td>
+              <td className="py-2 px-4 text-gray-800 dark:text-white">{user.fullname}</td>
               <td className="py-2 px-4 text-gray-700 dark:text-gray-300">{user.email}</td>
-              <td className="py-2 px-4 text-gray-700 dark:text-gray-300">{user.role}</td>
+              <td className="py-2 px-4 text-gray-700 dark:text-gray-300">{user.role === "admin" ? "Admin" : "Khách hàng"}</td>
               <td className="py-2 px-4 flex gap-2">
                 <button
-                  onClick={() => handleEdit(user.id)}
+                  onClick={() => handleEdit(user._id)}
                   className="text-blue-600 hover:text-blue-800"
                 >
                   <Edit size={18} />
                 </button>
                 <button
-                  onClick={() => handleDelete(user.id)}
+                  onClick={() => handleDelete(user._id)}
                   className="text-red-600 hover:text-red-800"
                 >
                   <Trash2 size={18} />
@@ -118,7 +137,6 @@ const UserList = () => {
         </tbody>
       </table>
 
-      {/* Không tìm thấy kết quả */}
       {filteredUsers.length === 0 && (
         <p className="mt-4 text-center text-gray-500 dark:text-gray-400">
           Không có người dùng nào phù hợp.

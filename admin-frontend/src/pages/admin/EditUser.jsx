@@ -2,51 +2,81 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-
-const mockUsers = [
-  { id: 1, name: "Nguyễn Văn A", email: "a@gmail.com", role: "Admin" },
-  { id: 2, name: "Trần Thị B", email: "b@gmail.com", role: "Khách hàng" },
-  { id: 3, name: "Lê Văn C", email: "c@gmail.com", role: "Khách hàng" },
-];
+import axios from "axios";
 
 const EditUser = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
 
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
-    const foundUser = mockUsers.find((u) => u.id === parseInt(id));
-    if (foundUser) setUser(foundUser);
-    else toast.error("Không tìm thấy người dùng");
-  }, [id]);
+    const fetchUser = async () => {
+      try {
+        const res = await axios.get(`http://localhost:3001/api/users/admin/users/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setUser(res.data);
+      } catch (error) {
+        toast.error("Không thể tải người dùng");
+        console.error(error);
+      }
+    };
+    fetchUser();
+  }, [id, token]);
 
   const handleChange = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    toast.success(`Đã cập nhật người dùng #${user.id}`);
-    // TODO: Gọi API PUT / PATCH để lưu thay đổi nếu có backend
-    navigate("/users");
+    try {
+      console.log('token:', token);
+      await axios.put(`http://localhost:3001/api/users/users/${id}`, user, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      toast.success("Cập nhật người dùng thành công!");
+      navigate("/admin/users");
+    } catch (error) {
+      toast.error("Lỗi khi cập nhật người dùng");
+      console.error(error);
+    }
   };
 
-  if (!user) return null;
+  if (!user) return <p className="text-center text-white">Đang tải...</p>;
 
   return (
     <div className="p-6 bg-white dark:bg-gray-900 min-h-screen">
       <h1 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
-        Sửa người dùng #{user.id}
+        Sửa người dùng #{user._id}
       </h1>
       <form onSubmit={handleSubmit} className="space-y-4 max-w-lg">
         <div>
           <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-            Tên
+            Họ tên
           </label>
           <input
             type="text"
-            name="name"
-            value={user.name}
+            name="fullname"
+            value={user.fullname}
+            onChange={handleChange}
+            className="w-full p-2 border rounded dark:bg-gray-800 dark:text-white"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            Tên đăng nhập
+          </label>
+          <input
+            type="text"
+            name="username"
+            value={user.username}
             onChange={handleChange}
             className="w-full p-2 border rounded dark:bg-gray-800 dark:text-white"
           />
@@ -61,6 +91,7 @@ const EditUser = () => {
             value={user.email}
             onChange={handleChange}
             className="w-full p-2 border rounded dark:bg-gray-800 dark:text-white"
+            disabled // email thường không sửa
           />
         </div>
         <div>
@@ -73,8 +104,8 @@ const EditUser = () => {
             onChange={handleChange}
             className="w-full p-2 border rounded dark:bg-gray-800 dark:text-white"
           >
-            <option value="Admin">Admin</option>
-            <option value="Khách hàng">Khách hàng</option>
+            <option value="admin">Admin</option>
+            <option value="user">Khách hàng</option>
           </select>
         </div>
         <button

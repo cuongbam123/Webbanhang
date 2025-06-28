@@ -19,16 +19,23 @@ const createUser = async (data) => {
 }
 
 const updateUser = async (data) => {
-    const user = await Users.findOne({ _id: data._id })
-    if (!user) return null
+    const user = await Users.findOne({ _id: data._id });
+    if (!user) return null;
 
-    user.fullname = data.fullname
-    user.username = data.username
-    user.password = data.password
+    if (data.fullname) user.fullname = data.fullname;
+    if (data.username) user.username = data.username;
+    if (data.password) user.password = data.password;
+    if (data.email)    user.email = data.email;
+    if (data.role)     user.role = data.role;
 
-    await user.save()
-    return user
+    await user.save();
+    return user;
+};
+
+const deleteUser = async (id) => {
+    return await Users.findByIdAndDelete(id);
 }
+
 
 const checkExistingUsername = async (username) => {
     return await Users.findOne({ username })
@@ -40,5 +47,6 @@ module.exports = {
     getUserByUsernameOrEmail,
     createUser,
     updateUser,
+    deleteUser,
     checkExistingUsername
 }

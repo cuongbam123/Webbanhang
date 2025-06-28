@@ -328,12 +328,14 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
         </li>
         {/* Hiển thị menu quản lý nếu là admin */}
         {role === "admin" && (
-          <li onClick={() => {
-            setMenu("admin");
-            const token = localStorage.getItem("token");
-            const encodedToken = encodeURIComponent(token); // đề phòng ký tự lạ
-            window.location.href = `http://localhost:3002/admin?token=${encodedToken}`;
-          }}>
+          <li
+            onClick={() => {
+              setMenu("admin");
+              const token = localStorage.getItem("token");
+              const encodedToken = encodeURIComponent(token); // đề phòng ký tự lạ
+              window.location.href = `http://localhost:3002/admin?token=${encodedToken}`;
+            }}
+          >
             <span style={{ textDecoration: "none", cursor: "pointer" }}>
               Thông tin đặt hàng
             </span>
@@ -434,7 +436,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
               }}
             >
               <button
-                onClick={handleLogout}
+                onClick={() => handleNavigate("/profile")}
                 style={{
                   width: "100%",
                   background: "none",
@@ -446,7 +448,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
                   fontWeight: "bold",
                 }}
               >
-                Thông tin cá nhân 
+                Thông tin cá nhân
               </button>
               <hr />
               <button

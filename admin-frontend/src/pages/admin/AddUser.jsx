@@ -1,33 +1,51 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const AddUser = () => {
   const navigate = useNavigate();
   const [form, setForm] = useState({
-    name: "",
+    fullname: "",
+    username: "",
     email: "",
     password: "",
-    role: "Khách hàng",
+    role: "user", // BE: 'user' hoặc 'admin'
   });
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!form.name || !form.email || !form.password) {
+    const { fullname, username, email, password, role } = form;
+
+    if (!fullname || !username || !email || !password) {
       toast.error("Vui lòng nhập đầy đủ thông tin!");
       return;
     }
 
-    // TODO: Gọi API thật tại đây (hiện chỉ giả lập)
-    console.log("Thêm người dùng mới:", form);
-    toast.success("Đã thêm người dùng mới!");
+    try {
+      const token = localStorage.getItem("token");
 
-    navigate("/users");
+      await axios.post("http://localhost:3001/api/users/register", form, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      toast.success("Đã thêm người dùng mới!");
+      navigate("/admin/users");
+    } catch (err) {
+      console.error(err);
+      if (err.response?.data?.message) {
+        toast.error(err.response.data.message);
+      } else {
+        toast.error("Lỗi khi thêm người dùng!");
+      }
+    }
   };
 
   return (
@@ -40,10 +58,23 @@ const AddUser = () => {
         <div>
           <label className="block mb-1 text-gray-800 dark:text-white">Họ và tên:</label>
           <input
-            name="name"
+            name="fullname"
             type="text"
             placeholder="Nhập tên..."
-            value={form.name}
+            value={form.fullname}
+            onChange={handleChange}
+            className="w-full p-2 border rounded dark:bg-gray-800 dark:text-white"
+            required
+          />
+        </div>
+
+        <div>
+          <label className="block mb-1 text-gray-800 dark:text-white">Tên đăng nhập:</label>
+          <input
+            name="username"
+            type="text"
+            placeholder="Nhập tên đăng nhập..."
+            value={form.username}
             onChange={handleChange}
             className="w-full p-2 border rounded dark:bg-gray-800 dark:text-white"
             required
@@ -84,8 +115,8 @@ const AddUser = () => {
             onChange={handleChange}
             className="w-full p-2 border rounded dark:bg-gray-800 dark:text-white"
           >
-            <option value="Khách hàng">Khách hàng</option>
-            <option value="Admin">Admin</option>
+            <option value="user">Khách hàng</option>
+            <option value="admin">Admin</option>
           </select>
         </div>
 
@@ -98,7 +129,7 @@ const AddUser = () => {
           </button>
           <button
             type="button"
-            onClick={() => navigate("/users")}
+            onClick={() => navigate("/admin/users")}
             className="bg-gray-400 text-white px-4 py-2 rounded hover:bg-gray-500"
           >
             Huỷ

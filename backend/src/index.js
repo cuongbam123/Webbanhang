@@ -67,7 +67,7 @@ mongoose
 // Cấu hình CORS
 const cors = require("cors");
 app.use(cors({
-  origin: process.env.CORS_ORIGIN || "http://localhost:3000",
+  origin: ['http://localhost:3000', 'http://localhost:3002'],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true,
 }));

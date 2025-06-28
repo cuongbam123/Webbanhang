@@ -328,14 +328,15 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
         </li>
         {/* Hiển thị menu quản lý nếu là admin */}
         {role === "admin" && (
-          <li onClick={() => setMenu("admin")}>
-            <Link
-              style={{ textDecoration: "none" }}
-              to="/admin"
-              onClick={() => handleNavigate("/admin")}
-            >
+          <li onClick={() => {
+            setMenu("admin");
+            const token = localStorage.getItem("token");
+            const encodedToken = encodeURIComponent(token); // đề phòng ký tự lạ
+            window.location.href = `http://localhost:3002/admin?token=${encodedToken}`;
+          }}>
+            <span style={{ textDecoration: "none", cursor: "pointer" }}>
               Thông tin đặt hàng
-            </Link>
+            </span>
             {menu === "admin" && <hr />}
           </li>
         )}

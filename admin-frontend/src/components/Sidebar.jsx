@@ -6,20 +6,20 @@ const Sidebar = () => {
     <aside className="h-screen w-64 bg-gray-900 text-white p-4 hidden md:block">
       <div className="text-2xl font-bold mb-8">Admin Dashboard</div>
       <nav className="flex flex-col gap-4">
-        <NavLink to="/" className="flex items-center gap-2 hover:text-yellow-400">
+        <NavLink to="/admin" className="flex items-center gap-2 hover:text-yellow-400">
           <Home size={20} />
           Dashboard
         </NavLink>
-        <NavLink to="/products" className="flex items-center gap-2 hover:text-yellow-400">
+        <NavLink to="/admin/products" className="flex items-center gap-2 hover:text-yellow-400">
           <Boxes size={20} />
           Sản phẩm
         </NavLink>
-        <NavLink to="/orders" className="flex items-center gap-2 hover:text-yellow-400">
+        <NavLink to="/admin/orders" className="flex items-center gap-2 hover:text-yellow-400">
           <PackageCheck size={20} />
           Đơn hàng
         </NavLink>
         {/* ✅ Mục Người dùng */}
-        <NavLink to="/users" className="flex items-center gap-2 hover:text-yellow-400">
+        <NavLink to="/admin/users" className="flex items-center gap-2 hover:text-yellow-400">
           <Users size={20} />
           Người dùng
         </NavLink>

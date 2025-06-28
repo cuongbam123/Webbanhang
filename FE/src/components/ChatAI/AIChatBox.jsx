@@ -3,7 +3,6 @@ import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
 import Swal from "sweetalert2";
 import { io } from "socket.io-client";
-import FloatingChatButton from "./FloatingChatButton";
 import "./AIChatBox.css";
 
 const socket = io("http://localhost:3001");
@@ -17,7 +16,6 @@ const AIChatBox = ({ onClose }) => {
 
   const chatRef = useRef(null);
   const inputRef = useRef(null);
-  const chatHistory = useRef([]);
 
   useEffect(() => {
     setMessages([
@@ -38,7 +36,6 @@ const AIChatBox = ({ onClose }) => {
 
   useEffect(() => {
     socket.on("receive_message", (reply) => {
-      chatHistory.current.push({ role: "model", parts: [{ text: reply }] });
       setMessages((prev) => [...prev, { type: "bot", content: reply }]);
       setLoading(false);
     });
@@ -48,14 +45,8 @@ const AIChatBox = ({ onClose }) => {
     };
   }, []);
 
-
   const handleSend = () => {
     if (!message.trim() && !fileData) return;
-
-    const userMsg = {
-      role: "user",
-      parts: [{ text: message.trim() }],
-    };
 
     const newMessage = {
       type: "user",
@@ -64,7 +55,6 @@ const AIChatBox = ({ onClose }) => {
     };
 
     setMessages((prev) => [...prev, newMessage]);
-    chatHistory.current.push(userMsg);
     setMessage("");
     setFileData(null);
     setLoading(true);
@@ -93,61 +83,73 @@ const AIChatBox = ({ onClose }) => {
   return (
     <div className="chatbot-container">
       <div className="chatbot-header">
-        <div>Trợ lý AI</div>
-        <button
-          className="chatbot-icon-btn"
-          onClick={onClose}
-          style={{ color: "white" }}
-        >
+        <span className="chatbot-header-icon">⚡</span>
+        <span>Trợ lý điện tử</span>
+        <button className="chatbot-close-btn" onClick={onClose}>
           ✖
         </button>
       </div>
 
       <div ref={chatRef} className="chatbot-body">
         {messages.map((msg, i) => (
-          <div key={i}>
-            <div className={`chatbot-msg ${msg.type}`}>
-              {msg.content}
-              {msg.file && (
-                <img
-                  src={`data:${msg.file.mime_type};base64,${msg.file.data}`}
-                  alt="attachment"
-                  style={{ marginTop: 8, maxWidth: 120, borderRadius: 8 }}
-                />
-              )}
-            </div>
+          <div key={i} className={`chatbot-msg ${msg.type}`}>
+            {msg.content.split("\n").map((line, idx) => (
+              <React.Fragment key={idx}>
+                {line}
+                <br />
+              </React.Fragment>
+            ))}
+            {msg.file && (
+              <img
+                src={`data:${msg.file.mime_type};base64,${msg.file.data}`}
+                alt="attachment"
+                style={{ marginTop: 8, maxWidth: 150, borderRadius: 8 }}
+              />
+            )}
           </div>
         ))}
         {loading && (
-          <div style={{ color: "#999", fontStyle: "italic" }}>AI đang trả lời...</div>
+          <div className="chatbot-loading">🤖 AI đang trả lời...</div>
         )}
       </div>
 
       <div className="chatbot-footer">
-        <div style={{ display: "flex", alignItems: "center" }}>
-          <textarea
-            ref={inputRef}
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            placeholder="Nhập tin nhắn..."
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey) {
-                e.preventDefault();
-                handleSend();
-              }
-            }}
-          />
-
-          <button className="chatbot-icon-btn" onClick={() => setShowEmoji(!showEmoji)}>
-            🙂
-          </button>
-
+        <div className="chatbot-input-row">
           <label className="chatbot-icon-btn" title="Gửi ảnh">
             📎
-            <input type="file" onChange={handleFileChange} style={{ display: "none" }} />
+            <input
+              type="file"
+              onChange={handleFileChange}
+              style={{ display: "none" }}
+            />
           </label>
 
-          <button className="chatbot-btn" onClick={handleSend} disabled={loading}>
+          <div className="chatbot-input-wrapper">
+            <textarea
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Nhập tin nhắn..."
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey) {
+                  e.preventDefault();
+                  handleSend();
+                }
+              }}
+              ref={inputRef}
+            />
+            <button
+              className="chatbot-emoji-inside"
+              onClick={() => setShowEmoji(!showEmoji)}
+            >
+              😊
+            </button>
+          </div>
+
+          <button
+            className="chatbot-send-btn"
+            onClick={handleSend}
+            disabled={loading}
+          >
             ➤
           </button>
         </div>
@@ -162,6 +164,9 @@ const AIChatBox = ({ onClose }) => {
           </div>
         )}
       </div>
+
+
+
     </div>
   );
 };

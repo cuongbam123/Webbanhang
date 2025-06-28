@@ -29,8 +29,8 @@ const LoginSignup = ({ setIsLoggedIn, setFullname }) => {
         { username: formData.username, password: formData.password }
       );
       localStorage.setItem("token", res.data.token);
-      localStorage.setItem("fullname", res.data.fullname); // Lưu fullname
       localStorage.setItem("role", res.data.role);
+      localStorage.setItem("fullname", res.data.fullname); // Lưu fullname
 
       alert("Đăng nhập thành công!");
       setIsLoggedIn(true); // Cập nhật login cho App
@@ -91,8 +91,6 @@ const LoginSignup = ({ setIsLoggedIn, setFullname }) => {
           <div className="login-signup-social">
             <button className="social-btn ggl">G+</button>
             <button className="social-btn fb">f</button>
-            <button className="social-btn git">&#xf09b;</button>
-            <button className="social-btn in">in</button>
           </div>
           <span className="login-signup-or">
             or use your{" "}

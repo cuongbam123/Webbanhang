@@ -187,7 +187,7 @@ const ProductList = () => {
             className="relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-bold text-white rounded shadow-lg group bg-gradient-to-r from-cyan-500 via-blue-500 to-blue-600 hover:from-cyan-600 hover:via-blue-600 hover:to-blue-700 transition-all duration-300"
           >
             <span className="absolute inset-0 flex items-center justify-center w-full h-full duration-300 transform translate-x-full bg-white bg-opacity-10 group-hover:translate-x-0"></span>
-            <span className="relative z-10">➕ Thêm sản phẩm</span>
+            <span className="relative z-10">Thêm sản phẩm</span>
           </button>
 
         </div>
@@ -290,24 +290,6 @@ const ProductList = () => {
       {showForm && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
           <div className="relative w-full max-w-3xl bg-gray-100 rounded-lg shadow p-6 m-4 overflow-y-auto">
-            <button
-              onClick={() => {
-                setShowForm(false);
-                setFormData({
-                  name_product: "",
-                  price_product: "",
-                  describe: "",
-                  number: "",
-                  id_category: "",
-                });
-                setImageFile(null);
-                setOldImage("");
-                setEditId(null);
-              }}
-              className="absolute top-2 right-2 text-gray-600 hover:text-red-600 text-xl font-bold"
-            >
-              ×
-            </button>
 
             <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
               {editId ? "Sửa sản phẩm" : "Thêm sản phẩm mới"}
@@ -397,7 +379,8 @@ const ProductList = () => {
                 </div>
               </div>
 
-              <div className="flex justify-end">
+              <div className="flex justify-end gap-4 pt-4">
+                {/* Nút Submit */}
                 <button
                   type="submit"
                   className="relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-bold text-white rounded shadow-lg group bg-gradient-to-r from-cyan-500 via-blue-500 to-blue-600 hover:from-cyan-600 hover:via-blue-600 hover:to-blue-700 transition-all duration-300"
@@ -406,7 +389,30 @@ const ProductList = () => {
                   <span className="relative z-10">{editId ? "Cập nhật" : "Thêm sản phẩm"}</span>
                 </button>
 
+                {/* Nút Huỷ */}
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShowForm(false);
+                    setFormData({
+                      name_product: "",
+                      price_product: "",
+                      describe: "",
+                      number: "",
+                      id_category: "",
+                    });
+                    setImageFile(null);
+                    setOldImage("");
+                    setEditId(null);
+                  }}
+                  className="relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-bold text-white rounded shadow-lg group bg-gradient-to-r from-red-500 via-red-600 to-red-700 hover:from-red-600 hover:via-red-700 hover:to-red-800 transition-all duration-300"
+                >
+                  <span className="absolute inset-0 flex items-center justify-center w-full h-full duration-300 transform translate-x-full bg-white bg-opacity-10 group-hover:translate-x-0"></span>
+                  <span className="relative z-10">Huỷ</span>
+                </button>
+
               </div>
+
             </form>
           </div>
         </div>

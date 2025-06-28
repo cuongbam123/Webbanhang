@@ -3,7 +3,7 @@ import { Home, Boxes, LogOut, PackageCheck, Users } from "lucide-react"; // ✅ 
 
 const Sidebar = () => {
   return (
-    <aside className="h-screen w-64 bg-gray-900 text-white p-4 hidden md:block">
+    <aside className="w-64 bg-gray-900 text-white p-4 hidden md:block min-h-screen">
       <div className="text-2xl font-bold mb-8">Admin Dashboard</div>
       <nav className="flex flex-col gap-4">
         <NavLink to="/admin" className="flex items-center gap-2 hover:text-yellow-400">

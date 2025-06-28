@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import React, { useEffect } from "react";
 
 // Pages
 import LoginPage from "./pages/LoginPage";
@@ -17,7 +18,18 @@ import AddUser from "./pages/admin/AddUser"; // ✅ Thêm nếu có trang thêm 
 // Layout
 import Layout from "./components/Layout";
 
+
 function App() {
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const tokenFromFE = params.get("token");
+    if (tokenFromFE) {
+      localStorage.setItem("token", tokenFromFE);
+
+      // Xoá token khỏi URL sau khi lưu để bảo mật
+      window.history.replaceState(null, "", window.location.pathname);
+    }
+  }, []);
   return (
     <Router>
       <Routes>
@@ -25,7 +37,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
 
         {/* Route có layout */}
-        <Route path="/" element={<Layout />}>
+        <Route path="/admin" element={<Layout />}>
           <Route index element={<DashboardPage />} />
           <Route path="products" element={<ProductList />} />
           <Route path="add-product" element={<AddProduct />} />

@@ -7,8 +7,6 @@ import React, { useEffect } from "react";
 import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import ProductList from "./pages/admin/ProductList";
-import AddProduct from "./pages/admin/AddProduct";
-import EditProduct from "./pages/admin/EditProduct";
 import OrderList from "./pages/admin/OrderList";
 import OrderDetail from "./pages/admin/OrderDetail";
 import UserList from "./pages/admin/UserList";
@@ -40,8 +38,6 @@ function App() {
         <Route path="/admin" element={<Layout />}>
           <Route index element={<DashboardPage />} />
           <Route path="products" element={<ProductList />} />
-          <Route path="add-product" element={<AddProduct />} />
-          <Route path="edit-product/:id" element={<EditProduct />} />
           <Route path="orders" element={<OrderList />} />
           <Route path="orders/:id" element={<OrderDetail />} />
           <Route path="users" element={<UserList />} />

@@ -65,9 +65,9 @@ const UserList = () => {
   });
 
   return (
-    <div className="p-4 bg-white dark:bg-gray-900 min-h-screen">
+    <div className="p-4 bg-white dark:bg-gray-900 min-h-full">
       <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+        <h1 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
           Quản lý người dùng
         </h1>
         <button

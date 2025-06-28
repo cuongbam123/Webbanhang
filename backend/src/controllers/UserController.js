@@ -58,9 +58,25 @@ module.exports = {
 
     updateUser: async (req, res, next) => {
         try {
+            // Nếu là admin => cho phép cập nhật bất kỳ
+            // Nếu là user => chỉ được phép cập nhật chính họ
+            if (req.user.role !== 'admin' && req.user.id !== req.params.id) {
+                return res.status(403).send("Không có quyền cập nhật thông tin người khác");
+            }
+
             const updated = await UserService.updateUser({ _id: req.params.id, ...req.body });
             if (!updated) return res.status(404).send('Không tìm thấy user để cập nhật');
             res.json(updated);
+        } catch (err) {
+            next(err);
+        }
+    },
+
+    deleteUser: async (req, res, next) => {
+        try {
+            const deleted = await UserService.deleteUser(req.params.id);
+            if (!deleted) return res.status(404).send('Không tìm thấy user để xoá');
+            res.status(204).end();
         } catch (err) {
             next(err);
         }

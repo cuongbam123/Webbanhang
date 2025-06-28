@@ -12,6 +12,13 @@ async function getAllDetailOrders() {
     .exec();
 }
 
+async function getDetailOrdersByOrderId(orderId) {
+  return await DetailOrder.find({ id_order: orderId })
+    .populate('id_product', 'name_product price_product')
+    .exec();
+}
+
+
 async function getDetailOrderById(id) {
   return await DetailOrder.findById(id)
     .populate('id_order')
@@ -32,5 +39,6 @@ module.exports = {
   getAllDetailOrders,
   getDetailOrderById,
   updateDetailOrder,
-  deleteDetailOrder
+  deleteDetailOrder,
+  getDetailOrdersByOrderId
 };

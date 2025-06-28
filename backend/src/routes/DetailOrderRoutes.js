@@ -19,4 +19,7 @@ router.put('/:id', verifyToken, isAdmin, detailOrderController.updateDetailOrder
 // Xoá chi tiết đơn hàng (admin)
 router.delete('/:id', verifyToken, isAdmin, detailOrderController.deleteDetailOrder);
 
+router.get('/order/:orderId', verifyToken, detailOrderController.getDetailOrdersByOrderId);
+
+
 module.exports = router;

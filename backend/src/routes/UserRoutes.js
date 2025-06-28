@@ -7,9 +7,13 @@ const { verifyToken, isAdmin } = require('../middlewares/auth');
 router.post('/register', UserController.register);
 router.post('/login', UserController.login);
 
+router.put('/users/:id', verifyToken, UserController.updateUser);
+
+
 // Route chỉ admin mới được truy cập
 router.get('/admin/users', verifyToken, isAdmin, UserController.index);
 router.get('/admin/users/:id', verifyToken, isAdmin, UserController.user);
-router.put('/admin/users/:id', verifyToken, isAdmin, UserController.updateUser);
+// router.put('/admin/users/:id', verifyToken, isAdmin, UserController.updateUser);
+router.delete('/admin/users/:id', verifyToken, isAdmin, UserController.deleteUser);
 
 module.exports = router;

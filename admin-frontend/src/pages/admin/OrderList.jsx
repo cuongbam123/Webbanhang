@@ -1,44 +1,65 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 
-const mockOrders = [
-  { id: 1, customer: "Nguyễn Văn A", total: 1200000, status: "Đang xử lý" },
-  { id: 2, customer: "Trần Thị B", total: 850000, status: "Đã giao" },
-  { id: 3, customer: "Lê Văn C", total: 650000, status: "Huỷ" },
-  { id: 4, customer: "Phạm Thị D", total: 760000, status: "Đang xử lý" },
-  { id: 5, customer: "Ngô Văn E", total: 990000, status: "Đã giao" },
-  { id: 6, customer: "Mai Thị F", total: 430000, status: "Đang xử lý" },
-  { id: 7, customer: "Bùi Văn G", total: 590000, status: "Huỷ" },
-];
-
 const OrderList = () => {
   const navigate = useNavigate();
+  const [orders, setOrders] = useState([]);
   const [statusFilter, setStatusFilter] = useState("Tất cả");
   const [searchTerm, setSearchTerm] = useState("");
-  const [orders, setOrders] = useState(mockOrders);
   const [currentPage, setCurrentPage] = useState(1);
   const ordersPerPage = 5;
 
-  // Lọc theo trạng thái và từ khoá tìm kiếm
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    fetchOrders();
+  }, []);
+
+  const fetchOrders = async () => {
+    try {
+      const res = await axios.get("http://localhost:3001/api/orders", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setOrders(res.data.data);
+    } catch (err) {
+      console.error("Lỗi khi tải đơn hàng:", err);
+      toast.error("❌ Lỗi khi tải danh sách đơn hàng");
+    }
+  };
+
+  const handleStatusChange = async (id, newStatus) => {
+    try {
+      await axios.put(
+        `http://localhost:3001/api/orders/${id}`,
+        { status: newStatus },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      toast.success(`Đã cập nhật đơn hàng #${id} thành \"${newStatus}\"`);
+      fetchOrders();
+    } catch (err) {
+      console.error("Cập nhật đơn hàng lỗi:", err);
+      toast.error("❌ Không cập nhật được đơn hàng");
+    }
+  };
+
   const filteredOrders = orders.filter((order) => {
     const matchStatus = statusFilter === "Tất cả" || order.status === statusFilter;
-    const matchSearch = order.customer.toLowerCase().includes(searchTerm.toLowerCase());
+    const name = order.id_user?.fullname || order.id_user?.username || "Ẩn danh";
+    const matchSearch = name.toLowerCase().includes(searchTerm.toLowerCase());
     return matchStatus && matchSearch;
   });
 
-  // Phân trang
   const totalPages = Math.ceil(filteredOrders.length / ordersPerPage);
   const startIndex = (currentPage - 1) * ordersPerPage;
   const paginatedOrders = filteredOrders.slice(startIndex, startIndex + ordersPerPage);
-
-  const handleStatusChange = (id, newStatus) => {
-    const updated = orders.map((order) =>
-      order.id === id ? { ...order, status: newStatus } : order
-    );
-    setOrders(updated);
-    toast.success(`Đã cập nhật đơn hàng #${id} thành "${newStatus}"`);
-  };
 
   return (
     <div className="p-4 bg-white dark:bg-gray-900 min-h-screen">
@@ -46,7 +67,6 @@ const OrderList = () => {
         Quản lý đơn hàng
       </h1>
 
-      {/* Bộ lọc + tìm kiếm */}
       <div className="flex flex-col md:flex-row md:items-center gap-4 mb-4">
         <input
           type="text"
@@ -54,7 +74,7 @@ const OrderList = () => {
           value={searchTerm}
           onChange={(e) => {
             setSearchTerm(e.target.value);
-            setCurrentPage(1); // reset lại trang
+            setCurrentPage(1);
           }}
           className="p-2 border rounded dark:bg-gray-800 dark:text-white w-full md:w-1/2"
         />
@@ -73,7 +93,6 @@ const OrderList = () => {
         </select>
       </div>
 
-      {/* Bảng đơn hàng */}
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white dark:bg-gray-800 shadow rounded-lg">
           <thead className="bg-gray-100 dark:bg-gray-700">
@@ -87,22 +106,22 @@ const OrderList = () => {
           <tbody>
             {paginatedOrders.map((order) => (
               <tr
-                key={order.id}
+                key={order._id}
                 className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer"
-                onClick={() => navigate(`/orders/${order.id}`)}
+                onClick={() => navigate(`/orders/${order._id}`)}
               >
-                <td className="py-2 px-4 text-gray-900 dark:text-white">{order.id}</td>
+                <td className="py-2 px-4 text-gray-900 dark:text-white">{order._id}</td>
                 <td className="py-2 px-4 text-gray-800 dark:text-white">
-                  {order.customer}
+                  {order.id_user?.fullname || order.id_user?.username || "Ẩn danh"}
                 </td>
                 <td className="py-2 px-4 text-gray-700 dark:text-gray-300">
-                  {order.total.toLocaleString("vi-VN")}₫
+                  {Number(order.total).toLocaleString("vi-VN")}₫
                 </td>
                 <td className="py-2 px-4">
                   <select
-                    value={order.status}
+                    value={order.status || "Đang xử lý"}
                     onClick={(e) => e.stopPropagation()}
-                    onChange={(e) => handleStatusChange(order.id, e.target.value)}
+                    onChange={(e) => handleStatusChange(order._id, e.target.value)}
                     className={`p-1 rounded border dark:bg-gray-800 dark:text-white ${
                       order.status === "Đã giao"
                         ? "bg-green-100"
@@ -121,7 +140,6 @@ const OrderList = () => {
           </tbody>
         </table>
 
-        {/* Không có đơn */}
         {filteredOrders.length === 0 && (
           <p className="mt-4 text-center text-gray-500 dark:text-gray-400">
             Không có đơn hàng nào phù hợp.
@@ -129,7 +147,6 @@ const OrderList = () => {
         )}
       </div>
 
-      {/* Phân trang */}
       {filteredOrders.length > ordersPerPage && (
         <div className="flex justify-center mt-6 gap-4">
           <button

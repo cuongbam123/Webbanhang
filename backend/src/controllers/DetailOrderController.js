@@ -12,6 +12,15 @@ exports.createDetailOrder = async (req, res, next) => {
   }
 };
 
+exports.getDetailOrdersByOrderId = async (req, res, next) => {
+  try {
+    const details = await detailService.getDetailOrdersByOrderId(req.params.orderId);
+    res.json(details);
+  } catch (err) {
+    next(err);
+  }
+};
+
 exports.listDetailOrders = async (req, res, next) => {
   try {
     const details = await detailService.getAllDetailOrders();

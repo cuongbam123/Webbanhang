@@ -28,6 +28,12 @@ const Cart = () => {
       alert("Giỏ hàng đang trống!");
       return;
     }
+    const token = localStorage.getItem("token");
+    if (!token) {
+      alert("Bạn cần đăng nhập để thanh toán!");
+      navigate("/login");
+      return;
+    }
     navigate("/order");
   };
 

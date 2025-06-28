@@ -30,12 +30,6 @@ export const ShopContextProvider = (props) => {
   }, [cartItems]);
 
   const addToCart = (itemId) => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      alert("Bạn cần đăng nhập để thêm sản phẩm vào giỏ hàng!");
-      window.location.href = "/login";
-      return;
-    }
     setCartItems((prev) => ({
       ...prev,
       [itemId]: prev[itemId] ? prev[itemId] + 1 : 1,

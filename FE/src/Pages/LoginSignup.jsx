@@ -91,8 +91,6 @@ const LoginSignup = ({ setIsLoggedIn, setFullname }) => {
           <div className="login-signup-social">
             <button className="social-btn ggl">G+</button>
             <button className="social-btn fb">f</button>
-            <button className="social-btn git">&#xf09b;</button>
-            <button className="social-btn in">in</button>
           </div>
           <span className="login-signup-or">
             or use your{" "}

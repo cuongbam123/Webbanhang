@@ -16,8 +16,10 @@
 
 # \*Khách hàng
 
-image.png
+![USECASE_USER](https://github.com/user-attachments/assets/037c9fdb-a5f9-4571-8cad-8fc04d996c93)
+
 
 # \* Admin
 
-image.png
+![USECASE_ADMIN](https://github.com/user-attachments/assets/516824f1-01b9-43e5-bacf-226466b68f5e)
+

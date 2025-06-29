@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { Edit, Trash2, UserPlus } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 
 const UserList = () => {
   const [users, setUsers] = useState([]);
@@ -13,6 +12,7 @@ const UserList = () => {
 
   const [form, setForm] = useState({
     fullname: "",
+    username: "",
     email: "",
     password: "",
     role: "user",
@@ -50,13 +50,19 @@ const UserList = () => {
 
   const openAddForm = () => {
     setEditingUser(null);
-    setForm({ fullname: "", email: "", password: "", role: "user" });
+    setForm({ fullname: "", username: "", email: "", password: "", role: "user" });
     setShowForm(true);
   };
 
   const openEditForm = (user) => {
     setEditingUser(user);
-    setForm({ ...user, password: "" });
+    setForm({
+      fullname: user.fullname || "",
+      username: user.username || "",
+      email: user.email || "",
+      password: "",
+      role: user.role || "user",
+    });
     setShowForm(true);
   };
 
@@ -66,24 +72,47 @@ const UserList = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const { fullname, username, email, password, role } = form;
+
+    if (!fullname || !username || !email) {
+      toast.error("Vui lòng nhập đầy đủ tên, username và email!");
+      return;
+    }
+    if (!editingUser && !password) {
+      toast.error("Vui lòng nhập mật khẩu!");
+      return;
+    }
+
     try {
       if (editingUser) {
-        // Gọi API cập nhật
-        await axios.put(`http://localhost:3001/api/users/admin/users/${editingUser._id}`, form, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        // ✅ Sửa đường dẫn nếu backend chỉ có /api/users/users/:id
+        await axios.put(`http://localhost:3001/api/users/users/${editingUser._id}`,
+          { fullname, username, email, role },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         toast.success("Đã cập nhật người dùng!");
       } else {
-        // Gọi API thêm
-        await axios.post(`http://localhost:3001/api/users/admin/users`, form, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        await axios.post(`http://localhost:3001/api/users/register`,
+          { fullname, username, email, password, role },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
         toast.success("Đã thêm người dùng!");
       }
       setShowForm(false);
       fetchUsers();
     } catch (err) {
-      toast.error("Lỗi khi lưu");
+      if (err.response?.data?.message) {
+        toast.error(err.response.data.message);
+      } else if (err.response?.status === 409) {
+        toast.error("Email hoặc username đã tồn tại!");
+      } else {
+        toast.error("Lỗi khi lưu");
+      }
     }
   };
 
@@ -138,19 +167,18 @@ const UserList = () => {
           <tr>
             <th className="py-2 px-4 text-left">ID</th>
             <th className="py-2 px-4 text-left">Tên</th>
+            <th className="py-2 px-4 text-left">Username</th>
             <th className="py-2 px-4 text-left">Email</th>
             <th className="py-2 px-4 text-left">Vai trò</th>
             <th className="py-2 px-4 text-left">Thao tác</th>
           </tr>
         </thead>
         <tbody>
-          {filteredUsers.map((user) => (
-            <tr
-              key={user._id}
-              className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700"
-            >
+          {filteredUsers.map((user, index) => (
+            <tr key={user._id || index} className="border-b border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700">
               <td className="py-2 px-4 text-gray-900 dark:text-white">{user._id}</td>
               <td className="py-2 px-4 text-gray-800 dark:text-white">{user.fullname}</td>
+              <td className="py-2 px-4 text-gray-700 dark:text-gray-300">{user.username}</td>
               <td className="py-2 px-4 text-gray-700 dark:text-gray-300">{user.email}</td>
               <td className="py-2 px-4 text-gray-700 dark:text-gray-300">{user.role === "admin" ? "Admin" : "Khách hàng"}</td>
               <td className="py-2 px-4 flex gap-2">
@@ -176,7 +204,7 @@ const UserList = () => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white dark:bg-gray-900 p-6 rounded-lg w-full max-w-md">
             <h2 className="text-xl font-bold mb-4 text-gray-900 dark:text-white">
-              {editingUser ? `Sửa người dùng` : "Thêm người dùng"}
+              {editingUser ? "Sửa người dùng" : "Thêm người dùng"}
             </h2>
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
@@ -185,6 +213,17 @@ const UserList = () => {
                   name="fullname"
                   type="text"
                   value={form.fullname}
+                  onChange={handleChange}
+                  className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white"
+                  required
+                />
+              </div>
+              <div>
+                <label className="block mb-1 text-gray-700 dark:text-gray-300">Tên đăng nhập</label>
+                <input
+                  name="username"
+                  type="text"
+                  value={form.username}
                   onChange={handleChange}
                   className="w-full p-2 border rounded dark:bg-gray-700 dark:text-white"
                   required
@@ -227,28 +266,20 @@ const UserList = () => {
                 </select>
               </div>
               <div className="flex justify-end gap-4 pt-4">
-                {/* Nút Thêm/Lưu */}
                 <button
                   type="submit"
                   className="relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-bold text-white rounded shadow-lg group bg-gradient-to-r from-cyan-500 via-blue-500 to-blue-600 hover:from-cyan-600 hover:via-blue-600 hover:to-blue-700 transition-all duration-300"
                 >
-                  <span className="absolute inset-0 flex items-center justify-center w-full h-full duration-300 transform translate-x-full bg-white bg-opacity-10 group-hover:translate-x-0"></span>
-                  <span className="relative z-10">{editingUser ? " Lưu" : " Thêm"}</span>
+                  <span className="relative z-10">{editingUser ? "Lưu" : "Thêm"}</span>
                 </button>
-
-                {/* Nút Huỷ */}
                 <button
                   type="button"
                   onClick={() => setShowForm(false)}
                   className="relative inline-flex items-center justify-center px-6 py-3 overflow-hidden font-bold text-white rounded shadow-lg group bg-gradient-to-r from-red-500 via-red-600 to-red-700 hover:from-red-600 hover:via-red-700 hover:to-red-800 transition-all duration-300"
                 >
-                  <span className="absolute inset-0 flex items-center justify-center w-full h-full duration-300 transform translate-x-full bg-white bg-opacity-10 group-hover:translate-x-0"></span>
                   <span className="relative z-10">Huỷ</span>
                 </button>
-
               </div>
-
-
             </form>
           </div>
         </div>

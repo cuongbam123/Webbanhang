@@ -10,8 +10,6 @@ import ProductList from "./pages/admin/ProductList";
 import OrderList from "./pages/admin/OrderList";
 import OrderDetail from "./pages/admin/OrderDetail";
 import UserList from "./pages/admin/UserList";
-import EditUser from "./pages/admin/EditUser";
-import AddUser from "./pages/admin/AddUser"; // ✅ Thêm nếu có trang thêm người dùng
 
 // Layout
 import Layout from "./components/Layout";
@@ -41,8 +39,6 @@ function App() {
           <Route path="orders" element={<OrderList />} />
           <Route path="orders/:id" element={<OrderDetail />} />
           <Route path="users" element={<UserList />} />
-          <Route path="edit-user/:id" element={<EditUser />} />
-          <Route path="add-user" element={<AddUser />} /> {/* ✅ nếu có */}
         </Route>
       </Routes>
 

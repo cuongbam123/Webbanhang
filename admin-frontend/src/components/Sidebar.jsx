@@ -24,7 +24,7 @@ const Sidebar = () => {
           Người dùng
         </NavLink>
         <button
-  onClick={() => (window.location.href = 'http://localhost:3000/login')}
+  onClick={() => (window.location.href = 'http://localhost:3000')}
   className="flex items-center gap-2 mt-auto hover:text-red-400"
 >
   <LogOut size={20} />

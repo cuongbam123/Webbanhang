@@ -337,7 +337,7 @@ const Navbar = ({ isLoggedIn, setIsLoggedIn }) => {
             }}
           >
             <span style={{ textDecoration: "none", cursor: "pointer" }}>
-              Thông tin đặt hàng
+              Quản lý hệ thống
             </span>
             {menu === "admin" && <hr />}
           </li>

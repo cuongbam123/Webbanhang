@@ -23,10 +23,14 @@ const Sidebar = () => {
           <Users size={20} />
           Người dùng
         </NavLink>
-        <NavLink to="/logout" className="flex items-center gap-2 mt-auto hover:text-red-400">
-          <LogOut size={20} />
-          Đăng xuất
-        </NavLink>
+        <button
+  onClick={() => (window.location.href = 'http://localhost:3000/login')}
+  className="flex items-center gap-2 mt-auto hover:text-red-400"
+>
+  <LogOut size={20} />
+  Đăng xuất
+</button>
+
       </nav>
     </aside>
   );

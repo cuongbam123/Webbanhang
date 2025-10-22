@@ -1,16 +1,17 @@
 const { Schema, model } = require('mongoose');
 
 const productSchema = new Schema({
-  // _id:           { type: String, required: true },
-  name_product: { type: String },
-  price_product:{ type: Number },
-  image:        { type: String },
-  describe:     { type: String },
-  // gender:       { type: String },
-  number:       { type: Number },
-  id_category:  { type: String, ref: 'Category', required: true }
-}, { collection: 'product' });
+  name:        { type: String, required: true },
+  brand:       { type: String }, // thương hiệu
+  price:       { type: Number, required: true },
+  image:       { type: String },
+  description: { type: String },
+  ingredients: { type: String }, // thành phần
+  skinType:    { type: String, enum: ['all', 'dry', 'oily', 'sensitive', 'normal'], default: 'all' },
+  stock:       { type: Number, default: 0 },
+  expiryDate:  { type: Date }, // hạn sử dụng
+  discount:    { type: Number, default: 0 }, // %
+  category:    { type: Schema.Types.ObjectId, ref: 'Category', required: true },
+}, { timestamps: true, collection: 'products' });
 
 module.exports = model('Product', productSchema);
-
-

@@ -1,47 +1,56 @@
 import React from "react";
 import "./FeaturedCategories.css";
-import smartphone from "../Assets/smartphone.png";
-import laptop from "../Assets/laptop.png";
-import accessories from "../Assets/accessories.png";
-import audio from "../Assets/audio.png";
+import makeup_remover from "../Assets/makeup_remover.png";
+import serum from "../Assets/serum.png";
+import cleanser from "../Assets/cleanser.png";
+import haircare from "../Assets/haircare.png";
+import sunscreen from "../Assets/sunscreen.png";
 import { useNavigate } from "react-router-dom";
 
 const FeaturedCategories = () => {
   const navigate = useNavigate();
+
   const categories = [
     {
       id: 1,
-      name: "Điện thoại",
-      image: smartphone,
-      description: "Latest smartphones from top brands",
-      route: "/dien-thoai",
+      name: "Nước tẩy trang",
+      image: makeup_remover,
+      description: "Làm sạch nhẹ nhàng, mang lại làn da tươi mát và rạng rỡ.",
+      route: "/nuoc-tay-trang",
     },
     {
       id: 2,
-      name: "Laptop",
-      image: laptop,
-      description: "Powerful laptops for work and gaming",
-      route: "/laptop",
+      name: "Serum",
+      image: serum,
+      description: "Tinh chất dưỡng sâu, giúp làn da căng bóng và khỏe mạnh.",
+      route: "/serum",
     },
     {
       id: 3,
-      name: "Phụ kiện",
-      image: accessories,
-      description: "Essential tech accessories",
-      route: "/phu-kien",
+      name: "Sữa rửa mặt",
+      image: cleanser,
+      description: "Làm sạch bụi bẩn, dịu nhẹ cho mọi loại da.",
+      route: "/sua-rua-mat",
     },
     {
       id: 4,
-      name: "Tai nghe",
-      image: audio,
-      description: "Premium audio devices",
-      route: "/phu-kien?type=Tai%20nghe",
+      name: "Dưỡng tóc",
+      image: haircare,
+      description: "Phục hồi hư tổn, cho mái tóc suôn mượt tự nhiên.",
+      route: "/duong-toc",
+    },
+    {
+      id: 5,
+      name: "Kem chống nắng",
+      image: sunscreen,
+      description: "Bảo vệ da khỏi tia UV và dưỡng ẩm suốt ngày dài.",
+      route: "/kem-chong-nang",
     },
   ];
 
   return (
     <div className="featured-categories" id="featured-categories">
-      <h1>Featured Categories</h1>
+      <h1>Danh mục nổi bật</h1>
       <div className="categories-container">
         {categories.map((category) => (
           <div key={category.id} className="category-item">
@@ -50,7 +59,12 @@ const FeaturedCategories = () => {
             </div>
             <h3>{category.name}</h3>
             <p>{category.description}</p>
-            <button className="explore-btn" onClick={() => navigate(category.route)}>Explore</button>
+            <button
+              className="explore-btn"
+              onClick={() => navigate(category.route)}
+            >
+              Khám phá
+            </button>
           </div>
         ))}
       </div>

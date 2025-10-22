@@ -13,28 +13,47 @@ const OrderDetail = () => {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const resOrder = await axios.get(`http://localhost:3001/api/orders/${id}`, {
+        const res = await axios.get(`http://localhost:3001/api/orders/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setOrder(resOrder.data.data);
 
-        const resDetails = await axios.get(`http://localhost:3001/api/detail-orders/order/${id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setDetailOrders(resDetails.data);
+        console.log("📦 Order detail:", res.data);
+
+        // lấy dữ liệu đúng cấu trúc backend trả về
+        const orderData = res.data?.data || res.data;
+
+        setOrder(orderData);
+        // nếu có items thì lấy, nếu không thì để mảng trống
+        setDetailOrders(Array.isArray(orderData?.items) ? orderData.items : []);
       } catch (error) {
-        console.error(error);
-        toast.error("Lỗi khi tải chi tiết đơn hàng");
+        console.error("❌ Lỗi khi tải chi tiết đơn hàng:", error);
+        toast.error("Không thể tải chi tiết đơn hàng");
       } finally {
         setLoading(false);
       }
     };
 
     fetchOrder();
-  }, [id]);
+  }, [id, token]);
 
   if (loading) return <p className="p-4 text-center">Đang tải...</p>;
   if (!order) return <p className="p-4 text-center">Không tìm thấy đơn hàng.</p>;
+
+  // hàm chuyển trạng thái sang tiếng Việt
+  const getStatusText = (status) => {
+    switch (status) {
+      case "pending":
+        return "Đang xử lý";
+      case "shipping":
+        return "Đang giao hàng";
+      case "completed":
+        return "Hoàn thành";
+      case "cancelled":
+        return "Đã hủy";
+      default:
+        return status || "Không xác định";
+    }
+  };
 
   return (
     <div className="p-6 bg-white dark:bg-gray-900 min-h-screen text-gray-800 dark:text-white">
@@ -42,11 +61,15 @@ const OrderDetail = () => {
 
       <div className="space-y-2 mb-6">
         <p><strong>Khách hàng:</strong> {order.id_user?.fullname || order.id_user?.username}</p>
-        <p><strong>Trạng thái:</strong> {order.status}</p>
+        <p><strong>Trạng thái:</strong> {getStatusText(order.status)}</p>
         <p><strong>Tổng tiền:</strong> {order.total?.toLocaleString("vi-VN")}₫</p>
         <p><strong>Phí ship:</strong> {order.feeship?.toLocaleString("vi-VN")}₫</p>
         <p><strong>Thanh toán:</strong> {order.pay ? "Đã thanh toán" : "Chưa thanh toán"}</p>
-        <p><strong>Ngày tạo:</strong> {new Date(order.create_time).toLocaleString("vi-VN")}</p>
+        <p><strong>Ngày tạo:</strong> 
+          {order.create_time
+            ? new Date(order.create_time).toLocaleString("vi-VN")
+            : "Không rõ"}
+        </p>
         <p><strong>Địa chỉ:</strong> {order.address}</p>
         <p><strong>Ghi chú:</strong> {order.id_note?.content || "Không có"}</p>
         <p><strong>Mã giảm giá:</strong> {order.id_coupon?.code || "Không áp dụng"}</p>
@@ -56,14 +79,13 @@ const OrderDetail = () => {
       <hr className="my-4" />
       <h2 className="text-xl font-semibold mb-2">Chi tiết sản phẩm:</h2>
 
-      {detailOrders.length === 0 ? (
+      {!Array.isArray(detailOrders) || detailOrders.length === 0 ? (
         <p className="text-gray-500">Không có sản phẩm nào.</p>
       ) : (
         <table className="w-full text-sm mt-2">
           <thead>
             <tr className="bg-gray-200 dark:bg-gray-700 text-left">
               <th className="py-2 px-4">Tên sản phẩm</th>
-              {/* <th className="py-2 px-4">Size</th> */}
               <th className="py-2 px-4">Số lượng</th>
               <th className="py-2 px-4">Giá</th>
             </tr>
@@ -71,10 +93,13 @@ const OrderDetail = () => {
           <tbody>
             {detailOrders.map((item) => (
               <tr key={item._id} className="border-b dark:border-gray-600">
-                <td className="py-2 px-4">{item.name_product || item.id_product?.name_product}</td>
-                {/* <td className="py-2 px-4">{item.size}</td> */}
+                <td className="py-2 px-4">
+                  {item.name_product || item.id_product?.name_product}
+                </td>
                 <td className="py-2 px-4">{item.count}</td>
-                <td className="py-2 px-4">{Number(item.price_product).toLocaleString("vi-VN")}₫</td>
+                <td className="py-2 px-4">
+                  {Number(item.price_product).toLocaleString("vi-VN")}₫
+                </td>
               </tr>
             ))}
           </tbody>

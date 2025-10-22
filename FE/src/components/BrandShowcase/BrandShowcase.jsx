@@ -1,55 +1,55 @@
 import React from "react";
 import "./BrandShowcase.css";
-import apple from "../Assets/apple.png";
-import samsung from "../Assets/samsung.png";
-import sony from "../Assets/sony.png";
-import dell from "../Assets/dell.png";
-import hp from "../Assets/hp.png";
-import lg from "../Assets/lg.png";
+import loreal from "../Assets/loreal.png";
+import innisfree from "../Assets/innisfree.png";
+import lancome from "../Assets/lancome.png";
+import thebodyshop from "../Assets/thebodyshop.png";
+import clinique from "../Assets/clinique.png";
+import estee from "../Assets/estee.png";
 
 const BrandShowcase = () => {
   const brands = [
     {
       id: 1,
-      name: "Apple",
-      logo: apple,
-      description: "Innovation at its finest",
+      name: "L'Oréal Paris",
+      logo: loreal,
+      description: "Vẻ đẹp đẳng cấp từ Pháp",
     },
     {
       id: 2,
-      name: "Samsung",
-      logo: samsung,
-      description: "Leading the future",
+      name: "Innisfree",
+      logo: innisfree,
+      description: "Tinh túy thiên nhiên từ đảo Jeju",
     },
     {
       id: 3,
-      name: "Sony",
-      logo: sony,
-      description: "Make. Believe.",
+      name: "Lancôme",
+      logo: lancome,
+      description: "Sang trọng & quý phái",
     },
     {
       id: 4,
-      name: "Dell",
-      logo: dell,
-      description: "Innovation that matters",
+      name: "The Body Shop",
+      logo: thebodyshop,
+      description: "Thân thiện với môi trường",
     },
     {
       id: 5,
-      name: "HP",
-      logo: hp,
-      description: "Keep reinventing",
+      name: "Clinique",
+      logo: clinique,
+      description: "Dịu nhẹ cho làn da nhạy cảm",
     },
     {
       id: 6,
-      name: "LG",
-      logo: lg,
-      description: "Life's Good",
+      name: "Estée Lauder",
+      logo: estee,
+      description: "Biểu tượng của sự thanh lịch",
     },
   ];
 
   return (
     <div className="brand-showcase">
-      <h1>Featured Brands</h1>
+      <h1>Thương hiệu nổi bật</h1>
       <div className="brands-container">
         {brands.map((brand) => (
           <div key={brand.id} className="brand-card">
@@ -58,7 +58,7 @@ const BrandShowcase = () => {
             </div>
             <h3>{brand.name}</h3>
             <p>{brand.description}</p>
-            <button className="view-products-btn">View Products</button>
+            <button className="view-products-btn">Xem sản phẩm</button>
           </div>
         ))}
       </div>

@@ -1,67 +1,75 @@
-import React, { useContext, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import "./CSS/ShopCategory.css";
 import { ShopContext } from "../Context/ShopContext";
 import dropdown_icon from "../Components/Assets/dropdown_icon.png";
-import Item from "../Components/Item/Item";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const ShopCategory = ({ banner, category }) => {
-  //   const { all_product } = useContext(ShopContext);
   const [searchParams] = useSearchParams();
   const brand = searchParams.get("brand");
   const type = searchParams.get("type");
+
   const [visibleCount, setVisibleCount] = useState(12);
   const [sortOpen, setSortOpen] = useState(false);
-  const [sortType, setSortType] = useState(""); // "asc" | "desc" | "az" | "za" | ""
-  const { all_product, addToCart } = useContext(ShopContext);
+  const [sortType, setSortType] = useState("");
+  const [products, setProducts] = useState([]);
 
-  // Lọc sản phẩm theo id_category, type hoặc brand nếu có
-  let filteredProducts = all_product.filter(
-    (product) =>
-      product.id_category === category &&
-      (
-        (type && product.name_product && product.name_product.toLowerCase().includes(type.toLowerCase())) ||
-        (!type && brand && product.name_product && product.name_product.toLowerCase().includes(brand.toLowerCase())) ||
-        (!type && !brand)
-      )
-  );
+  const { addToCart } = useContext(ShopContext);
 
-  // Lọc sản phẩm theo category, brand, type
-  //   let filteredProducts = all_product.filter(
-  //     (item) =>
-  //       props.category === item.category &&
-  //       (!brand || item.name.toLowerCase().includes(brand.toLowerCase())) &&
-  //       (!type || item.name.toLowerCase().includes(type.toLowerCase()))
-  //   );
+  // ✅ Lấy URL backend từ .env
+  const API_URL = process.env.REACT_APP_API_URL || "https://my-backend-gbqg.onrender.com/api";
+  const BASE_URL = process.env.REACT_APP_BASE_URL || "https://my-backend-gbqg.onrender.com";
 
-  // Sắp xếp sản phẩm nếu có chọn sort
-  if (sortType === "asc") {
-    filteredProducts = [...filteredProducts].sort(
-      (a, b) => Number(a.price_product) - Number(b.price_product)
-    );
-  } else if (sortType === "desc") {
-    filteredProducts = [...filteredProducts].sort(
-      (a, b) => Number(b.price_product) - Number(a.price_product)
-    );
-  } else if (sortType === "az") {
-    filteredProducts = [...filteredProducts].sort((a, b) =>
-      a.name_product.localeCompare(b.name_product, 'vi', { sensitivity: 'base' })
-    );
-  } else if (sortType === "za") {
-    filteredProducts = [...filteredProducts].sort((a, b) =>
-      b.name_product.localeCompare(a.name_product, 'vi', { sensitivity: 'base' })
-    );
-  }
+  useEffect(() => {
+    console.log("🔍 API_URL:", API_URL);
+    console.log("🔍 BASE_URL:", BASE_URL);
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const res = await axios.get(`${API_URL}/products`);
+      setProducts(res.data.data || res.data);
+    } catch (err) {
+      console.error("❌ Lỗi khi tải sản phẩm:", err);
+      toast.error("Không thể tải danh sách sản phẩm!");
+    }
+  };
+
+  const filteredProducts = products.filter((p) => {
+    const catMatch =
+      p.category?._id === category || p.category?._id === category?._id;
+    const brandMatch = !brand || p.brand?.toLowerCase().includes(brand.toLowerCase());
+    const typeMatch = !type || p.name?.toLowerCase().includes(type.toLowerCase());
+    return catMatch && brandMatch && typeMatch;
+  });
+
+  const sortedProducts = [...filteredProducts];
+  if (sortType === "asc") sortedProducts.sort((a, b) => a.price - b.price);
+  else if (sortType === "desc") sortedProducts.sort((a, b) => b.price - a.price);
+  else if (sortType === "az") sortedProducts.sort((a, b) => a.name.localeCompare(b.name, "vi"));
+  else if (sortType === "za") sortedProducts.sort((a, b) => b.name.localeCompare(a.name, "vi"));
 
   return (
     <div className="shop-category">
-      <img className="shopcategory-banner" src={banner} alt="" />
+      <img className="shopcategory-banner" src={banner} alt="banner" />
+
       <div className="shopcategory-indexSort">
         <div></div>
-        <div className="shopcategory-sort" style={{ position: "relative", marginLeft: 0, marginTop: 0 }}>
+        <div
+          className="shopcategory-sort"
+          style={{
+            position: "relative",
+            marginLeft: 0,
+            marginTop: 0,
+          }}
+        >
           <span onClick={() => setSortOpen((open) => !open)} style={{ cursor: "pointer" }}>
-            Sort by <img src={dropdown_icon} alt="" style={{ verticalAlign: "middle" }} />
+            Sắp xếp <img src={dropdown_icon} alt="" style={{ verticalAlign: "middle" }} />
           </span>
+
           {sortOpen && (
             <div
               style={{
@@ -74,70 +82,89 @@ const ShopCategory = ({ banner, category }) => {
                 boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
                 zIndex: 10,
                 minWidth: "170px",
-                padding: "8px 0"
+                padding: "8px 0",
               }}
             >
-              <div
-                style={{ padding: "10px 20px", cursor: "pointer", color: sortType === "asc" ? "#3498db" : undefined }}
-                onClick={() => { setSortType("asc"); setSortOpen(false); }}
-              >
-                Giá: Thấp đến Cao
-              </div>
-              <div
-                style={{ padding: "10px 20px", cursor: "pointer", color: sortType === "desc" ? "#3498db" : undefined }}
-                onClick={() => { setSortType("desc"); setSortOpen(false); }}
-              >
-                Giá: Cao đến Thấp
-              </div>
-              <div
-                style={{ padding: "10px 20px", cursor: "pointer", color: sortType === "az" ? "#3498db" : undefined }}
-                onClick={() => { setSortType("az"); setSortOpen(false); }}
-              >
-                Tên: A → Z
-              </div>
-              <div
-                style={{ padding: "10px 20px", cursor: "pointer", color: sortType === "za" ? "#3498db" : undefined }}
-                onClick={() => { setSortType("za"); setSortOpen(false); }}
-              >
-                Tên: Z → A
-              </div>
-              <div
-                style={{ padding: "10px 20px", cursor: "pointer", color: sortType === "" ? "#3498db" : undefined }}
-                onClick={() => { setSortType(""); setSortOpen(false); }}
-              >
-                Mặc định
-              </div>
+              {[
+                { key: "asc", label: "Giá: Thấp đến Cao" },
+                { key: "desc", label: "Giá: Cao đến Thấp" },
+                { key: "az", label: "Tên: A → Z" },
+                { key: "za", label: "Tên: Z → A" },
+                { key: "", label: "Mặc định" },
+              ].map((opt) => (
+                <div
+                  key={opt.key}
+                  style={{
+                    padding: "10px 20px",
+                    cursor: "pointer",
+                    color: sortType === opt.key ? "#3498db" : undefined,
+                  }}
+                  onClick={() => {
+                    setSortType(opt.key);
+                    setSortOpen(false);
+                  }}
+                >
+                  {opt.label}
+                </div>
+              ))}
             </div>
           )}
         </div>
       </div>
+
       <div className="product-list">
-        {filteredProducts.length > 0 ? (
-          filteredProducts.map((product) => (
-            <div key={product._id} className="product-card">
-              <Link to={`/product/${product._id}`}>
-                <img src={product.image} alt={product.name_product} />
-              </Link>
-              <div className="product-info">
-                <h3>{product.name_product}</h3>
-                <p>
-                  {product.price_product.toLocaleString()} VNĐ
-                  {product.old_price && (
-                    <span className="old-price" style={{ marginLeft: 8 }}>
-                      {product.old_price.toLocaleString()} VNĐ
-                    </span>
-                  )}
-                </p>
+        {sortedProducts.length > 0 ? (
+          sortedProducts.slice(0, visibleCount).map((product) => {
+            let imageUrl = product.image || "";
+if (imageUrl.startsWith("http://localhost:3001")) {
+  imageUrl = imageUrl.replace("http://localhost:3001", BASE_URL);
+} else if (imageUrl.startsWith("/")) {
+  imageUrl = `${BASE_URL}${imageUrl}`;
+}
+
+            console.log("🖼️ Product image URL:", imageUrl);
+
+            return (
+              <div key={product._id} className="product-card">
+                <Link to={`/product/${product._id}`}>
+                  <img src={imageUrl} alt={product.name} />
+                </Link>
+                <div className="product-info">
+                  <h3>{product.name}</h3>
+                  <p className="category-name">
+                    {product.category?.name || "Không rõ danh mục"}
+                  </p>
+                  <p>
+                    {product.price.toLocaleString()} VNĐ
+                    {product.discount && product.discount > 0 && (
+                      <span
+                        className="old-price"
+                        style={{ marginLeft: 8, textDecoration: "line-through" }}
+                      >
+                        {(
+                          product.price / (1 - product.discount / 100)
+                        ).toLocaleString()} VNĐ
+                      </span>
+                    )}
+                  </p>
+                </div>
+
+                <button onClick={() => addToCart(product._id)}>Thêm vào giỏ</button>
               </div>
-              <button onClick={() => addToCart(product._id)}>
-                Thêm vào giỏ
-              </button>
-            </div>
-          ))
+            );
+          })
         ) : (
           <p>Không có sản phẩm nào trong danh mục này.</p>
         )}
       </div>
+
+      {visibleCount < sortedProducts.length && (
+        <div className="text-center mt-4">
+          <button onClick={() => setVisibleCount((prev) => prev + 12)} className="load-more-btn">
+            Xem thêm
+          </button>
+        </div>
+      )}
     </div>
   );
 };

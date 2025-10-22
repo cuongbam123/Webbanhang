@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import { io } from "socket.io-client";
 import "./AIChatBox.css";
 
-const socket = io("http://localhost:3001");
+const socket = io("https://my-backend-gbqg.onrender.com");
 
 const AIChatBox = ({ onClose }) => {
   const [message, setMessage] = useState("");

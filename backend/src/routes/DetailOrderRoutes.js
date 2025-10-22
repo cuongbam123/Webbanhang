@@ -1,24 +1,18 @@
-
 const express = require('express');
 const router = express.Router();
 const detailOrderController = require('../controllers/DetailOrderController');
 const { verifyToken, isAdmin } = require('../middlewares/auth');
 
-// Tạo mới 1 detail order riêng lẻ
-router.post('/', verifyToken, detailOrderController.createDetailOrder);
-
-// Lấy toàn bộ chi tiết đơn hàng (admin)
+// Admin xem tất cả chi tiết
 router.get('/', verifyToken, isAdmin, detailOrderController.listDetailOrders);
 
-// Lấy chi tiết theo ID
-router.get('/:id', verifyToken, detailOrderController.getDetailOrder);
+// Lấy chi tiết của 1 đơn (admin hoặc user chính chủ)
+router.get('/:orderId', verifyToken, detailOrderController.getDetailOrdersByOrderId);
 
-// Cập nhật chi tiết đơn hàng (admin)
+// CRUD cơ bản
+router.get('/detail/:id', verifyToken, detailOrderController.getDetailOrder);
+router.post('/', verifyToken, isAdmin, detailOrderController.createDetailOrder);
 router.put('/:id', verifyToken, isAdmin, detailOrderController.updateDetailOrder);
-
-// Xoá chi tiết đơn hàng (admin)
 router.delete('/:id', verifyToken, isAdmin, detailOrderController.deleteDetailOrder);
-
-router.get('/order/:orderId', verifyToken, detailOrderController.getDetailOrdersByOrderId);
 
 module.exports = router;

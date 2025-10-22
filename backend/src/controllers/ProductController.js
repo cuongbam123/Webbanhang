@@ -1,51 +1,35 @@
-const ProductService = require('../services/ProductService');
+const ProductService = require("../services/ProductService");
 
 module.exports = {
-  // index: async (req, res, next) => {
-  //   try {
-  //     const { page = 1, limit = 20, sortBy = 'name_product', sortOrder = 'asc', search = '', id_category = '' } = req.query;
-
-  //     const skip = (page - 1) * limit;
-  //     const sort = { [sortBy]: sortOrder === 'desc' ? -1 : 1 };
-
-  //     let filter = {};
-  //     if (search) filter.name_product = { $regex: search, $options: 'i' };
-  //     if (id_category) filter.id_category = id_category;
-
-  //     const products = await ProductService.getAllProducts(parseInt(limit), parseInt(skip), sort, filter);
-  //     const total = await ProductService.countProducts(filter);
-
-  //     res.json({ total, page: parseInt(page), limit: parseInt(limit), sortBy, sortOrder, search, id_category, data: products });
-  //   } catch (err) {
-  //     next(err);
-  //   }
-  // },
   index: async (req, res, next) => {
-    try {
-        const { sortBy = 'name_product', sortOrder = 'asc', search = '', id_category = '' } = req.query;
+  try {
+    const { search = "", category = "", sortBy = "name", sortOrder = "asc" } = req.query;
+    const sort = { [sortBy]: sortOrder === "desc" ? -1 : 1 };
+    const filter = {};
 
-        const sort = { [sortBy]: sortOrder === 'desc' ? -1 : 1 };
+    if (search) filter.name = { $regex: search, $options: "i" };
+    if (category) filter.category = category;
 
-        let filter = {};
-        if (search) {
-            filter.name_product = { $regex: search, $options: 'i' };
-        }
-        if (id_category) {
-            filter.id_category = id_category;
-        }
+    let products = await ProductService.getAllProducts(0, 0, sort, filter);
 
-        const products = await ProductService.getAllProducts(0, 0, sort, filter); // 0 nghĩa là lấy hết
-        res.json({ data: products });
-    } catch (err) {
-        next(err);
-    }
+    // ✅ Thêm domain đầy đủ cho ảnh
+    const host = `${req.protocol}://${req.get("host")}`;
+    products = products.map((p) => ({
+      ...p._doc,
+      image: p.image?.startsWith("http") ? p.image : `${host}/uploads/${p.image}`,
+    }));
+
+    res.json({ data: products });
+  } catch (err) {
+    next(err);
+  }
 },
 
 
   show: async (req, res, next) => {
     try {
       const product = await ProductService.getProductById(req.params.id);
-      if (!product) return res.status(404).send('Không tìm thấy sản phẩm');
+      if (!product) return res.status(404).send("Không tìm thấy sản phẩm");
       res.json(product);
     } catch (err) {
       next(err);
@@ -54,24 +38,25 @@ module.exports = {
 
   create: async (req, res, next) => {
     try {
+      const { name, price, description, brand, category, ingredients, skinType, stock, expiryDate, discount } = req.body;
 
-      console.log('Dữ liệu nhận từ FE:', req.body);
-    console.log('Ảnh nhận từ FE:', req.file);
-
-      const { name_product, price_product, describe, number, id_category } = req.body;
-
-      let image = '';
+      let image = "";
       if (req.file) {
-        image = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+        image = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
       }
 
       const newProduct = await ProductService.createProduct({
-        name_product,
-        price_product,
+        name,
+        price,
+        description,
+        brand,
         image,
-        describe,
-        number,
-        id_category
+        category,
+        ingredients,
+        skinType,
+        stock,
+        expiryDate,
+        discount,
       });
 
       res.status(201).json(newProduct);
@@ -82,16 +67,14 @@ module.exports = {
 
   update: async (req, res, next) => {
     try {
-      const updateData = req.body;
-
+      const data = req.body;
       if (req.file) {
-        updateData.image = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
+        data.image = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
       }
 
-      const updatedProduct = await ProductService.updateProduct(req.params.id, updateData);
-      if (!updatedProduct) return res.status(404).send('Không tìm thấy sản phẩm');
-
-      res.json(updatedProduct);
+      const updated = await ProductService.updateProduct(req.params.id, data);
+      if (!updated) return res.status(404).send("Không tìm thấy sản phẩm");
+      res.json(updated);
     } catch (err) {
       next(err);
     }
@@ -100,8 +83,8 @@ module.exports = {
   remove: async (req, res, next) => {
     try {
       const deleted = await ProductService.deleteProduct(req.params.id);
-      if (!deleted) return res.status(404).send('Không tìm thấy sản phẩm');
-      res.json({ message: 'Xóa thành công' });
+      if (!deleted) return res.status(404).send("Không tìm thấy sản phẩm");
+      res.json({ message: "Xóa thành công" });
     } catch (err) {
       next(err);
     }

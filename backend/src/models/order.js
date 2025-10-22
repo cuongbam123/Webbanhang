@@ -1,17 +1,28 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model } = require("mongoose");
 
-const orderSchema = new Schema({
-  _id:         { type: String, required: true },
-  address:    { type: String },
-  total:      { type: Number },
-  status:     { type: String },
-  pay:        { type: Boolean },
-  feeship:    { type: Number },
-  create_time:{ type: Date, default: Date.now },
-  id_user:     { type: String, ref: 'User', required: true },
-  id_payment:  { type: String, ref: 'Payment', required: true },
-  id_note:    { type: String, ref: 'Note' },
-  id_coupon:  { type: String, ref: 'Coupon' }
-}, { collection: 'order' });
+const orderSchema = new Schema(
+  {
+    user: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    address: { type: String, required: true },
+    total: { type: Number, required: true },
+    status: {
+      type: String,
+      enum: ["pending", "shipping", "completed", "cancelled"],
+      default: "pending",
+    },
+    paid: { type: Boolean, default: false },
+    shippingFee: { type: Number, default: 0 },
+    payment: {
+      type: String,
+      enum: ["COD", "PAYPAL"],
+      required: true,
+      default: "COD",
+    },
+    note: { type: Schema.Types.ObjectId, ref: "Note" },
+    coupon: { type: Schema.Types.ObjectId, ref: "Coupon" },
+    createdAt: { type: Date, default: Date.now },
+  },
+  { collection: "orders" }
+);
 
-module.exports = model('Order', orderSchema);
+module.exports = model("Order", orderSchema);

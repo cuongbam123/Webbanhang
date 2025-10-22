@@ -5,7 +5,7 @@ const NewsLetter = () => {
   return (
     <div className="newsletter">
       <div className="newsletter-content">
-        <h1>Get the Latest Tech Deals in Your Inbox</h1>
+        <h1>Get the Beautiful Deals in Your Inbox</h1>
         <p>
           Subscribe to our newsletter for updates on new gadgets, exclusive
           offers, and more!

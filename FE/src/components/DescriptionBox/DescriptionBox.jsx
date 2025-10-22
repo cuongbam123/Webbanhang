@@ -48,20 +48,22 @@ const DescriptionBox = () => {
       {tab === "desc" ? (
         <div className="descriptionbox-description">
           <p>
-            Website bán thiết bị điện tử của chúng tôi chuyên cung cấp các sản
-            phẩm công nghệ chính hãng như điện thoại thông minh, laptop, máy
-            tính bảng, phụ kiện, thiết bị âm thanh, đồng hồ thông minh và nhiều
-            sản phẩm điện tử hiện đại khác. Chúng tôi cam kết mang đến cho khách
-            hàng trải nghiệm mua sắm tiện lợi, nhanh chóng cùng mức giá cạnh
-            tranh nhất thị trường.
+            Website bán mỹ phẩm của chúng tôi chuyên cung cấp các sản phẩm làm
+            đẹp chính hãng như: sản phẩm chăm sóc da (kem dưỡng, serum, mặt nạ),
+            sản phẩm trang điểm (son môi, kem nền, phấn má), sản phẩm chăm sóc
+            tóc, nước hoa và nhiều loại mỹ phẩm cao cấp khác. Chúng tôi cam kết
+            mang đến cho khách hàng trải nghiệm mua sắm tiện lợi, nhanh chóng
+            cùng mức giá cạnh tranh nhất thị trường và đảm bảo chất lượng, nguồn
+            gốc rõ ràng của sản phẩm.
           </p>
           <p>
-            Tất cả sản phẩm đều có thông tin chi tiết, hình ảnh sắc nét, giá bán
-            rõ ràng và nhiều lựa chọn về mẫu mã, cấu hình, màu sắc. Khách hàng
-            được hỗ trợ tư vấn tận tình, chính sách bảo hành minh bạch, giao
-            hàng toàn quốc và nhiều chương trình khuyến mãi hấp dẫn. Mỗi sản
-            phẩm đều có trang thông tin riêng giúp bạn dễ dàng so sánh, lựa chọn
-            phù hợp với nhu cầu.
+            Tất cả sản phẩm đều có thông tin chi tiết về thành phần, công dụng,
+            hình ảnh thực tế, giá bán rõ ràng và nhiều lựa chọn về thương hiệu,
+            dòng sản phẩm, màu sắc (đối với đồ trang điểm). Khách hàng được hỗ
+            trợ tư vấn tận tình về cách sử dụng, chính sách đổi trả minh bạch,
+            giao hàng toàn quốc và nhiều chương trình khuyến mãi hấp dẫn. Mỗi
+            sản phẩm đều có trang thông tin riêng giúp bạn dễ dàng so sánh, lựa
+            chọn sản phẩm phù hợp với loại da và nhu cầu làm đẹp của mình.
           </p>
         </div>
       ) : (

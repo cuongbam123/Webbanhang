@@ -1,29 +1,28 @@
+// routes/orderRoutes.js
 const express = require("express");
 const router = express.Router();
 const orderController = require("../controllers/OrderController");
 const { verifyToken, isAdmin } = require("../middlewares/auth");
 
-// Tạo đơn hàng (người dùng)
+// 🛒 User: tạo đơn hàng
 router.post("/", verifyToken, orderController.createOrder);
 
-// Lấy tất cả đơn hàng (admin)
-router.get("/", verifyToken, isAdmin, orderController.getAllOrders);
-router.get('/orders/my-orders', verifyToken, orderController.getMyOrders);
+// 👤 User: xem đơn hàng của chính mình
+router.get("/my-orders", verifyToken, orderController.getMyOrders);
 
-// Lấy đơn hàng theo ID (user hoặc admin)
+// 🧾 Xem chi tiết 1 đơn hàng (admin hoặc chính chủ)
 router.get("/:id", verifyToken, orderController.getOrderById);
 
-//Lấy đơn hàng của chính mình
-router.get('/my', verifyToken, orderController.getMyOrders);
+// 👑 Admin: xem tất cả đơn
+router.get("/", verifyToken, isAdmin, orderController.getAllOrders);
 
-
-// Cập nhật đơn hàng (admin)
+// ✏️ Admin: cập nhật đơn hàng
 router.put("/:id", verifyToken, isAdmin, orderController.updateOrder);
 
-// Xoá đơn hàng (admin)
+// 🗑️ Admin: xóa đơn hàng
 router.delete("/:id", verifyToken, isAdmin, orderController.deleteOrder);
 
-// Lấy danh sách đơn hàng của user hiện tại
-router.get("/my", verifyToken, orderController.getOrdersByUser);
+router.get("/stats/monthly", verifyToken, isAdmin, orderController.getMonthlyRevenue);
+
 
 module.exports = router;

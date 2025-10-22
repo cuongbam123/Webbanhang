@@ -26,10 +26,24 @@ const updateUser = async (data) => {
     if (data.username) user.username = data.username;
     if (data.password) user.password = data.password;
     if (data.email)    user.email = data.email;
+    if (data.phone) user.phone = data.phone;
+    if (data.birthday)   user.dob = data.dob;
     if (data.role)     user.role = data.role;
 
     await user.save();
     return user;
+};
+
+const updateProfile = async (userId, data) => {
+  const { fullname, email, phone, birthday } = data;
+
+  const updatedUser = await Users.findByIdAndUpdate(
+    userId,
+    { fullname, email, phone, birthday },
+    { new: true }
+  ).select("-password");
+
+  return updatedUser;
 };
 
 const deleteUser = async (id) => {
@@ -48,5 +62,6 @@ module.exports = {
     createUser,
     updateUser,
     deleteUser,
+    updateProfile,
     checkExistingUsername
 }

@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 
 module.exports = {
     register: async (req, res, next) => {
+         console.log("🟢 Body nhận được từ FE:", req.body); // <== thêm dòng này
         try {
             const exists = await UserService.checkExistingUsername(req.body.username);
             if (exists) return res.status(409).send("User đã tồn tại");
@@ -91,5 +92,22 @@ module.exports = {
             next(err);
         }
     },
+    
+    updateProfile: async (req, res) => {
+    try {
+        const userId = req.user.id; // từ verifyToken
+        const updatedUser = await UserService.updateProfile(userId, req.body);
+
+        if (!updatedUser) {
+        return res.status(404).json({ message: "Người dùng không tồn tại." });
+        }
+
+        res.json(updatedUser);
+    } catch (err) {
+        console.error("Lỗi update profile:", err);
+        res.status(500).json({ message: "Cập nhật thông tin thất bại." });
+    }
+    },
+    
     
 };

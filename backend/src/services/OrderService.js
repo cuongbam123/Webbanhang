@@ -2,11 +2,6 @@ const Order = require("../models/order");
 const DetailOrder = require("../models/detailOrder");
 const { v4: uuidv4 } = require("uuid");
 
-/**
- * Tạo đơn hàng và danh sách chi tiết đơn hàng
- * @param {Object} data - dữ liệu đơn hàng + danh sách sản phẩm
- * @returns { order, detailOrders }
- */
 async function createOrder(data) {
   const { products, ...orderData } = data;
 
@@ -14,51 +9,97 @@ async function createOrder(data) {
     throw new Error("Danh sách sản phẩm không hợp lệ");
   }
 
-  const orderId = orderData._id || uuidv4();
-  orderData._id = orderId;
+  let total = 0;
 
-  // Tạo đơn hàng
-  const order = new Order(orderData);
-  await order.save();
+  const normalizedProducts = products.map((item) => {
+    const id_product = item.id_product || item._id || item.productId;
+    const nameProduct = item.name_product || item.nameProduct || item.name;
+    const priceProduct = Number(item.price_product || item.priceProduct || item.price);
+    const count = Number(item.count || item.quantity || item.qty);
 
-  // Tạo chi tiết đơn hàng
+    if (!id_product || !nameProduct || !priceProduct) {
+      throw new Error("Thiếu thông tin sản phẩm (id, tên hoặc giá)");
+    }
+
+    if (priceProduct > 0 && count > 0) total += priceProduct * count;
+
+    return {
+      id_product,
+      nameProduct,
+      priceProduct,
+      count,
+      size: item.size || "M",
+      brand: item.brand || "",
+      category: item.category || "",
+      image: item.image || "",
+      discountAtPurchase: Number(item.discountAtPurchase || 0),
+    };
+  });
+
+  if (!Number.isFinite(total)) total = 0;
+
+  const orderInfo = {
+    user: orderData.user || orderData.id_user,
+    payment: orderData.payment || "COD",
+    total,
+    status: orderData.status || "pending",
+    paid: orderData.paid || false,
+    shippingFee: Number(orderData.shippingFee || 0),
+    note: orderData.note || null,
+    coupon: orderData.coupon || null,
+    address: orderData.address || "",
+  };
+
+  if (!orderInfo.user) throw new Error("Thiếu thông tin user trong đơn hàng");
+
+  const order = await Order.create(orderInfo);
+
   const detailOrders = await Promise.all(
-    products.map((item) => {
-      if (!item.id_product)
-        throw new Error("Thiếu id_product trong chi tiết sản phẩm");
-
-      return new DetailOrder({
+    normalizedProducts.map((item) =>
+      DetailOrder.create({
         _id: uuidv4(),
-        id_order: orderId,
-        id_product: item.id_product,
-        name_product: item.name_product,
-        price_product: item.price_product,
-        count: item.count,
-        size: item.size || "M",
-      }).save();
-    })
+        id_order: String(order._id),
+        id_product: String(item.id_product),
+        nameProduct: item.nameProduct,
+        brand: item.brand,
+        category: item.category,
+        image: item.image,
+        priceProduct: Number(item.priceProduct),
+        count: Number(item.count),
+        size: item.size,
+        discountAtPurchase: Number(item.discountAtPurchase),
+      })
+    )
   );
 
   return { order, detailOrders };
 }
 
-// Các hàm cũ giữ nguyên
 async function getAllOrders() {
   return await Order.find()
-    .populate("id_user", "username fullname email")
-    .populate("id_payment", "pay_name")
-    .populate("id_note", "fullname phone content")
-    .populate("id_coupon", "code promotion")
-    .exec();
+    .populate("user", "fullname email")
+    .populate("coupon", "code promotion")
+    .sort({ createdAt: -1 });
 }
 
 async function getOrderById(id) {
-  return await Order.findById(id)
-    .populate("id_user", "username fullname email")
-    .populate("id_payment", "pay_name")
-    .populate("id_note", "fullname phone content")
-    .populate("id_coupon", "code promotion")
-    .exec();
+  // Lấy thông tin đơn hàng chính
+  const order = await Order.findById(id)
+    .populate("user", "fullname email")
+    .populate("coupon", "code promotion")
+    .lean();
+
+  if (!order) return null;
+
+  // 🔍 Lấy danh sách chi tiết sản phẩm theo id_order
+  const detailOrders = await DetailOrder.find({ id_order: String(id) })
+    .populate("id_product", "name_product price_product image")
+    .lean();
+
+  // Gộp lại
+  order.detailOrders = detailOrders || [];
+
+  return order;
 }
 
 async function updateOrder(id, updates) {
@@ -70,12 +111,9 @@ async function deleteOrder(id) {
 }
 
 async function getOrdersByUser(userId) {
-  return await Order.find({ id_user: userId })
-    .populate("id_user", "username fullname email")
-    .populate("id_payment", "pay_name")
-    .populate("id_note", "fullname phone content")
-    .populate("id_coupon", "code promotion")
-    .exec();
+  return await Order.find({ user: userId })
+    .populate("coupon", "code promotion")
+    .sort({ createdAt: -1 });
 }
 
 module.exports = {

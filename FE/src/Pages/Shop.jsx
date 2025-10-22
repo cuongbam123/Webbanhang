@@ -1,11 +1,11 @@
 import React from "react";
 import Hero from "../Components/Hero/Hero";
 import Popular from "../Components/Popular/Popular";
-import Offers from "../Components/Offers/Offers";
-import NewCollections from "../Components/NewCollections/NewCollections";
+// import Offers from "../Components/Offers/Offers";
+// import NewCollections from "../Components/NewCollections/NewCollections";
 import NewsLetter from "../Components/NewsLetter/NewsLetter";
 import FeaturedCategories from "../Components/FeaturedCategories/FeaturedCategories";
-import TechDeals from "../Components/TechDeals/TechDeals";
+import TechDeals from "../Components/TechDeals/BeautyDeals";
 import BrandShowcase from "../Components/BrandShowcase/BrandShowcase";
 
 const Shop = () => {
@@ -15,8 +15,8 @@ const Shop = () => {
       <FeaturedCategories />
       <Popular />
       <TechDeals />
-      <Offers />
-      <NewCollections />
+      {/* <Offers /> */}
+      {/* <NewCollections /> */}
       <BrandShowcase />
       <NewsLetter />
     </div>

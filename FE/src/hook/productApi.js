@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:3001/api/products';
+const API_URL = 'https://my-backend-gbqg.onrender.com/api/products';
 
 export const fetchProductById = async (id) => {
     try {

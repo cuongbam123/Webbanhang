@@ -9,12 +9,12 @@ const UserProfile = () => {
   const [editUser, setEditUser] = useState({});
 
   useEffect(() => {
-    const fetchUser = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) return;
+    const token = localStorage.getItem("token");
+    if (!token) return;
 
+    const fetchUser = async () => {
       try {
-        const res = await axios.get("http://localhost:3001/api/users/profile", {
+        const res = await axios.get("https://my-backend-gbqg.onrender.com/api/users/profile", {
           headers: { Authorization: `Bearer ${token}` },
         });
         setUser(res.data);
@@ -25,17 +25,18 @@ const UserProfile = () => {
     };
 
     const fetchOrders = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) return;
-
       try {
-        const res = await axios.get("http://localhost:3001/api/orders/orders/my-orders", {
+        const res = await axios.get("https://my-backend-gbqg.onrender.com/api/orders/my-orders", {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setOrders(res.data); // <-- phải có dòng này!
-  } catch (err) {
-    console.error("Lỗi khi lấy đơn hàng:", err);
-  }
+
+        const fetchedOrders = res.data?.data;
+        setOrders(Array.isArray(fetchedOrders) ? fetchedOrders : []);
+      } catch (err) {
+        console.error("Lỗi khi lấy đơn hàng:", err);
+        toast.error("Không thể tải danh sách đơn hàng");
+        setOrders([]);
+      }
     };
 
     fetchUser();
@@ -51,13 +52,9 @@ const UserProfile = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await axios.put(
-        "http://localhost:3001/api/users/update-profile",
+        "https://my-backend-gbqg.onrender.com/api/users/users/update-profile",
         editUser,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
       setUser(res.data);
       toast.success("Cập nhật thành công!");
@@ -66,6 +63,17 @@ const UserProfile = () => {
       console.error(err);
       toast.error("Cập nhật thất bại");
     }
+  };
+
+  // 🌸 Map trạng thái sang tiếng Việt
+  const translateStatus = (status) => {
+    const map = {
+      pending: "⏳ Đang xử lý",
+      shipping: "🚚 Đang giao hàng",
+      completed: "✅ Hoàn thành",
+      cancelled: "❌ Đã hủy",
+    };
+    return map[status] || "Không xác định";
   };
 
   return (
@@ -109,8 +117,14 @@ const UserProfile = () => {
             {renderInput("Số điện thoại", "phone", editUser, setEditUser)}
             {renderInput("Ngày sinh", "birthday", editUser, setEditUser, "date")}
 
-            <button type="submit" style={styles.btn}>Lưu</button>
-            <button type="button" onClick={() => setEditing(false)} style={styles.btnCancel}>
+            <button type="submit" style={styles.btn}>
+              Lưu
+            </button>
+            <button
+              type="button"
+              onClick={() => setEditing(false)}
+              style={styles.btnCancel}
+            >
               Hủy
             </button>
           </form>
@@ -119,8 +133,15 @@ const UserProfile = () => {
             {renderText("Họ tên", user.fullname)}
             {renderText("Email", user.email)}
             {renderText("Số điện thoại", user.phone)}
-            {renderText("Ngày sinh", user.birthday)}
-            <button onClick={handleEdit} style={styles.btn}>Chỉnh sửa thông tin</button>
+            {renderText(
+              "Ngày sinh",
+              user.birthday
+                ? new Date(user.birthday).toLocaleDateString("vi-VN")
+                : ""
+            )}
+            <button onClick={handleEdit} style={styles.btn}>
+              Chỉnh sửa thông tin
+            </button>
           </>
         )}
       </div>
@@ -130,7 +151,13 @@ const UserProfile = () => {
       </h3>
 
       {orders.length === 0 ? (
-        <p style={{ color: "#888", textAlign: "center", fontStyle: "italic" }}>
+        <p
+          style={{
+            color: "#888",
+            textAlign: "center",
+            fontStyle: "italic",
+          }}
+        >
           Chưa có đơn hàng nào.
         </p>
       ) : (
@@ -148,10 +175,15 @@ const UserProfile = () => {
               {orders.map((order) => (
                 <tr key={order._id}>
                   <td style={styles.td}>{order._id}</td>
-                  {/* <td style={styles.td}>{new Date(order.createdAt).toLocaleDateString("vi-VN")}</td> */}
-                  <td>{new Date(order.create_time).toLocaleDateString("vi-VN")}</td>
-                  <td style={styles.td}>{order.total.toLocaleString()} VNĐ</td>
-                  <td style={styles.td}>{order.status || "Đang xử lý"}</td>
+                  <td style={styles.td}>
+                    {order.createdAt
+                      ? new Date(order.createdAt).toLocaleDateString("vi-VN")
+                      : "—"}
+                  </td>
+                  <td style={styles.td}>
+                    {order.total?.toLocaleString("vi-VN")} VNĐ
+                  </td>
+                  <td style={styles.td}>{translateStatus(order.status)}</td>
                 </tr>
               ))}
             </tbody>
@@ -162,7 +194,7 @@ const UserProfile = () => {
   );
 };
 
-// Helper render functions
+// Helpers
 const renderInput = (label, name, obj, setObj, type = "text") => (
   <div style={{ marginBottom: 12 }}>
     <label style={styles.label}>{label}:</label>

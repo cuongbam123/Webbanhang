@@ -28,11 +28,11 @@ function DashboardPage() {
         const headers = { Authorization: `Bearer ${token}` };
 
         // 📊 Doanh thu theo tháng
-        const resChart = await axios.get("http://localhost:3001/api/orders/stats/monthly", { headers });
+        const resChart = await axios.get("https://my-backend-gbqg.onrender.com/api/orders/stats/monthly", { headers });
         setChartData(resChart.data.data);
 
         // 🧾 Danh sách đơn hàng (admin)
-        const resOrders = await axios.get("http://localhost:3001/api/orders", { headers });
+        const resOrders = await axios.get("https://my-backend-gbqg.onrender.com/api/orders", { headers });
         const orderList = resOrders.data.data || [];
 
         // 🧮 Tính tổng thống kê

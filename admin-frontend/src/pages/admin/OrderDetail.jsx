@@ -13,7 +13,7 @@ const OrderDetail = () => {
   useEffect(() => {
     const fetchOrder = async () => {
       try {
-        const res = await axios.get(`http://localhost:3001/api/orders/${id}`, {
+        const res = await axios.get(`https://my-backend-gbqg.onrender.com/api/orders/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 

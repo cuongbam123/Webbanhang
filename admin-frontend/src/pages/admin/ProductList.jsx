@@ -48,7 +48,7 @@ const ProductList = () => {
   const fetchProducts = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:3001/api/products", {
+      const res = await axios.get("https://my-backend-gbqg.onrender.com/api/products", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setProducts(res.data.data || []);
@@ -60,7 +60,7 @@ const ProductList = () => {
 
   const fetchCategories = async () => {
   try {
-    const res = await axios.get("http://localhost:3001/api/categories");
+    const res = await axios.get("https://my-backend-gbqg.onrender.com/api/categories");
 
     console.log("📦 Categories từ server:", res.data); // kiểm tra
     // Vì API trả về mảng trực tiếp, ta gán thẳng res.data
@@ -77,7 +77,7 @@ const ProductList = () => {
     if (window.confirm("Bạn có chắc muốn xoá sản phẩm này?")) {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:3001/api/products/${id}`, {
+        await axios.delete(`https://my-backend-gbqg.onrender.com/api/products/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         toast.success("✅ Đã xoá sản phẩm!");
@@ -130,7 +130,7 @@ const ProductList = () => {
       if (imageFile) data.append("image", imageFile);
 
       if (editId) {
-        await axios.put(`http://localhost:3001/api/products/${editId}`, data, {
+        await axios.put(`https://my-backend-gbqg.onrender.com/api/products/${editId}`, data, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
@@ -139,7 +139,7 @@ const ProductList = () => {
         toast.success("✅ Cập nhật sản phẩm thành công!");
       } else {
         if (!imageFile) return toast.error("❌ Vui lòng chọn ảnh sản phẩm");
-        await axios.post("http://localhost:3001/api/products", data, {
+        await axios.post("https://my-backend-gbqg.onrender.com/api/products", data, {
           headers: {
             Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data",
@@ -229,43 +229,58 @@ const ProductList = () => {
             </tr>
           </thead>
           <tbody>
-            {filteredProducts.map((p, idx) => (
-              <tr
-                key={p._id || idx}
-                className="border-b border-gray-200 dark:border-gray-700"
-              >
-                <td className="py-2 px-4">
-                  <img
-                    src={p.image}
-                    alt={p.name}
-                    className="w-20 h-20 object-cover rounded"
-                  />
-                </td>
-                <td className="py-2 px-4">{p.name}</td>
-                <td className="py-2 px-4">{p.brand}</td>
-                <td className="py-2 px-4">
-                  {p.price?.toLocaleString("vi-VN")}₫
-                </td>
-                <td className="py-2 px-4">{p.category?.name || "Chưa có"}</td>
-                <td className="py-2 px-4 flex gap-2">
-                  <button
-                    onClick={() => handleEdit(p)}
-                    className="text-blue-600 hover:text-blue-800"
-                    title="Sửa"
-                  >
-                    <FiEdit size={18} />
-                  </button>
-                  <button
-                    onClick={() => handleDelete(p._id)}
-                    className="text-red-600 hover:text-red-800"
-                    title="Xoá"
-                  >
-                    <FiTrash size={18} />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+  {filteredProducts.map((p, idx) => {
+    // ✅ xử lý đường dẫn ảnh
+    const BASE_URL =
+      process.env.REACT_APP_BASE_URL ||
+      "https://my-backend-gbqg.onrender.com";
+
+    let imageUrl = p.image || "/no-image.png";
+    if (imageUrl.includes("localhost:3001")) {
+      const filename = imageUrl.split("/").pop();
+      imageUrl = `${BASE_URL}/uploads/${filename}`;
+    }
+
+    return (
+      <tr
+        key={p._id || idx}
+        className="border-b border-gray-200 dark:border-gray-700"
+      >
+        <td className="py-2 px-4">
+          <img
+            src={imageUrl}
+            alt={p.name}
+            className="w-20 h-20 object-cover rounded"
+            onError={(e) => (e.target.src = "/no-image.png")}
+          />
+        </td>
+        <td className="py-2 px-4">{p.name}</td>
+        <td className="py-2 px-4">{p.brand}</td>
+        <td className="py-2 px-4">
+          {p.price?.toLocaleString("vi-VN")}₫
+        </td>
+        <td className="py-2 px-4">{p.category?.name || "Chưa có"}</td>
+        <td className="py-2 px-4 flex gap-2">
+          <button
+            onClick={() => handleEdit(p)}
+            className="text-blue-600 hover:text-blue-800"
+            title="Sửa"
+          >
+            <FiEdit size={18} />
+          </button>
+          <button
+            onClick={() => handleDelete(p._id)}
+            className="text-red-600 hover:text-red-800"
+            title="Xoá"
+          >
+            <FiTrash size={18} />
+          </button>
+        </td>
+      </tr>
+    );
+  })}
+</tbody>
+
         </table>
 
         {filteredProducts.length === 0 && (

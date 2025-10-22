@@ -20,7 +20,7 @@ function LoginPage() {
       setLoading(true);
 
       // 🧠 Gửi username + password (đúng với backend)
-      const res = await axios.post("http://localhost:3001/api/users/login", {
+      const res = await axios.post("https://my-backend-gbqg.onrender.com/api/users/login", {
         username,
         password,
       });

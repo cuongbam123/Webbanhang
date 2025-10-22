@@ -26,7 +26,7 @@ const UserList = () => {
 
   const fetchUsers = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/api/users/admin/users", {
+      const res = await axios.get("https://my-backend-gbqg.onrender.com/api/users/admin/users", {
         headers: { Authorization: `Bearer ${token}` },
       });
       setUsers(res.data);
@@ -38,7 +38,7 @@ const UserList = () => {
   const handleDelete = async (id) => {
     if (!window.confirm("Bạn có chắc muốn xoá người dùng này?")) return;
     try {
-      await axios.delete(`http://localhost:3001/api/users/admin/users/${id}`, {
+      await axios.delete(`https://my-backend-gbqg.onrender.com/api/users/admin/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       toast.success("Đã xoá người dùng!");
@@ -87,7 +87,7 @@ const UserList = () => {
     try {
       if (editingUser) {
         // ✅ Sửa đường dẫn nếu backend chỉ có /api/users/users/:id
-        await axios.put(`http://localhost:3001/api/users/users/${editingUser._id}`,
+        await axios.put(`https://my-backend-gbqg.onrender.com/api/users/users/${editingUser._id}`,
           { fullname, username, email, role },
           {
             headers: { Authorization: `Bearer ${token}` },
@@ -95,7 +95,7 @@ const UserList = () => {
         );
         toast.success("Đã cập nhật người dùng!");
       } else {
-        await axios.post(`http://localhost:3001/api/users/register`,
+        await axios.post(`https://my-backend-gbqg.onrender.com/api/users/register`,
           { fullname, username, email, password, role },
           {
             headers: { Authorization: `Bearer ${token}` },

@@ -19,7 +19,7 @@ const OrderList = () => {
 
   const fetchOrders = async () => {
     try {
-      const res = await axios.get("http://localhost:3001/api/orders", {
+      const res = await axios.get("https://my-backend-gbqg.onrender.com/api/orders", {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -34,7 +34,7 @@ const OrderList = () => {
   const handleStatusChange = async (id, newStatus) => {
     try {
       await axios.put(
-        `http://localhost:3001/api/orders/${id}`,
+        `https://my-backend-gbqg.onrender.com/api/orders/${id}`,
         { status: newStatus },
         {
           headers: {
